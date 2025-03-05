@@ -10,9 +10,9 @@
 - 📚 **Plataforma de cursos** – Web para inscripción y visualización de contenido educativo.  
 
 ## 🛠 Tecnologías utilizadas  
-- **Frontend:** React, Vue, Tailwind CSS, Bootstrap  
+- **Frontend:** React, Angular, Vue, Tailwind CSS, Bootstrap  
 - **Backend:** Node.js, Express, Laravel, Django  
-- **Base de Datos:** MySQL, PostgreSQL, MongoDB  
+- **Base de Datos:** MySQL, PostgreSQL, MongoDB, FireBase  
 - **Despliegue:** Vercel, Netlify, Render  
 
 ## 🔗 Demo y despliegue  
