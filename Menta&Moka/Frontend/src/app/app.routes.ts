@@ -1,17 +1,26 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component';
+import { AdminCreateUserComponent } from './pages/admin/admin-create-user.component';
+import { AuthGuard } from './guards/auth.guard';
 
-export const routes: Routes = [
+export const appRoutes: Routes = [
+  { path: '', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  // Rutas del admin
   {
-    path: 'register',
-    loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent)
+    path: 'admin',
+    component: AdminDashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'login',
-    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
+    path: 'admin/create-user',
+    component: AdminCreateUserComponent,
+    canActivate: [AuthGuard]
   },
-  {
-    path: '',
-    redirectTo: '/login',  // Cambiamos el redirect inicial al login
-    pathMatch: 'full'
-  }
+
+  { path: '**', redirectTo: '' }
 ];
