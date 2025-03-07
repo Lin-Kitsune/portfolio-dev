@@ -21,11 +21,25 @@ export class LoginComponent {
 
   async login() {
     try {
-        const userCredential = await this.authService.login(this.email, this.password);
-        console.log('✅ Usuario logueado:', userCredential.user);
-        this.router.navigate(['/']);
-      } catch (err) {
-        console.error('❌ Error al iniciar sesión:', err);
-      }      
+      const userCredential = await this.authService.login(this.email, this.password);
+      const uid = userCredential.user.uid;
+
+      // 🔥 Al loguear, traemos el rol desde Firestore
+      this.authService.getUserRole(uid).subscribe(role => {
+        if (role === 'administrador') {
+          console.log('👑 Admin detectado, redirigiendo al panel de admin');
+          this.router.navigate(['/admin']);
+        } else if (role === 'cliente') {
+          console.log('👤 Cliente detectado, redirigiendo al home');
+          this.router.navigate(['/']);
+        } else {
+          console.warn('⚠️ Usuario con rol desconocido, redirigiendo al home por defecto');
+          this.router.navigate(['/']);
+        }
+      });
+
+    } catch (err) {
+      console.error('❌ Error al iniciar sesión:', err);
+    }
   }
 }
