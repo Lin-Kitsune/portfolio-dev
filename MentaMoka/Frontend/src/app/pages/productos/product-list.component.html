@@ -1,0 +1,55 @@
+<div class="p-6 max-w-5xl mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-marronTierra mb-4">Lista de Productos</h2>
+
+    <!-- Barra de búsqueda y botón de agregar producto -->
+    <div class="mb-4 flex justify-between items-center">
+      <input type="text" placeholder="Buscar producto..."
+             class="w-1/2 p-2 border border-beigeMadera rounded-md">
+      <a routerLink="/admin/products/create"
+         class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-marronTierra transition">
+        + Agregar Producto
+      </a>
+    </div>
+
+    <!-- Tabla de productos -->
+    <table class="w-full border-collapse border border-beigeMadera">
+      <thead>
+        <tr class="bg-verdeSalvia text-white">
+          <th class="p-2 border border-beigeMadera">Imagen</th>
+          <th class="p-2 border border-beigeMadera">Nombre</th>
+          <th class="p-2 border border-beigeMadera">Categoría</th>
+          <th class="p-2 border border-beigeMadera">Precio</th>
+          <th class="p-2 border border-beigeMadera">Stock</th>
+          <th class="p-2 border border-beigeMadera">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products$ | async" class="text-center">
+          <td class="p-2 border border-beigeMadera">
+            <img [src]="product.image_url" alt="{{ product.name }}" class="w-16 h-16 rounded-md mx-auto">
+          </td>
+          <td class="p-2 border border-beigeMadera">{{ product.name }}</td>
+          <td class="p-2 border border-beigeMadera">{{ product.category }}</td>
+          <td class="p-2 border border-beigeMadera">{{ product.price | currency }}</td>
+          <td class="p-2 border border-beigeMadera">{{ product.stock }}</td>
+          <td class="p-2 border border-beigeMadera flex justify-center gap-4">
+            <a *ngIf="product.id" [routerLink]="['/admin/products/edit', product.id]" 
+               class="text-blue-600 hover:underline">
+              ✏️ Editar
+            </a>
+            <button *ngIf="product.id" (click)="deleteProduct(product.id!)" 
+                    class="text-red-600 hover:underline">
+              ❌ Eliminar
+            </button>
+          </td>          
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mensaje si no hay productos -->
+    <div *ngIf="(products$ | async)?.length === 0" class="text-center text-marronTierra mt-4">
+      No hay productos disponibles.
+    </div>
+</div>
+
+  
