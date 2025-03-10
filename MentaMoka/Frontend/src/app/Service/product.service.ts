@@ -25,27 +25,27 @@ export interface Product {
 export class ProductService {
 
   private firestore = inject(Firestore);
-  private productsCollection = collection(this.firestore, 'products');
 
-  constructor() {}
+  constructor() {} 
 
-  // ✅ Corrección: Convertir `productsCollection` en una `query()`
   getProducts(): Observable<Product[]> {
-    const productsQuery = query(this.productsCollection); // 🔥 Firestore necesita una `Query`
-    return collectionData(productsQuery, { idField: 'id' }) as Observable<Product[]>;
+    const productsCollection = collection(this.firestore, 'products'); // ✅ Se obtiene la colección correctamente
+    const productsQuery = query(productsCollection); // ✅ Convertimos la colección en una consulta válida
+    return collectionData(productsQuery, { idField: 'id' }) as Observable<Product[]>; // ✅ Se usa correctamente
   }
 
   async addProduct(product: Product): Promise<void> {
-    await addDoc(this.productsCollection, { ...product, created_at: new Date().toISOString() });
+    const productsCollection = collection(this.firestore, 'products'); // ✅ Se obtiene la colección en el momento de la inserción
+    await addDoc(productsCollection, { ...product, created_at: new Date().toISOString() });
   }
 
   async updateProduct(id: string, product: Partial<Product>): Promise<void> {
-    const productDoc = doc(this.firestore, 'products', id);
+    const productDoc = doc(this.firestore, 'products', id); // ✅ Se obtiene la referencia del documento correctamente
     await updateDoc(productDoc, { ...product });
   }
 
   async deleteProduct(id: string): Promise<void> {
-    const productDoc = doc(this.firestore, 'products', id);
+    const productDoc = doc(this.firestore, 'products', id); // ✅ Se obtiene la referencia del documento correctamente
     await deleteDoc(productDoc);
   }
 }
