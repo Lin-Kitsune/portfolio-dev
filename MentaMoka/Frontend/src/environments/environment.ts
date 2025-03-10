@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  useEmulators: true,
+  useEmulators: false,
   firebaseConfig: {
       apiKey: "AIzaSyBCsqYkFNpvH7VM9w5QfQPqi1CIFORhMlA",
       authDomain: "menta-moka.firebaseapp.com",

@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products$ | async" class="text-center">
+        <tr *ngFor="let product of (products$ | async)" class="text-center">
           <td class="p-2 border border-beigeMadera">
             <img [src]="product.image_url" alt="{{ product.name }}" class="w-16 h-16 rounded-md mx-auto">
           </td>
@@ -43,7 +43,7 @@
             </button>
           </td>          
         </tr>
-      </tbody>
+      </tbody>      
     </table>
 
     <!-- Mensaje si no hay productos -->

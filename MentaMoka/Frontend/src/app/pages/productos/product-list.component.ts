@@ -13,14 +13,16 @@ import { Product } from '../../models/product.model';
 })
 export class ProductListComponent {
   
-  products$: Observable<Product[]>| undefined;
+  products$: Observable<Product[]>;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) {
+    this.products$ = this.productService.getProducts(); // ✅ Correcto
+  }
 
   ngOnInit() {
-    this.products$ = this.productService.getProducts();
-    this.products$.subscribe(products => {
-      console.log('Productos cargados desde Firestore:', products);
+    this.products$.subscribe({
+      next: (products) => console.log('🔥 Productos cargados:', products),
+      error: (err) => console.error('❌ Error cargando productos en el componente:', err),
     });
   }
 
