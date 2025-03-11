@@ -24,22 +24,27 @@ export class LoginComponent {
       const userCredential = await this.authService.login(this.email, this.password);
       const uid = userCredential.user.uid;
 
-      // 🔥 Al loguear, traemos el rol desde Firestore
-      this.authService.getUserRole(uid).subscribe(role => {
-        if (role === 'administrador') {
-          console.log('👑 Admin detectado, redirigiendo al panel de admin');
-          this.router.navigate(['/admin']);
-        } else if (role === 'cliente') {
-          console.log('👤 Cliente detectado, redirigiendo al home');
-          this.router.navigate(['/']);
-        } else {
-          console.warn('⚠️ Usuario con rol desconocido, redirigiendo al home por defecto');
-          this.router.navigate(['/']);
-        }
-      });
+      // 🔥 Asegurar que el token está actualizado antes de obtener el rol
+      await userCredential.user.getIdToken(true);
 
+      // ✅ Obtener el rol correctamente usando `await`
+      const role = await this.authService.getUserRole();
+
+      console.log("🎭 Rol detectado:", role);
+
+      if (role === 'administrador') {
+        console.log('👑 Admin detectado, redirigiendo al panel de admin');
+        this.router.navigate(['/admin']);
+      } else if (role === 'cliente') {
+        console.log('👤 Cliente detectado, redirigiendo al home');
+        this.router.navigate(['/']);
+      } else {
+        console.warn('⚠️ Usuario con rol desconocido, redirigiendo al home por defecto');
+        this.router.navigate(['/']);
+      }
     } catch (err) {
       console.error('❌ Error al iniciar sesión:', err);
     }
   }
 }
+

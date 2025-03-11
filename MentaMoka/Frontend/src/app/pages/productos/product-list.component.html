@@ -30,8 +30,11 @@
           </td>
           <td class="p-2 border border-beigeMadera">{{ product.name }}</td>
           <td class="p-2 border border-beigeMadera">{{ product.category }}</td>
-          <td class="p-2 border border-beigeMadera">{{ product.price | currency }}</td>
-          <td class="p-2 border border-beigeMadera">{{ product.stock }}</td>
+          <td class="p-2 border border-beigeMadera">{{ product.price | currency:'CLP ':'symbol':'1.0-0' }}</td>
+          <td class="p-2 border border-beigeMadera" 
+              [ngClass]="{'text-red-500 font-bold': product.stock === 0}">
+            {{ product.stock > 0 ? product.stock : '🚨 Sin ingredientes'}}
+          </td>
           <td class="p-2 border border-beigeMadera flex justify-center gap-4">
             <a *ngIf="product.id" [routerLink]="['/admin/products/edit', product.id]" 
                class="text-blue-600 hover:underline">

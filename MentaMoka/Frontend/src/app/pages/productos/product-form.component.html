@@ -1,56 +1,98 @@
 <div class="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold text-marronTierra mb-4">
-      {{ product.id ? 'Editar Producto' : 'Agregar Producto' }}
-    </h2>
-  
-    <form (ngSubmit)="saveProduct()" class="space-y-4">
+  <h2 class="text-2xl font-bold text-marronTierra mb-4">
+    {{ productId ? 'Editar Producto' : 'Agregar Producto' }}
+  </h2>
+
+  <form (ngSubmit)="saveProduct()" class="space-y-4">
+    <!-- Campos de producto -->
+    <div>
+      <label class="block font-medium text-marronTierra">Nombre:</label>
+      <input type="text" [(ngModel)]="product.name" name="name" required
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <!-- 🔥 Categoría con Select -->
+    <div>
+      <label class="block font-medium text-marronTierra">Categoría:</label>
+      <div class="flex gap-2">
+        <!-- Select de Categorías -->
+        <select [(ngModel)]="product.category" name="category"
+                class="w-full p-2 border border-beigeMadera rounded-md bg-white text-gray-700">
+          <option *ngFor="let category of categories" [value]="category.name">
+            {{ category.name }}
+          </option>
+        </select>
+    
+        <!-- Input para nueva categoría -->
+        <input [(ngModel)]="newCategory" name="newCategory" placeholder="Nueva categoría"
+               class="w-1/2 p-2 border border-beigeMadera rounded-md bg-white text-gray-700"
+               (keydown.enter)="addCategory()">
+    
+        <!-- Botón para agregar categoría -->
+        <button type="button" (click)="addCategory()"
+                class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-marronTierra transition">
+          ➕ Agregar
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">Descripción:</label>
+      <textarea [(ngModel)]="product.description" name="description" required
+                class="w-full p-2 border border-beigeMadera rounded-md"></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block font-medium text-marronTierra">Nombre:</label>
-        <input type="text" [(ngModel)]="product.name" name="name" required
+        <label class="block font-medium text-marronTierra">Precio:</label>
+        <input type="number" [(ngModel)]="product.price" name="price" required
                class="w-full p-2 border border-beigeMadera rounded-md">
       </div>
-  
       <div>
-        <label class="block font-medium text-marronTierra">Categoría:</label>
-        <input type="text" [(ngModel)]="product.category" name="category" required
-               class="w-full p-2 border border-beigeMadera rounded-md">
+        <label class="block font-medium text-marronTierra">Stock (Calculado automáticamente):</label>
+        <input type="number" [value]="product.stock" disabled
+               class="w-full p-2 border border-beigeMadera rounded-md bg-gray-100">
       </div>
-  
-      <div>
-        <label class="block font-medium text-marronTierra">Descripción:</label>
-        <textarea [(ngModel)]="product.description" name="description" required
-                  class="w-full p-2 border border-beigeMadera rounded-md"></textarea>
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">URL de Imagen:</label>
+      <input type="text" [(ngModel)]="product.image_url" name="image_url" required
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <!-- 🔥 Sección para seleccionar ingredientes -->
+    <div>
+      <label class="block font-medium text-marronTierra">Ingredientes:</label>
+      <div class="flex items-center gap-4">
+        <select [(ngModel)]="selectedIngredient" name="selectedIngredient"
+                class="w-full p-2 border border-beigeMadera rounded-md">
+          <option *ngFor="let ingredient of availableIngredients" [value]="ingredient.id">
+            {{ ingredient.name }} (Stock: {{ ingredient.stock }})
+          </option>
+        </select>
+        <input type="number" [(ngModel)]="selectedQuantity" name="selectedQuantity" min="1"
+               placeholder="Cantidad"
+               class="w-20 p-2 border border-beigeMadera rounded-md">
+        <button type="button" (click)="addIngredient()"
+                class="bg-verdeSalvia text-white px-3 py-2 rounded-md hover:bg-marronTierra">
+          ➕ Agregar
+        </button>
       </div>
-  
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block font-medium text-marronTierra">Precio:</label>
-          <input type="number" [(ngModel)]="product.price" name="price" required
-                 class="w-full p-2 border border-beigeMadera rounded-md">
-        </div>
-        <div>
-          <label class="block font-medium text-marronTierra">Stock:</label>
-          <input type="number" [(ngModel)]="product.stock" name="stock" required
-                 class="w-full p-2 border border-beigeMadera rounded-md">
-        </div>
-      </div>
-  
-      <div>
-        <label class="block font-medium text-marronTierra">URL de Imagen:</label>
-        <input type="text" [(ngModel)]="product.image_url" name="image_url" required
-               class="w-full p-2 border border-beigeMadera rounded-md">
-      </div>
-  
-      <div class="flex items-center">
-        <input type="checkbox" [(ngModel)]="product.customizable" name="customizable"
-               class="mr-2">
-        <label class="font-medium text-marronTierra">¿Personalizable?</label>
-      </div>
-  
-      <button type="submit"
-              class="w-full bg-verdeSalvia text-white font-bold py-2 rounded-md hover:bg-marronTierra transition">
-        Guardar Producto
-      </button>
-    </form>
-  </div>
-  
+
+      <!-- Lista de ingredientes agregados -->
+      <ul class="mt-2 space-y-2">
+        <li *ngFor="let ingredient of product.ingredients" class="flex justify-between bg-gray-100 p-2 rounded-md">
+          <span>{{ ingredient.name }} - {{ ingredient.quantity }}</span>
+          <button type="button" (click)="removeIngredient(ingredient.id!)">
+                  class="text-red-600 hover:underline">❌</button>
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit"
+            class="w-full bg-verdeSalvia text-white font-bold py-2 rounded-md hover:bg-marronTierra transition">
+      Guardar Producto
+    </button>
+  </form>
+</div>

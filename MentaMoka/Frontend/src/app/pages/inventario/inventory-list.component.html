@@ -1,0 +1,38 @@
+<div class="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-marronTierra mb-4">Inventario de Ingredientes</h2>
+  
+    <button (click)="goToAddIngredient()"
+            class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-marronTierra transition">
+      + Agregar Ingrediente
+    </button>
+  
+    <table class="w-full border-collapse border border-beigeMadera mt-4">
+      <thead>
+        <tr class="bg-verdeSalvia text-white">
+          <th class="p-2 border border-beigeMadera">Nombre</th>
+          <th class="p-2 border border-beigeMadera">Imagen</th>
+          <th class="p-2 border border-beigeMadera">Stock</th>
+          <th class="p-2 border border-beigeMadera">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ingredient of ingredients" class="text-center">
+          <td class="p-2 border border-beigeMadera">{{ ingredient.name }}</td>
+          <td class="p-2 border border-beigeMadera">
+            <img [src]="ingredient.image_url" alt="{{ ingredient.name }}" class="w-16 h-16 rounded-md mx-auto">
+          </td>
+          <td class="p-2 border border-beigeMadera">{{ ingredient.stock }}</td>
+          <td class="p-2 border border-beigeMadera flex justify-center gap-4">
+            <button (click)="goToEditIngredient(ingredient.id)">
+                ✏️ Editar
+            </button>
+
+            <button (click)="deleteIngredient(ingredient.id)">
+                ❌ Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

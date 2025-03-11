@@ -6,21 +6,17 @@ admin.initializeApp({
 });
 
 async function crearPrimerAdmin() {
-    const user = await admin.auth().createUser({
-        email: 'admin@mentaymoka.com',
-        password: 'Admin1234',
-        displayName: 'Admin Principal',
-    });
+    try {
+        const user = await admin.auth().getUserByEmail('admin@mentaymoka.com');
 
-    await admin.firestore().collection('users').doc(user.uid).set({
-        uid: user.uid,
-        email: 'admin@mentaymoka.com',
-        name: 'Admin Principal',
-        role: 'administrador',
-        createdAt: new Date().toISOString()
-    });
+        // 🔥 Asignar Custom Claims
+        await admin.auth().setCustomUserClaims(user.uid, { role: 'administrador' });
 
-    console.log('✅ Admin creado:', user.uid);
+        console.log(`✅ Claims asignados al usuario ${user.email}`);
+
+    } catch (error) {
+        console.error('❌ Error asignando claims:', error);
+    }
 }
 
-crearPrimerAdmin().catch(console.error);
+crearPrimerAdmin();
