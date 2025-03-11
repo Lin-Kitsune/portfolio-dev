@@ -3,10 +3,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component';
 import { AdminCreateUserComponent } from './pages/admin/admin-create-user.component';
+import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
-  { path: '', component: RegisterComponent },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+  { path: 'inicio', component: RegisterComponent }, // Puedes cambiarlo a tu página de inicio real
+  { path: 'productos-clientes', component: ProductListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
@@ -32,5 +35,5 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
 
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'inicio' } // Redirección si la ruta no existe
 ];

@@ -1,11 +1,33 @@
 <div class="w-full min-h-screen bg-blancoAlgodon text-marronTierra font-sans">
   <header class="bg-verdeSalvia text-blancoAlgodon p-4 shadow-md">
-    <h1 class="text-3xl font-bold">Menta & Moka</h1>
-    <nav class="mt-2">
-      <a routerLink="/" class="mr-4">Inicio</a>
-      <a routerLink="/menu" class="mr-4">Menú</a>
-      <a routerLink="/reservas">Reservas</a>
-    </nav>
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Logo -->
+      <h1 class="text-3xl font-bold">Menta & Moka</h1>
+
+      <!-- Navegación Principal -->
+      <nav class="flex space-x-6">
+        <a [routerLink]="'inicio'" class="font-semibold relative transition-all duration-300 after:absolute after:content-[''] after:w-0 after:h-[2px] after:bg-[#D5A253] after:left-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full hover:after:left-0">Inicio</a>
+        <a [routerLink]="'menu'" class="font-semibold relative transition-all duration-300 after:absolute after:content-[''] after:w-0 after:h-[2px] after:bg-[#D5A253] after:left-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full hover:after:left-0">Menú</a>
+        <a [routerLink]="'reservas'" class="font-semibold relative transition-all duration-300 after:absolute after:content-[''] after:w-0 after:h-[2px] after:bg-[#D5A253] after:left-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full hover:after:left-0">Reservas</a>
+        <a [routerLink]="'productos-clientes'" class="font-semibold relative transition-all duration-300 after:absolute after:content-[''] after:w-0 after:h-[2px] after:bg-[#D5A253] after:left-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full hover:after:left-0">Productos</a>
+      </nav>
+
+      <!-- Navegación de Usuario -->
+      <div class="flex space-x-4">
+        <!-- ✅ Mostrar solo si el usuario NO está autenticado -->
+        <a *ngIf="!isLoggedIn" [routerLink]="'login'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
+          Iniciar Sesión
+        </a>
+        <a *ngIf="!isLoggedIn" [routerLink]="'register'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
+          Registrarse
+        </a>
+
+        <!-- ✅ Mostrar solo si el usuario ESTÁ autenticado -->
+        <button *ngIf="isLoggedIn" (click)="logout()" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
   </header>
 
   <main class="p-6">

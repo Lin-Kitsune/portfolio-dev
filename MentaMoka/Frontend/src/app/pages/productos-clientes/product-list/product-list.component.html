@@ -1,0 +1,69 @@
+<div class="container mx-auto px-4 py-8 flex">
+    <!-- Filtros -->
+    <aside class="w-1/4 p-4 bg-white shadow-md rounded-lg">
+        <h3 class="text-xl font-bold mb-4">Filtros</h3>
+
+        <!-- Categoría -->
+        <div class="mb-4">
+            <h4 class="font-semibold mb-2">Categoría</h4>
+            <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="w-full p-2 border rounded">
+                <option value="">Todas</option>
+                <option value="Café">Café</option>
+                <option value="Té">Té</option>
+                <option value="Jugos">Jugos</option>
+                <option value="Pastelería">Pastelería</option>
+                <option value="Snacks">Snacks</option>
+            </select>
+        </div>
+
+        <!-- Precio -->
+        <div class="mb-4">
+            <h4 class="font-semibold mb-2">Precio</h4>
+            <input type="number" [(ngModel)]="minPrice" placeholder="Mínimo" class="w-full p-2 border rounded mb-2">
+            <input type="number" [(ngModel)]="maxPrice" placeholder="Máximo" class="w-full p-2 border rounded">
+            <button (click)="applyFilters()" class="mt-2 bg-verdeSalvia text-white py-1 px-4 rounded">Aplicar</button>
+        </div>
+
+        <!-- Opciones -->
+        <div class="mb-4">
+            <h4 class="font-semibold mb-2">Opciones</h4>
+            <label class="block">
+                <input type="checkbox" [(ngModel)]="customizableOnly" (change)="applyFilters()"> Personalizable
+            </label>
+            <label class="block">
+                <input type="checkbox" [(ngModel)]="discountOnly" (change)="applyFilters()"> Con Descuento
+            </label>
+        </div>
+    </aside>
+
+    <!-- Lista de productos -->
+    <div class="w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ml-4">
+        <div *ngFor="let product of filteredProducts" 
+             class="relative bg-white shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 hover:shadow-lg group flex flex-col justify-between h-full">
+            
+            <div>
+                <img [src]="product.image_url" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-lg">
+                <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
+                <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
+                <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP':'symbol':'1.0-0' }}</p>
+            </div>
+
+            <!-- Botón "Añadir al carrito" con transición suave -->
+            <button (click)="addToCart(product)" 
+                    class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-300 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
+                
+                <span class="transition-opacity duration-300 ease-in-out"
+                      [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
+                    Añadir al carrito
+                </span>
+                
+                <svg class="w-6 h-6 absolute transition-opacity duration-300 ease-in-out"
+                     [ngClass]="{'opacity-0': hovering !== product.id, 'opacity-100': hovering === product.id}"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5 6m2 7l1 5h8l1-5M9 18h6"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
