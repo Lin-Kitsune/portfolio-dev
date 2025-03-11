@@ -1,10 +1,10 @@
 // product-list.component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';  
-import { ProductService } from '../../Service/product.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../models/product.model'; // Ahora sí coincide perfectamente
+import { ProductService } from '../../Service/product.service';
+import { Product } from '../../models/product.model'
 
 @Component({
   selector: 'app-product-list',

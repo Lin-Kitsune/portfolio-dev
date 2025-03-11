@@ -3,7 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component';
 import { AdminCreateUserComponent } from './pages/admin/admin-create-user.component';
-import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component';
+import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component-client';
 import { AuthGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
