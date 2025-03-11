@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProductService, Product } from '../../../Service/product.service';
+import { ProductService } from '../../../Service/product.service';
+import { Product } from '../../../models/product.model';
 import { CartService } from '../../../Service/cart.service'; // ✅ Importamos el servicio del carrito
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  templateUrl: './product-list.component-client.html',
+  styleUrls: ['./product-list.component-client.scss']
 })
 export class ProductListComponent implements OnInit {
 
