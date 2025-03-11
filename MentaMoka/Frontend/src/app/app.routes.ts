@@ -21,6 +21,7 @@ export const appRoutes: Routes = [
     component: AdminCreateUserComponent,
     canActivate: [AuthGuard]
   },
+    // Gestión de productos
   {
     path: 'admin/products',
     loadComponent: () => import('./pages/productos/product-list.component').then(m => m.ProductListComponent),
@@ -29,6 +30,27 @@ export const appRoutes: Routes = [
   {
     path: 'admin/products/create',
     loadComponent: () => import('./pages/productos/product-form.component').then(m => m.ProductFormComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin/products/edit/:id',
+    loadComponent: () => import('./pages/productos/product-form.component').then(m => m.ProductFormComponent),
+    canActivate: [AuthGuard]
+},
+  // Gestión de Inventario
+  {
+    path: 'admin/inventory',
+    loadComponent: () => import('./pages/inventario/inventory-list.component').then(m => m.InventoryListComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin/inventory/create',
+    loadComponent: () => import('./pages/inventario/inventory-form.component').then(m => m.InventoryFormComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin/inventory/edit/:id',
+    loadComponent: () => import('./pages/inventario/inventory-form.component').then(m => m.InventoryFormComponent),
     canActivate: [AuthGuard]
   },
 
