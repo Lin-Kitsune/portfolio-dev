@@ -2,7 +2,7 @@
   <header class="bg-verdeSalvia text-blancoAlgodon p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
       <!-- Logo -->
-      <h1 class="text-3xl font-bold">Menta & Moka</h1>
+      <h1 class="text-3xl font-bold">LinMaD Macchiato☕</h1>
 
       <!-- Navegación Principal -->
       <nav class="flex space-x-6">
@@ -13,7 +13,17 @@
       </nav>
 
       <!-- Navegación de Usuario -->
-      <div class="flex space-x-4">
+      <div class="flex space-x-4 items-center">
+        <!-- Carrito de compras -->
+        <button (click)="toggleCart()" class="relative bg-verdeSalvia text-white p-2 rounded-full hover:bg-opacity-80 transition-all">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5 6m2 7l1 5h8l1-5M9 18h6"/>
+          </svg>
+          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-2">
+            {{ cartItemCount }}
+          </span>
+        </button>
+
         <!-- ✅ Mostrar solo si el usuario NO está autenticado -->
         <a *ngIf="!isLoggedIn" [routerLink]="'login'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
           Iniciar Sesión
@@ -37,4 +47,63 @@
   <footer class="bg-beigeMadera text-center p-4">
     <p>© 2025 Menta & Moka - Todos los derechos reservados</p>
   </footer>
+
+  <!-- ✅ Modal de Carrito con animación y botón fijo -->
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-end transition-opacity duration-300"
+       [ngClass]="{'opacity-100': isCartOpen, 'opacity-0': !isCartOpen, 'pointer-events-none': !isCartOpen}">
+
+    <div class="bg-white w-80 h-full p-4 shadow-lg transform transition-transform duration-500 ease-in-out flex flex-col"
+         [ngClass]="{'translate-x-0': isCartOpen, 'translate-x-full': !isCartOpen}">
+
+      <!-- 🔹 Encabezado -->
+      <div class="flex justify-between items-center border-b pb-2">
+        <h2 class="text-lg font-bold">Tienes {{ cartItemCount }} productos</h2>
+        <button (click)="toggleCart()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 🔹 Lista de productos -->
+      <div class="flex-1 overflow-y-auto">
+        <div *ngFor="let item of cartItems" class="flex items-center justify-between mt-4 border-b pb-2">
+          <img [src]="item.image_url" alt="{{ item.name }}" class="w-12 h-12 object-cover rounded">
+          <div class="flex-1 ml-2">
+            <p class="text-sm font-semibold">{{ item.name }}</p>
+            <p class="text-xs text-gray-500">Tamaño: {{ item.size }}</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button (click)="decreaseQuantity(item)" class="bg-gray-300 px-2 rounded">−</button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="increaseQuantity(item)" class="bg-verdeSalvia text-white px-2 rounded">+</button>
+          </div>
+          <button (click)="removeFromCart(item)" class="text-red-500 p-2 rounded-full hover:bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M9 6V5a3 3 0 013-3h0a3 3 0 013 3v1m4 0h-6m-4 0H5m2 0h10M4 6h16m-3 4v10a2 2 0 01-2 2H9a2 2 0 01-2-2V10m4 0v10m4-10v10"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 🔹 Acciones (fijo en la parte inferior) -->
+      <div class="pb-4 pt-2 border-t mt-2">
+        <button (click)="clearCart()" class="bg-red-500 text-white w-full py-2 rounded-md font-semibold hover:bg-red-600 transition-all">
+          Vaciar carrito 🗑️
+        </button>
+        <div class="mt-2 flex justify-between">
+          <p class="text-lg font-bold">Subtotal</p>
+          <p class="text-lg font-bold">{{ cartTotal | currency:'CLP $':'symbol':'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <!-- 🔹 Botón de pago (Fijo en la parte inferior) -->
+      <div class="p-2 bg-white shadow-md">
+        <button class="bg-verdeSalvia text-white w-full py-3 rounded-md font-semibold hover:bg-opacity-80 transition-all">
+          Pagar 💳
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>

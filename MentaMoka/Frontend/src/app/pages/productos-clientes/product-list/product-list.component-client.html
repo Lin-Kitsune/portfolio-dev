@@ -15,25 +15,6 @@
                 <option value="Snacks">Snacks</option>
             </select>
         </div>
-
-        <!-- Precio -->
-        <div class="mb-4">
-            <h4 class="font-semibold mb-2">Precio</h4>
-            <input type="number" [(ngModel)]="minPrice" placeholder="Mínimo" class="w-full p-2 border rounded mb-2">
-            <input type="number" [(ngModel)]="maxPrice" placeholder="Máximo" class="w-full p-2 border rounded">
-            <button (click)="applyFilters()" class="mt-2 bg-verdeSalvia text-white py-1 px-4 rounded">Aplicar</button>
-        </div>
-
-        <!-- Opciones -->
-        <div class="mb-4">
-            <h4 class="font-semibold mb-2">Opciones</h4>
-            <label class="block">
-                <input type="checkbox" [(ngModel)]="customizableOnly" (change)="applyFilters()"> Personalizable
-            </label>
-            <label class="block">
-                <input type="checkbox" [(ngModel)]="discountOnly" (change)="applyFilters()"> Con Descuento
-            </label>
-        </div>
     </aside>
 
     <!-- Lista de productos -->
@@ -41,28 +22,46 @@
         <div *ngFor="let product of filteredProducts" 
              class="relative bg-white shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 hover:shadow-lg group flex flex-col justify-between h-full">
             
-            <div>
+            <div class="relative">
                 <img [src]="product.image_url" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-lg">
-                <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
-                <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
-                <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP':'symbol':'1.0-0' }}</p>
+                
+                <!-- ✅ Menú emergente con animación más rápida -->
+                <div *ngIf="selectedProduct?.id === product.id" 
+                     class="absolute inset-0 bg-white bg-opacity-95 p-4 flex flex-col justify-center items-center rounded-lg shadow-lg transition-all duration-150 ease-in-out transform scale-95 opacity-0"
+                     [ngClass]="{'scale-100 opacity-100': selectedProduct?.id === product.id}">
+                    
+                    <!-- ❌ Botón de cierre estilizado -->
+                    <button (click)="closeModal()" 
+                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold rounded-full p-1">
+                        ✕
+                    </button>
+
+                    <h2 class="text-lg font-bold mb-2">Tamaño:</h2>
+                    <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-4">
+                        <option value="">Elige una opción</option>
+                        <option value="Pequeño">Pequeño</option>
+                        <option value="Mediano">Mediano</option>
+                        <option value="Grande">Grande</option>
+                    </select>
+
+                    <button (click)="addToCart()" class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full transition-all duration-150 hover:bg-green-700">
+                        Añadir al carrito
+                    </button>
+                </div>
             </div>
 
-            <!-- Botón "Añadir al carrito" con transición suave -->
-            <button (click)="addToCart(product)" 
-                    class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-300 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
+            <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
+            <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
+            <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP $':'symbol':'1.0-0' }}</p>
+
+            <!-- Botón "Añadir al carrito" que abre el menú emergente -->
+            <button (click)="openModal(product)" 
+                    class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-150 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
                 
-                <span class="transition-opacity duration-300 ease-in-out"
+                <span class="transition-opacity duration-150 ease-in-out"
                       [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
                     Añadir al carrito
                 </span>
-                
-                <svg class="w-6 h-6 absolute transition-opacity duration-300 ease-in-out"
-                     [ngClass]="{'opacity-0': hovering !== product.id, 'opacity-100': hovering === product.id}"
-                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5 6m2 7l1 5h8l1-5M9 18h6"/>
-                </svg>
             </button>
         </div>
     </div>

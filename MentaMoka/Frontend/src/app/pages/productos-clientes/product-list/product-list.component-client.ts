@@ -22,10 +22,12 @@ export class ProductListComponent implements OnInit {
   maxPrice: number | null = null;
   customizableOnly: boolean = false;
   discountOnly: boolean = false;
-  
-  hovering: string | null | undefined = null; // ✅ Se mantiene la estructura
+  hovering: string | null | undefined = null;
 
-  constructor(private productService: ProductService, private cartService: CartService) {} // ✅ Inyectamos el servicio del carrito
+  selectedProduct: Product | null = null; // ✅ Guarda el producto seleccionado
+  selectedSize: string = ''; // ✅ Guarda el tamaño seleccionado
+
+  constructor(private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
@@ -46,9 +48,38 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  // ✅ Agregar producto al carrito
-  addToCart(product: Product) {
-    this.cartService.addToCart(product);
-    console.log('🛒 Producto añadido al carrito:', product);
+// ✅ Ajustamos la animación para hacerla más rápida (150ms en lugar de 200ms)
+openModal(product: Product) {
+  this.selectedProduct = product;
+  this.selectedSize = ''; // Reiniciamos la selección
+  setTimeout(() => {
+      document.querySelector('.scale-95')?.classList.remove('scale-95', 'opacity-0');
+  }, 10);
+}
+
+closeModal() {
+  const modalElement = document.querySelector('.scale-100');
+  if (modalElement) {
+      modalElement.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+          this.selectedProduct = null;
+          this.selectedSize = '';
+      }, 150);
+  } else {
+      this.selectedProduct = null;
+      this.selectedSize = '';
+  }
+}
+
+  // ✅ Agregar al carrito con tamaño seleccionado
+  addToCart() {
+    if (this.selectedProduct && this.selectedSize) {
+      const productToAdd = { ...this.selectedProduct, size: this.selectedSize };
+      this.cartService.addToCart(productToAdd, this.selectedSize);
+      console.log('🛒 Producto añadido al carrito:', productToAdd);
+      this.closeModal();
+    } else {
+      alert("Por favor, selecciona un tamaño.");
+    }
   }
 }
