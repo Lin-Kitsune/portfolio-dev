@@ -1,0 +1,35 @@
+<div class="carousel-container">
+  <div class="carousel-wrapper">
+    <!-- Carrusel -->
+    <div class="flex w-full h-full transition-transform duration-700 ease-in-out flex-nowrap"
+         [style.transform]="'translateX(-' + (currentIndex * 100) + '%)'">
+      <div *ngFor="let image of images" class="carousel-slide">
+        
+        <!-- Imagen -->
+        <div class="relative w-full h-full">
+          <img [src]="image.image" alt="Café" class="carousel-image">
+        </div>
+
+        <!-- Fondo oscuro -->
+        <div class="carousel-overlay"></div>
+
+        <!-- Contenido -->
+        <div class="carousel-content">
+          <h1 class="carousel-title">{{ image.title }}</h1>
+          <p class="carousel-subtitle">{{ image.subtitle }}</p>
+          <button class="carousel-button">{{ image.buttonText }}</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Indicadores de paginación -->
+    <div class="carousel-indicators">
+      <span *ngFor="let image of images; let i = index"
+            class="carousel-indicator"
+            [ngClass]="{ 'carousel-indicator-active': i === currentIndex }"
+            (click)="goToSlide(i)">
+      </span>
+    </div>
+  </div>
+</div>
