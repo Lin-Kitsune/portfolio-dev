@@ -1,0 +1,65 @@
+/* ===== Carrusel: Ancho exacto y alineado ===== */
+.carousel-container {
+  @apply w-full flex justify-center; /* Centra el carrusel */
+}
+
+.carousel-wrapper {
+  @apply container mx-auto max-w-[1440px] overflow-hidden relative h-[40vh] sm:h-[50vh] md:h-[55vh] lg:h-[60vh] xl:h-[65vh] border border-gray-200 shadow-md;
+}
+
+/* ===== Slides (Imágenes) ===== */
+.carousel-slide {
+  @apply w-full flex-shrink-0 relative overflow-hidden;
+}
+
+.carousel-image {
+  @apply w-full h-full object-cover object-center; /* Ajusta imagen sin distorsión */
+}
+
+/* ===== Overlay Oscuro ===== */
+.carousel-overlay {
+  @apply absolute inset-0 bg-black bg-opacity-40;
+}
+
+/* ===== Contenido del Carrusel (Texto y Botón) ===== */
+.carousel-content {
+  @apply absolute inset-0 flex flex-col justify-center items-center text-white text-center px-4 md:px-8 w-full;
+}
+
+.carousel-title {
+  @apply text-3xl sm:text-4xl md:text-5xl font-bold drop-shadow-lg;
+}
+
+.carousel-subtitle {
+  @apply text-lg sm:text-xl mt-2 drop-shadow-md;
+}
+
+.carousel-button {
+  @apply mt-4 px-6 py-3 bg-mostazaSuave text-white font-semibold rounded-lg shadow-md hover:bg-opacity-80 transition-all;
+}
+
+/* ===== Botones de Navegación (Anterior/Siguiente) ===== */
+.carousel-nav-button {
+  @apply absolute top-1/2 transform -translate-y-1/2 
+         bg-gray-200 text-gray-700 w-8 h-8 flex items-center justify-center 
+         rounded-full shadow-md hover:bg-gray-300 transition-all;
+}
+
+.carousel-nav-icon {
+  @apply w-5 h-5;
+}
+
+/* ===== Indicadores de Paginación ===== */
+.carousel-indicators {
+  @apply absolute bottom-4 left-1/2 transform -translate-x-1/2 
+         flex space-x-2 w-auto; /* Asegura que los indicadores estén centrados */
+}
+
+.carousel-indicator {
+  @apply w-3 h-3 rounded-full border border-gray-400 
+         transition-all cursor-pointer;
+}
+
+.carousel-indicator-active {
+  @apply bg-mostazaSuave border-mostazaSuave;
+}

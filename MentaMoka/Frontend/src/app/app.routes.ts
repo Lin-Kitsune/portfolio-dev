@@ -2,13 +2,14 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component';
+import { HomeComponent } from './pages/Home/home.component';
 import { AdminCreateUserComponent } from './pages/admin/admin-create-user.component';
 import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component-client';
 import { AuthGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-  { path: 'inicio', component: RegisterComponent }, // Puedes cambiarlo a tu página de inicio real
+  { path: 'inicio', component: HomeComponent }, // Puedes cambiarlo a tu página de inicio real
   { path: 'productos-clientes', component: ProductListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

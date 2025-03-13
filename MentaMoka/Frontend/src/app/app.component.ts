@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   private auth = getAuth();
   
   isCartOpen = false;
+  isSearchOpen = false;
   cartItems: CartItem[] = [];
   cartItemCount = 0;
   cartTotal = 0;
@@ -80,5 +81,9 @@ export class AppComponent implements OnInit {
 
   clearCart() {
     this.cartService.clearCart();
+  }
+
+  toggleSearch(open: boolean) {
+    this.isSearchOpen = open;
   }
 }
