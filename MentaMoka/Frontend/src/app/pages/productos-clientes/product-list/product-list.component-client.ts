@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../Service/product.service';
 import { Product } from '../../../models/product.model';
-import { CartService } from '../../../Service/cart.service'; // ✅ Importamos el servicio del carrito
+import { CartService } from '../../../Service/cart.service'; 
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -16,23 +18,27 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
+  categories$: Observable<any[]>; // 🔹 Obtiene categorías de Firestore
 
+  searchQuery: string = ''; // 🔍 Estado para el buscador
   selectedCategory: string = '';
   minPrice: number | null = null;
   maxPrice: number | null = null;
-  customizableOnly: boolean = false;
-  discountOnly: boolean = false;
+  sortBy: string = ''; // 🔹 Nuevo estado para ordenar
   hovering: string | null | undefined = null;
 
-  selectedProduct: Product | null = null; // ✅ Guarda el producto seleccionado
-  selectedSize: string = ''; // ✅ Guarda el tamaño seleccionado
+  selectedProduct: Product | null = null; 
+  selectedSize: string = ''; 
 
-  constructor(private productService: ProductService, private cartService: CartService) {}
+  constructor(private productService: ProductService, private cartService: CartService, private firestore: Firestore) {
+    const categoriesRef = collection(this.firestore, 'categories');
+    this.categories$ = collectionData(categoriesRef);
+  }
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
-      this.filteredProducts = data;
+      this.applyFilters();
     });
   }
 
@@ -41,37 +47,50 @@ export class ProductListComponent implements OnInit {
       const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
       const matchesMinPrice = this.minPrice !== null ? product.price >= this.minPrice : true;
       const matchesMaxPrice = this.maxPrice !== null ? product.price <= this.maxPrice : true;
-      const matchesCustomizable = this.customizableOnly ? product.customizable : true;
-      const matchesDiscount = this.discountOnly ? product.discount > 0 : true;
+      const matchesSearch = this.searchQuery.trim() !== '' 
+        ? product.name.toLowerCase().includes(this.searchQuery.toLowerCase()) 
+        : true;
 
-      return matchesCategory && matchesMinPrice && matchesMaxPrice && matchesCustomizable && matchesDiscount;
+      return matchesCategory && matchesMinPrice && matchesMaxPrice && matchesSearch;
     });
+
+    this.applySorting(); // 🔹 Aplicamos ordenamiento después de filtrar
   }
 
-// ✅ Ajustamos la animación para hacerla más rápida (150ms en lugar de 200ms)
-openModal(product: Product) {
-  this.selectedProduct = product;
-  this.selectedSize = ''; // Reiniciamos la selección
-  setTimeout(() => {
-      document.querySelector('.scale-95')?.classList.remove('scale-95', 'opacity-0');
-  }, 10);
-}
-
-closeModal() {
-  const modalElement = document.querySelector('.scale-100');
-  if (modalElement) {
-      modalElement.classList.add('scale-95', 'opacity-0');
-      setTimeout(() => {
-          this.selectedProduct = null;
-          this.selectedSize = '';
-      }, 150);
-  } else {
-      this.selectedProduct = null;
-      this.selectedSize = '';
+  applySorting() {
+    if (this.sortBy === 'price-asc') {
+      this.filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (this.sortBy === 'price-desc') {
+      this.filteredProducts.sort((a, b) => b.price - a.price);
+    } else if (this.sortBy === 'name-asc') {
+      this.filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (this.sortBy === 'name-desc') {
+      this.filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+    }
   }
-}
 
-  // ✅ Agregar al carrito con tamaño seleccionado
+  openModal(product: Product) {
+    this.selectedProduct = product;
+    this.selectedSize = ''; 
+    setTimeout(() => {
+        document.querySelector('.scale-95')?.classList.remove('scale-95', 'opacity-0');
+    }, 10);
+  }
+
+  closeModal() {
+    const modalElement = document.querySelector('.scale-100');
+    if (modalElement) {
+        modalElement.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            this.selectedProduct = null;
+            this.selectedSize = '';
+        }, 150);
+    } else {
+        this.selectedProduct = null;
+        this.selectedSize = '';
+    }
+  }
+
   addToCart() {
     if (this.selectedProduct && this.selectedSize) {
       const productToAdd = { ...this.selectedProduct, size: this.selectedSize };
