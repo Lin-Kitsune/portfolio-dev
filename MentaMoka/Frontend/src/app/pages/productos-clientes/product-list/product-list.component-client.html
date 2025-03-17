@@ -1,6 +1,6 @@
 <div class="container mx-auto px-4 py-8 flex">
-    <!-- Filtros -->
-    <aside class="w-1/4 p-4 bg-white shadow-md rounded-lg">
+    <!-- 🔹 Filtros -->
+    <aside class="w-1/4 p-4 bg-white bg-opacity-90 shadow-md rounded-lg">
         <h3 class="text-xl font-bold mb-4">Filtros</h3>
 
         <!-- Categoría -->
@@ -8,61 +8,91 @@
             <h4 class="font-semibold mb-2">Categoría</h4>
             <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="w-full p-2 border rounded">
                 <option value="">Todas</option>
-                <option value="Café">Café</option>
-                <option value="Té">Té</option>
-                <option value="Jugos">Jugos</option>
-                <option value="Pastelería">Pastelería</option>
-                <option value="Snacks">Snacks</option>
+                <option *ngFor="let category of categories$ | async" [value]="category.name">{{ category.name }}</option>
             </select>
+        </div>
+
+        <!-- Rango de precios -->
+        <div class="mb-4">
+            <h4 class="font-semibold mb-2">Rango de precios</h4>
+            <div class="flex space-x-2">
+                <input type="number" [(ngModel)]="minPrice" (input)="applyFilters()" placeholder="Mín" class="w-1/2 p-2 border rounded">
+                <input type="number" [(ngModel)]="maxPrice" (input)="applyFilters()" placeholder="Máx" class="w-1/2 p-2 border rounded">
+            </div>
         </div>
     </aside>
 
-    <!-- Lista de productos -->
-    <div class="w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ml-4">
-        <div *ngFor="let product of filteredProducts" 
-             class="relative bg-white shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 hover:shadow-lg group flex flex-col justify-between h-full">
+    <div class="w-3/4 ml-4">
+        <!-- 🔹 Breadcrumb (Rastro de navegación) -->
+        <nav class="text-sm mb-2 text-gray-600">
+            <a  class="text-verdeSalvia hover:underline">Inicio</a>
+            <span class="mx-2">›</span>
+            <span class="text-gray-500">Todos los productos</span>
+        </nav>
+
+        <!-- 🔹 Buscador y Ordenar por -->
+        <div class="flex justify-between items-center mb-4">
+            <!-- 🔍 Buscador -->
+            <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Buscar productos..."
+                   class="p-2 border rounded w-1/3 focus:outline-none focus:ring-2 focus:ring-verdeSalvia">
             
-            <div class="relative">
-                <img [src]="product.image_url" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-lg">
+            <!-- 📌 Ordenar por -->
+            <select [(ngModel)]="sortBy" (change)="applyFilters()" class="p-2 border rounded">
+                <option value="">Ordenar por</option>
+                <option value="name-asc">Nombre (A-Z)</option>
+                <option value="name-desc">Nombre (Z-A)</option>
+                <option value="price-asc">Precio (Menor a Mayor)</option>
+                <option value="price-desc">Precio (Mayor a Menor)</option>
+            </select>
+        </div>
+
+        <!-- 🔹 Lista de productos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div *ngFor="let product of filteredProducts" 
+                class="relative bg-white shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 hover:shadow-lg group flex flex-col justify-between h-full">
                 
-                <!-- ✅ Menú emergente con animación más rápida -->
-                <div *ngIf="selectedProduct?.id === product.id" 
-                     class="absolute inset-0 bg-white bg-opacity-95 p-4 flex flex-col justify-center items-center rounded-lg shadow-lg transition-all duration-150 ease-in-out transform scale-95 opacity-0"
-                     [ngClass]="{'scale-100 opacity-100': selectedProduct?.id === product.id}">
+                <div class="relative">
+                    <img [src]="product.image_url" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-lg">
                     
-                    <!-- ❌ Botón de cierre estilizado -->
-                    <button (click)="closeModal()" 
-                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold rounded-full p-1">
-                        ✕
-                    </button>
+                    <!-- ✅ Menú emergente de selección de tamaño -->
+                    <div *ngIf="selectedProduct?.id === product.id" 
+                        class="absolute inset-0 bg-white bg-opacity-95 p-4 flex flex-col justify-center items-center rounded-lg shadow-lg transition-all duration-150 ease-in-out transform scale-95 opacity-0"
+                        [ngClass]="{'scale-100 opacity-100': selectedProduct?.id === product.id}">
 
-                    <h2 class="text-lg font-bold mb-2">Tamaño:</h2>
-                    <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-4">
-                        <option value="">Elige una opción</option>
-                        <option value="Pequeño">Pequeño</option>
-                        <option value="Mediano">Mediano</option>
-                        <option value="Grande">Grande</option>
-                    </select>
+                        <!-- ❌ Botón de cierre -->
+                        <button (click)="closeModal()" 
+                                class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold rounded-full p-1">
+                            ✕
+                        </button>
 
-                    <button (click)="addToCart()" class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full transition-all duration-150 hover:bg-green-700">
-                        Añadir al carrito
-                    </button>
+                        <h2 class="text-lg font-bold mb-2">Tamaño:</h2>
+                        <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-4">
+                            <option value="">Elige una opción</option>
+                            <option value="Pequeño">Pequeño</option>
+                            <option value="Mediano">Mediano</option>
+                            <option value="Grande">Grande</option>
+                        </select>
+
+                        <button (click)="addToCart()" class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full transition-all duration-150 hover:bg-green-700">
+                            Añadir al carrito
+                        </button>
+                    </div>
                 </div>
+
+                <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
+                <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
+                <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP $':'symbol':'1.0-0' }}</p>
+
+                <!-- Botón "Añadir al carrito" que abre el menú emergente -->
+                <button (click)="openModal(product)" 
+                        class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-150 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
+                    
+                    <span class="transition-opacity duration-150 ease-in-out"
+                        [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
+                        Añadir al carrito
+                    </span>
+                </button>
             </div>
-
-            <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
-            <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
-            <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP $':'symbol':'1.0-0' }}</p>
-
-            <!-- Botón "Añadir al carrito" que abre el menú emergente -->
-            <button (click)="openModal(product)" 
-                    class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-150 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
-                
-                <span class="transition-opacity duration-150 ease-in-out"
-                      [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
-                    Añadir al carrito
-                </span>
-            </button>
         </div>
     </div>
 </div>
