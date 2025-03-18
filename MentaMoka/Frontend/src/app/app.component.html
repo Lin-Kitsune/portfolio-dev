@@ -66,13 +66,13 @@
         </button>
         
         <!-- ✅ Mostrar solo si el usuario NO está autenticado -->
-        <a *ngIf="!isLoggedIn" [routerLink]="'login'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
+        <a *ngIf="!isLoggedIn" [routerLink]="'login'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200 ml-4">
           Iniciar Sesión
         </a>
-        <a *ngIf="!isLoggedIn" [routerLink]="'register'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
+        <a *ngIf="!isLoggedIn" [routerLink]="'register'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200 ml-4">
           Registrarse
         </a>
-        <button *ngIf="isLoggedIn" (click)="logout()" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200">
+        <button *ngIf="isLoggedIn" (click)="logout()" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200 ml-4">
           Cerrar Sesión
         </button>
       </div>
@@ -80,101 +80,101 @@
     </div>
   </header>
   
-  
-  <main class="p-12">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="app-container">
+    <main class="p-12">
+      <router-outlet></router-outlet>
+    </main>
 
-  <footer class="bg-marronTierra text-beigeMadera pt-6">
-    <!-- Línea superior -->
-    <div class="border-t-2 border-beigeMadera w-10/12 mx-auto mb-6"></div>
-  
-    <div class="container mx-auto max-w-[1440px] flex flex-wrap justify-between text-sm px-12  md:grid-cols-4 gap-6 ">
-      
-      <!-- Sección de Productos -->
-      <div>
-        <h3 class="text-lg text-brownDark">
-          <span class="font-bold">Productos</span>
-        </h3>
-        <ul class="mt-2 space-y-1">
-          <li><a href="#" class="nav-link-footer">Tienda</a></li>
-        </ul>
-      </div>
-  
-      <!-- Sección de Categorías -->
-      <div>
-        <h3 class="text-lg text-brownDark">
-          <span class="font-bold">Categoría</span>
-        </h3>
-        <ul class="mt-2 space-y-1">
-          <li><a href="#" class="nav-link-footer">Menú</a></li>
-          <li><a href="#" class="nav-link-footer">Novedades</a></li>
-          <li><a href="#" class="nav-link-footer">Selección Semanal</a></li>
-        </ul>
-      </div>
-  
-      <!-- Información de la Empresa -->
-      <div>
-        <h3 class="text-lg text-brownDark">
-          <span class="font-bold">Información</span>
-        </h3>
-        <ul class="mt-2 space-y-1">
-          <li><a href="#" class="nav-link-footer">Sobre Nosotros</a></li>
-          <li><a href="#" class="nav-link-footer">Contacto</a></li>
-          <li><a href="#" class="nav-link-footer">Opciones de Pago</a></li>
-          <li><a href="#" class="nav-link-footer">Términos y Condiciones</a></li>
-          <li><a href="#" class="nav-link-footer">Soporte</a></li>
-          <li><a href="#" class="nav-link-footer">Valores</a></li>
-          <li><a href="#" class="nav-link-footer">Sostenibilidad</a></li>
-        </ul>
-      </div>
-  
-      <!-- Redes Sociales -->
-      <div>
-        <h3 class="text-lg text-brownDark">
-          <span class="font-bold">Síguenos</span>
-        </h3>
-        <div class="flex flex-col mt-2 space-y-2">
-          <!-- Instagram -->
-          <a href="#" class="social-icon">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjRUJEQUM2IiBkPSJNMTMuMDI4IDJjMS4xMjUuMDAzIDEuNjk2LjAwOSAyLjE4OS4wMjNsLjE5NC4wMDdjLjIyNC4wMDguNDQ1LjAxOC43MTIuMDNjMS4wNjQuMDUgMS43OS4yMTggMi40MjcuNDY1Yy42Ni4yNTQgMS4yMTYuNTk4IDEuNzcyIDEuMTUzYTQuOSA0LjkgMCAwIDEgMS4xNTMgMS43NzJjLjI0Ny42MzcuNDE1IDEuMzYzLjQ2NSAyLjQyOGMuMDEyLjI2Ni4wMjIuNDg3LjAzLjcxMmwuMDA2LjE5NGMuMDE1LjQ5Mi4wMjEgMS4wNjMuMDIzIDIuMTg4bC4wMDEuNzQ2djEuMzFhNzkgNzkgMCAwIDEtLjAyMyAyLjE4OGwtLjAwNi4xOTRjLS4wMDguMjI1LS4wMTguNDQ2LS4wMy43MTJjLS4wNSAxLjA2NS0uMjIgMS43OS0uNDY2IDIuNDI4YTQuOSA0LjkgMCAwIDEtMS4xNTMgMS43NzJhNC45IDQuOSAwIDAgMS0xLjc3MiAxLjE1M2MtLjYzNy4yNDctMS4zNjMuNDE1LTIuNDI3LjQ2NWwtLjcxMi4wM2wtLjE5NC4wMDZjLS40OTMuMDE0LTEuMDY0LjAyMS0yLjE4OS4wMjNsLS43NDYuMDAxaC0xLjMwOWE3OCA3OCAwIDAgMS0yLjE4OS0uMDIzbC0uMTk0LS4wMDZhNjMgNjMgMCAwIDEtLjcxMi0uMDMxYy0xLjA2NC0uMDUtMS43OS0uMjE4LTIuNDI4LS40NjVhNC45IDQuOSAwIDAgMS0xLjc3MS0xLjE1M2E0LjkgNC45IDAgMCAxLTEuMTU0LTEuNzcyYy0uMjQ3LS42MzctLjQxNS0xLjM2My0uNDY1LTIuNDI4bC0uMDMtLjcxMmwtLjAwNS0uMTk0QTc5IDc5IDAgMCAxIDIgMTMuMDI4di0yLjA1NmE3OSA3OSAwIDAgMSAuMDIyLTIuMTg4bC4wMDctLjE5NGMuMDA4LS4yMjUuMDE4LS40NDYuMDMtLjcxMmMuMDUtMS4wNjUuMjE4LTEuNzkuNDY1LTIuNDI4QTQuOSA0LjkgMCAwIDEgMy42OCAzLjY3OGE0LjkgNC45IDAgMCAxIDEuNzctMS4xNTNjLjYzOC0uMjQ3IDEuMzYzLS40MTUgMi40MjgtLjQ2NWMuMjY2LS4wMTIuNDg4LS4wMjIuNzEyLS4wM2wuMTk0LS4wMDZhNzkgNzkgMCAwIDEgMi4xODgtLjAyM3pNMTIgN2E1IDUgMCAxIDAgMCAxMGE1IDUgMCAwIDAgMC0xMG0wIDJhMyAzIDAgMSAxIC4wMDEgNmEzIDMgMCAwIDEgMC02bTUuMjUtMy41YTEuMjUgMS4yNSAwIDAgMCAwIDIuNWExLjI1IDEuMjUgMCAwIDAgMC0yLjUiLz48L3N2Zz4=" alt="Instagram">
-          </a>
-      
-          <!-- Facebook -->
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path fill="#EBDAC6" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95"/>
-            </svg>
-          </a>
+    <footer class="bg-marronTierra text-beigeMadera pt-6">
+      <!-- Línea superior -->
+      <div class="border-t-2 border-beigeMadera w-10/12 mx-auto mb-6"></div>
+    
+      <div class="container mx-auto max-w-[1440px] flex flex-wrap justify-between text-sm px-12  md:grid-cols-4 gap-6 ">
+        
+        <!-- Sección de Productos -->
+        <div>
+          <h3 class="text-lg text-brownDark">
+            <span class="font-bold">Productos</span>
+          </h3>
+          <ul class="mt-2 space-y-1">
+            <li><a href="#" class="nav-link-footer">Tienda</a></li>
+          </ul>
+        </div>
+    
+        <!-- Sección de Categorías -->
+        <div>
+          <h3 class="text-lg text-brownDark">
+            <span class="font-bold">Categoría</span>
+          </h3>
+          <ul class="mt-2 space-y-1">
+            <li><a href="#" class="nav-link-footer">Menú</a></li>
+            <li><a href="#" class="nav-link-footer">Novedades</a></li>
+            <li><a href="#" class="nav-link-footer">Selección Semanal</a></li>
+          </ul>
+        </div>
+    
+        <!-- Información de la Empresa -->
+        <div>
+          <h3 class="text-lg text-brownDark">
+            <span class="font-bold">Información</span>
+          </h3>
+          <ul class="mt-2 space-y-1">
+            <li><a href="#" class="nav-link-footer">Sobre Nosotros</a></li>
+            <li><a href="#" class="nav-link-footer">Contacto</a></li>
+            <li><a href="#" class="nav-link-footer">Opciones de Pago</a></li>
+            <li><a href="#" class="nav-link-footer">Términos y Condiciones</a></li>
+            <li><a href="#" class="nav-link-footer">Soporte</a></li>
+            <li><a href="#" class="nav-link-footer">Valores</a></li>
+            <li><a href="#" class="nav-link-footer">Sostenibilidad</a></li>
+          </ul>
+        </div>
+    
+        <!-- Redes Sociales -->
+        <div>
+          <h3 class="text-lg text-brownDark">
+            <span class="font-bold">Síguenos</span>
+          </h3>
+          <div class="flex flex-col mt-2 space-y-2">
+            <!-- Instagram -->
+            <a href="#" class="social-icon">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjRUJEQUM2IiBkPSJNMTMuMDI4IDJjMS4xMjUuMDAzIDEuNjk2LjAwOSAyLjE4OS4wMjNsLjE5NC4wMDdjLjIyNC4wMDguNDQ1LjAxOC43MTIuMDNjMS4wNjQuMDUgMS43OS4yMTggMi40MjcuNDY1Yy42Ni4yNTQgMS4yMTYuNTk4IDEuNzcyIDEuMTUzYTQuOSA0LjkgMCAwIDEgMS4xNTMgMS43NzJjLjI0Ny42MzcuNDE1IDEuMzYzLjQ2NSAyLjQyOGMuMDEyLjI2Ni4wMjIuNDg3LjAzLjcxMmwuMDA2LjE5NGMuMDE1LjQ5Mi4wMjEgMS4wNjMuMDIzIDIuMTg4bC4wMDEuNzQ2djEuMzFhNzkgNzkgMCAwIDEtLjAyMyAyLjE4OGwtLjAwNi4xOTRjLS4wMDguMjI1LS4wMTguNDQ2LS4wMy43MTJjLS4wNSAxLjA2NS0uMjIgMS43OS0uNDY2IDIuNDI4YTQuOSA0LjkgMCAwIDEtMS4xNTMgMS43NzJhNC45IDQuOSAwIDAgMS0xLjc3MiAxLjE1M2MtLjYzNy4yNDctMS4zNjMuNDE1LTIuNDI3LjQ2NWwtLjcxMi4wM2wtLjE5NC4wMDZjLS40OTMuMDE0LTEuMDY0LjAyMS0yLjE4OS4wMjNsLS43NDYuMDAxaC0xLjMwOWE3OCA3OCAwIDAgMS0yLjE4OS0uMDIzbC0uMTk0LS4wMDZhNjMgNjMgMCAwIDEtLjcxMi0uMDMxYy0xLjA2NC0uMDUtMS43OS0uMjE4LTIuNDI4LS40NjVhNC45IDQuOSAwIDAgMS0xLjc3MS0xLjE1M2E0LjkgNC45IDAgMCAxLTEuMTU0LTEuNzcyYy0uMjQ3LS42MzctLjQxNS0xLjM2My0uNDY1LTIuNDI4bC0uMDMtLjcxMmwtLjAwNS0uMTk0QTc5IDc5IDAgMCAxIDIgMTMuMDI4di0yLjA1NmE3OSA3OSAwIDAgMSAuMDIyLTIuMTg4bC4wMDctLjE5NGMuMDA4LS4yMjUuMDE4LS40NDYuMDMtLjcxMmMuMDUtMS4wNjUuMjE4LTEuNzkuNDY1LTIuNDI4QTQuOSA0LjkgMCAwIDEgMy42OCAzLjY3OGE0LjkgNC45IDAgMCAxIDEuNzctMS4xNTNjLjYzOC0uMjQ3IDEuMzYzLS40MTUgMi40MjgtLjQ2NWMuMjY2LS4wMTIuNDg4LS4wMjIuNzEyLS4wM2wuMTk0LS4wMDZhNzkgNzkgMCAwIDEgMi4xODgtLjAyM3pNMTIgN2E1IDUgMCAxIDAgMCAxMGE1IDUgMCAwIDAgMC0xMG0wIDJhMyAzIDAgMSAxIC4wMDEgNmEzIDMgMCAwIDEgMC02bTUuMjUtMy41YTEuMjUgMS4yNSAwIDAgMCAwIDIuNWExLjI1IDEuMjUgMCAwIDAgMC0yLjUiLz48L3N2Zz4=" alt="Instagram">
+            </a>
+        
+            <!-- Facebook -->
+            <a href="#" class="social-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#EBDAC6" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95"/>
+              </svg>
+            </a>
 
-          <!-- TikTok -->
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path fill="#EBDAC6" fill-rule="evenodd" d="M16 21.75A5.75 5.75 0 0 0 21.75 16V8A5.75 5.75 0 0 0 16 2.25H8A5.75 5.75 0 0 0 2.25 8v8A5.75 5.75 0 0 0 8 21.75zM13.711 5.763A.75.75 0 0 0 12.25 6v9A2.25 2.25 0 1 1 10 12.75a.75.75 0 0 0 0-1.5A3.75 3.75 0 1 0 13.75 15V8.458c.767.712 1.847 1.292 3.25 1.292a.75.75 0 0 0 0-1.5c-.972 0-1.711-.4-2.259-.919c-.56-.532-.898-1.173-1.03-1.568" clip-rule="evenodd"/>
-            </svg>
-          </a>
+            <!-- TikTok -->
+            <a href="#" class="social-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#EBDAC6" fill-rule="evenodd" d="M16 21.75A5.75 5.75 0 0 0 21.75 16V8A5.75 5.75 0 0 0 16 2.25H8A5.75 5.75 0 0 0 2.25 8v8A5.75 5.75 0 0 0 8 21.75zM13.711 5.763A.75.75 0 0 0 12.25 6v9A2.25 2.25 0 1 1 10 12.75a.75.75 0 0 0 0-1.5A3.75 3.75 0 1 0 13.75 15V8.458c.767.712 1.847 1.292 3.25 1.292a.75.75 0 0 0 0-1.5c-.972 0-1.711-.4-2.259-.919c-.56-.532-.898-1.173-1.03-1.568" clip-rule="evenodd"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  
-    <!-- Sección de Políticas con Degradado y Tamaño Ajustado -->
-    <div class="flex justify-center mt-6">
-      <div class="bg-gradient-to-r from-[#5A3E33] via-[#3A2A25] to-[#5A3E33] text-beigeMadera py-2 px-6 -lg flex flex-wrap justify-center space-x-4 text-xs">
-        <a href="#" class="nav-link-footer">Configuración de Datos</a>
-        <a href="#" class="nav-link-footer">Cookies</a>
-        <a href="#" class="nav-link-footer">Política de Privacidad</a>
-        <a href="#" class="nav-link-footer">Términos y Condiciones</a>
-        <a href="#" class="nav-link-footer">Aviso Legal</a>
+    
+      <!-- Sección de Políticas con Degradado y Tamaño Ajustado -->
+      <div class="flex justify-center mt-6">
+        <div class="bg-gradient-to-r from-[#5A3E33] via-[#3A2A25] to-[#5A3E33] text-beigeMadera py-2 px-6 -lg flex flex-wrap justify-center space-x-4 text-xs">
+          <a href="#" class="nav-link-footer">Configuración de Datos</a>
+          <a href="#" class="nav-link-footer">Cookies</a>
+          <a href="#" class="nav-link-footer">Política de Privacidad</a>
+          <a href="#" class="nav-link-footer">Términos y Condiciones</a>
+          <a href="#" class="nav-link-footer">Aviso Legal</a>
+        </div>
       </div>
-    </div>
 
-  
-    <!-- Derechos reservados -->
-    <div class="text-center text-xs mt-2 pb-4">
-      <p>© 2025 LinMaD Macchiato - Todos los derechos reservados</p>
-    </div>
-  </footer>         
-
+    
+      <!-- Derechos reservados -->
+      <div class="text-center text-xs mt-2 pb-4">
+        <p>© 2025 LinMaD Macchiato - Todos los derechos reservados</p>
+      </div>
+    </footer>         
+  </div>
   <!-- ✅ Modal de Carrito con animación y botón fijo -->
   <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-end transition-opacity duration-300"
        [ngClass]="{'opacity-100': isCartOpen, 'opacity-0': !isCartOpen, 'pointer-events-none': !isCartOpen}">
