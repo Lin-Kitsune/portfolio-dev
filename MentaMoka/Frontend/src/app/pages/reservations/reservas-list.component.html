@@ -1,0 +1,184 @@
+<div class="reservas-container max-w-4xl mx-auto p-6">
+   <!-- 🔹 Breadcrumb (Rastro de navegación) -->
+   <nav class="text-sm mb-2 text-gray-600">
+    <a class="text-verdeSalvia hover:underline">Inicio</a>
+    <span class="mx-2">›</span>
+    <span class="text-gray-500">Reservas</span>
+  </nav>
+  <!-- Barra de búsqueda y botones (como en la página de productos) -->
+  <div class="flex justify-between items-center mb-4">
+    <!-- Buscador -->
+    <input 
+      type="text" 
+      [(ngModel)]="searchQuery" 
+      (input)="applyFilters()" 
+      placeholder="Buscar reservas..."
+      class="p-2 border rounded w-1/3 focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
+    />
+
+    <!-- Botones para Reservar y Ver Calendario -->
+    <div class="flex gap-4">
+      <button 
+        (click)="toggleModal('reserva')" 
+        class="bg-verdeSalvia text-blancoAlgodon py-2 px-6 rounded hover:bg-greenDark focus:outline-none"
+      >
+        Hacer una Reserva
+      </button>
+
+      <!-- <button 
+        (click)="toggleModal('calendario')" 
+        class="bg-verdeSalvia text-blancoAlgodon py-2 px-6 rounded hover:bg-greenDark focus:outline-none"
+      >
+        Ver Calendario
+      </button> -->
+    </div>
+  </div>
+
+  <!-- Lista de reservas -->
+  <ul class="space-y-4">
+    <li *ngFor="let reserva of reservas" class="relative bg-white shadow-md rounded-lg p-4 mb-4 transition duration-300 hover:shadow-lg hover:scale-105">
+      <div class="flex justify-between items-center">
+        <!-- Información de la reserva (Fecha, Hora, Mesa) -->
+        <div class="flex flex-col">
+          <p class="text-xl font-semibold text-marronTierra">{{ reserva.date }} - {{ reserva.time }} - Mesa {{ reserva.table_number }}</p>
+          
+          <!-- Información adicional (Número de invitados y petición especial) -->
+          <div class="mt-2">
+            <p class="text-md text-gray-700">Número de invitados: {{ reserva.guests }}</p>
+            <p class="text-md text-gray-700">Petición especial: {{ reserva.special_request || 'Ninguna' }}</p>
+          </div>
+        </div>
+        
+        <!-- Botones de acción -->
+        <div class="flex gap-3">
+          <button 
+            (click)="confirmarReserva(reserva.id)" 
+            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none transition duration-300"
+          >
+            Confirmar
+          </button>
+          <button 
+            (click)="cancelarReserva(reserva.id)" 
+            class="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 focus:outline-none transition duration-300"
+          >
+            Cancelar
+          </button>
+          <button 
+            (click)="reagendarReserva(reserva)" 
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
+          >
+            Reagendar
+          </button>
+        </div>
+      </div>
+    </li>    
+  </ul>
+
+  <!-- Mostrar formulario de reserva -->
+  <div *ngIf="crearReservaFormVisible" class="modal fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
+      <h3 class="text-2xl font-semibold text-center text-greenDark mb-4">Crear Nueva Reserva</h3>
+
+      <form (ngSubmit)="crearReserva()">
+        <!-- Fecha y Hora -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col">
+            <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha:</label>
+            <input 
+              type="date" 
+              id="fecha" 
+              [(ngModel)]="reserva.date" 
+              name="date" 
+              class="p-2 border border-gray-300 rounded mt-1"
+              required
+              (change)="obtenerMesasDisponibles(reserva.date, reserva.time)" 
+            >
+          </div>
+
+          <div class="flex flex-col">
+            <label for="hora" class="block text-sm font-medium text-gray-700">Hora:</label>
+            <input 
+              type="time" 
+              id="hora" 
+              [(ngModel)]="reserva.time" 
+              name="time" 
+              class="p-2 border border-gray-300 rounded mt-1"
+              required
+              (change)="obtenerMesasDisponibles(reserva.date, reserva.time)" 
+            >
+          </div>
+        </div>
+
+        <!-- Número de Invitados y Petición Especial -->
+        <div class="flex flex-col">
+          <label for="invitados" class="block text-sm font-medium text-gray-700">Número de Invitados:</label>
+          <input 
+            type="number" 
+            id="invitados" 
+            [(ngModel)]="reserva.guests" 
+            name="guests" 
+            class="p-2 border border-gray-300 rounded mt-1"
+            required
+          >
+        </div>
+
+        <div class="flex flex-col">
+          <label for="peticion" class="block text-sm font-medium text-gray-700">Petición Especial:</label>
+          <input 
+            type="text" 
+            id="peticion" 
+            [(ngModel)]="reserva.special_request" 
+            name="special_request" 
+            class="p-2 border border-gray-300 rounded mt-1"
+          >
+        </div>
+
+        <!-- Número de Mesa -->
+        <div class="my-4">
+          <label for="mesa" class="block text-sm font-medium text-gray-700">Número de Mesa:</label>
+          <select 
+            id="mesa" 
+            [(ngModel)]="reserva.table_number" 
+            name="table_number" 
+            class="w-full p-2 border border-gray-300 rounded mt-1"
+            required
+          >
+            <option *ngFor="let mesa of mesasDisponibles" [value]="mesa">
+              Mesa {{ mesa }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="flex justify-between gap-4">
+          <button 
+            type="submit" 
+            class="bg-verdeSalvia text-blancoAlgodon py-2 px-6 rounded hover:bg-greenDark focus:outline-none w-1/2"
+            [disabled]="isProcessing"
+          >
+            {{ isProcessing ? 'Procesando...' : 'Crear Reserva' }}
+          </button>
+
+          <button 
+            type="button" 
+            (click)="cerrarModal()" 
+            class="bg-gray-400 text-blancoAlgodon py-2 px-6 rounded hover:bg-gray-600 focus:outline-none w-1/2"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Mostrar calendario -->
+  <div *ngIf="mostrarCalendario" class="modal">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <app-calendario 
+        (newReservation)="handleNewReservation($event)"
+        [reserva]="reserva"
+      ></app-calendario>
+    </div>
+  </div>
+</div>

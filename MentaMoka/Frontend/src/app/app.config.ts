@@ -1,3 +1,4 @@
+// src/app/app.config.ts
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
@@ -17,15 +18,15 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
 
+    // Configuración de Firebase
     provideFirebaseApp(() => {
       let app: FirebaseApp;
       if (!getApps().length) {
         console.log('🔥 Firebase NO estaba inicializado, inicializándolo ahora...');
         app = initializeApp(environment.firebaseConfig);
 
-        // 🔥 🔥 🔥 Se inicializa `Auth` aquí, ANTES de que cualquier otro servicio lo use
+        // Inicializa `Auth` y configura su persistencia
         initializeAuth(app, { persistence: indexedDBLocalPersistence });
-
         console.log('✅ Firebase App inicializado:', app);
       } else {
         console.log('⚡ Firebase YA estaba inicializado, reutilizando instancia existente.');
@@ -34,14 +35,12 @@ export const appConfig: ApplicationConfig = {
       return app;
     }),
 
-    // 🔥 Ahora `Auth` se obtiene de la instancia correcta
-    provideAuth(() => {
-      console.log('✅ Registrando Firebase Auth...');
-      return getAuth();
-    }),
-
+    // Inicializa los servicios de Firebase
+    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+
+    // Configura las funciones si las estás usando
     provideFunctions(() => {
         const functions = getFunctions(undefined, 'us-central1');
         if (environment.useEmulators) {

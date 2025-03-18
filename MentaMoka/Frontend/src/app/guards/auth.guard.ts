@@ -35,4 +35,5 @@ export class AuthGuard implements CanActivate {
     console.log("✅ Usuario autorizado como administrador.");
     return true;
   }
+  
 }

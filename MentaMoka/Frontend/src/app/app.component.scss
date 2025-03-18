@@ -62,3 +62,31 @@ header .container {
   width: 100%;
   left: 0;
 }
+
+/* Aplica flex a la raíz del documento */
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+/* Contenedor principal que usa flexbox */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Asegura que el contenido ocupe toda la altura de la ventana */
+}
+
+/* Contenido principal */
+main {
+  flex: 1; /* Esto permite que el contenido ocupe el espacio disponible */
+}
+
+/* Estilo del footer */
+footer {
+  margin-top: auto; /* Empuja el footer al fondo */
+  background-color: #8e735b; /* Color de fondo */
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+}

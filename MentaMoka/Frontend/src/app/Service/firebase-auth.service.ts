@@ -38,22 +38,30 @@ export class FirebaseAuthService {
   async register(email: string, password: string): Promise<UserCredential> {
     const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
     await this.refreshToken();
+  
+    // Guardamos el userId en localStorage después de un registro exitoso
+    localStorage.setItem('userId', userCredential.user.uid);
+  
     return userCredential;
   }
+  
 
   /**
    * 🔑 Inicia sesión y actualiza el token del usuario
    */
   async login(email: string, password: string): Promise<UserCredential> {
     const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-    
-    // 🔄 Forzar actualización del token para obtener los custom claims
+  
+    // Forzar actualización del token para obtener los custom claims
     await userCredential.user.getIdToken(true);
     
+    // Guardamos el userId en localStorage después de un inicio de sesión exitoso
+    localStorage.setItem('userId', userCredential.user.uid);
+  
     console.log('✅ Sesión iniciada, token actualizado.');
- 
+  
     return userCredential;
- }
+  }  
  
   /**
    * 🚪 Cierra sesión del usuario
@@ -67,6 +75,12 @@ export class FirebaseAuthService {
    */
   getCurrentUser(): User | null {
     return this.auth?.currentUser ?? null;
+  }
+
+   // Obtener el user_id del usuario autenticado
+   getCurrentUserId(): string | null {
+    const user = this.auth.currentUser;
+    return user ? user.uid : null;  // Retorna el user_id si el usuario está autenticado
   }
 
   /**

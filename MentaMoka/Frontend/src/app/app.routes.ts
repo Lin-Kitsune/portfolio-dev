@@ -5,6 +5,8 @@ import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component
 import { HomeComponent } from './pages/Home/home.component';
 import { AdminCreateUserComponent } from './pages/admin/admin-create-user.component';
 import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component-client';
+import { CalendarioComponent } from './pages/reservations/calendario.component';
+import { ReservasListComponent } from './pages/reservations/reservas-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
@@ -13,6 +15,8 @@ export const appRoutes: Routes = [
   { path: 'productos-clientes', component: ProductListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'reservas', component: ReservasListComponent },
+  { path: 'calendario', component: CalendarioComponent },
 
   // Rutas del admin
   {
