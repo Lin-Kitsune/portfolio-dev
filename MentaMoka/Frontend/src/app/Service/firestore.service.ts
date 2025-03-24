@@ -38,4 +38,17 @@ export class FirestoreService {
     return collectionData(adminsRef, { idField: 'id' });
   }
 
+  // ✅ Obtener todas las reservas
+getAllReservas(): Observable<any[]> {
+  const reservasRef = collection(this.firestore, 'reservations');
+  return collectionData(reservasRef, { idField: 'id' });
+}
+
+// ✅ Actualizar estado de una reserva
+updateReservaStatus(id: string, newStatus: string): Promise<void> {
+  const reservaRef = doc(this.firestore, `reservations/${id}`);
+  return setDoc(reservaRef, { status: newStatus }, { merge: true });
+}
+
+
 }
