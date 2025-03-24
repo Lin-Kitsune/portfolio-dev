@@ -1,0 +1,14 @@
+<div *ngIf="transactionDetails">
+    <h1>Resultado del Pago</h1>
+    <p><strong>Orden de Compra:</strong> {{ transactionDetails.buy_order }}</p>
+    <p><strong>Monto:</strong> {{ transactionDetails.amount | currency:'CLP $':'symbol':'1.0-0' }}</p>
+    <p><strong>Estado:</strong> {{ transactionDetails.status }}</p>
+    <p><strong>Código de autorización:</strong> {{ transactionDetails.authorization_code }}</p>
+    <p><strong>Fecha de la transacción:</strong> {{ transactionDetails.transaction_date }}</p>
+    <p><strong>Cuotas:</strong> {{ transactionDetails.installments }}</p>
+    <p><strong>Tarjeta usada:</strong> {{ transactionDetails.card_number }}</p>
+    <p *ngIf="transactionDetails.status !== 'AUTHORIZED'">
+      Lo sentimos, la transacción fue rechazada. Verifique los datos de su tarjeta o el saldo disponible.
+    </p>
+  </div>
+  
