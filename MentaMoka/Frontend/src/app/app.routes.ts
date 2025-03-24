@@ -7,6 +7,7 @@ import { AdminCreateUserComponent } from './pages/admin/admin-create-user.compon
 import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component-client';
 import { CalendarioComponent } from './pages/reservations/calendario.component';
 import { ReservasListComponent } from './pages/reservations/reservas-list.component';
+import { ReservaAdminComponent } from './pages/reserva-admin/reserva-admin.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
@@ -61,6 +62,12 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/inventario/inventory-form.component').then(m => m.InventoryFormComponent),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'admin/reservas-admin',
+    loadComponent: () => import('./pages/reserva-admin/reserva-admin.component').then(m => m.ReservaAdminComponent),
+    canActivate: [AuthGuard]
+  },
+  
 
   { path: '**', redirectTo: 'inicio' } // Redirección si la ruta no existe
 ];
