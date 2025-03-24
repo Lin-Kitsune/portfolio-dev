@@ -49,67 +49,68 @@
         <!-- 🔹 Lista de productos -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <div *ngFor="let product of filteredProducts" 
-                class="relative bg-white shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 hover:shadow-lg group flex flex-col justify-between h-full">
-                
-                <div class="relative">
-                    <img [src]="product.image_url" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-lg">
-                    
-                    <!-- ✅ Menú emergente de selección de tamaño -->
-                    <div *ngIf="selectedProduct?.id === product.id" 
-                        class="absolute inset-0 bg-white bg-opacity-95 p-4 flex flex-col justify-start items-center rounded-lg shadow-lg transition-all duration-150 ease-in-out transform scale-95 opacity-0 overflow-y-auto max-h-[90%] max-w-full z-20"
-                        [ngClass]="{'scale-100 opacity-100': selectedProduct?.id === product.id}">
-
-                        <!-- ❌ Botón de cierre -->
-                        <button (click)="closeModal()" 
-                                class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold rounded-full p-1">
-                            ✕
-                        </button>
-
-                        <!-- 🔹 Tamaño -->
-                        <label class="text-sm font-semibold w-full text-left mb-1">Tamaño:</label>
-                            <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-3">
-                                <option value="">Selecciona</option>
-                                <option value="Pequeño">Pequeño</option>
-                                <option value="Mediano">Mediano</option>
-                                <option value="Grande">Grande</option>
-                            </select>
-
-                        <!-- 🔹 Tipo de Leche -->
-                        <label class="text-sm font-semibold w-full text-left mb-1">Tipo de leche:</label>
-                        <select [(ngModel)]="selectedMilk" class="w-full p-2 border rounded mb-3">
-                            <option value="">Selecciona</option>
-                            <option *ngFor="let milk of milks" [value]="milk">{{ milk }}</option>
-                        </select>
-                          
-
-                        <!-- 🔹 Nivel de Azúcar -->
-                        <label class="text-sm font-semibold w-full text-left mb-1">Azúcar:</label>
-                        <select [(ngModel)]="selectedSugar" class="w-full p-2 border rounded mb-4">
-                            <option value="">Selecciona</option>
-                            <option *ngFor="let sugar of sugars" [value]="sugar">{{ sugar }}</option>
-                        </select>
-                          
-
-                        <button (click)="addToCart()" class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full transition-all duration-150 hover:bg-green-700">
-                            Añadir al carrito
-                        </button>
-                    </div>
-                </div>
-
-                <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
-                <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
-                <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP $':'symbol':'1.0-0' }}</p>
-
-                <!-- Botón "Añadir al carrito" que abre el menú emergente -->
-                <button (click)="openModal(product)" 
-                        class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-150 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
-                    
-                    <span class="transition-opacity duration-150 ease-in-out"
-                        [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
-                        Añadir al carrito
-                    </span>
-                </button>
+                 class="relative bg-white shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 hover:shadow-lg group flex flex-col justify-between h-full">
+              
+              <div class="relative">
+                <img [src]="product.image_url" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-lg">
+              </div>
+      
+              <h3 class="text-lg font-semibold mt-4 text-marronTierra">{{ product.name }}</h3>
+              <p class="text-gray-600 text-sm mt-2">{{ product.description }}</p>
+              <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP $':'symbol':'1.0-0' }}</p>
+      
+              <!-- Botón "Añadir al carrito" que abre el modal -->
+              <button (click)="openModal(product)" 
+                      class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-150 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
+                <span class="transition-opacity duration-150 ease-in-out"
+                      [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
+                  Añadir al carrito
+                </span>
+              </button>
             </div>
-        </div>
+          </div>
     </div>
 </div>
+
+<!-- ✅ Modal flotante fuera del *ngFor -->
+<div *ngIf="selectedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">
+      <h2 class="text-lg font-bold mb-4 text-center">Personaliza tu bebida</h2>
+  
+      <!-- Tamaño -->
+      <label class="text-sm font-semibold w-full text-left mb-1">Tamaño:</label>
+      <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-3">
+        <option value="">Selecciona</option>
+        <option value="Pequeño">Pequeño</option>
+        <option value="Mediano">Mediano</option>
+        <option value="Grande">Grande</option>
+      </select>
+  
+      <!-- Tipo de leche -->
+      <label class="text-sm font-semibold w-full text-left mb-1">Tipo de leche:</label>
+      <select [(ngModel)]="selectedMilk" class="w-full p-2 border rounded mb-3">
+        <option value="">Selecciona</option>
+        <option *ngFor="let milk of milks" [value]="milk">{{ milk }}</option>
+      </select>
+  
+      <!-- Azúcar -->
+      <label class="text-sm font-semibold w-full text-left mb-1">Azúcar:</label>
+      <select [(ngModel)]="selectedSugar" class="w-full p-2 border rounded mb-4">
+        <option value="">Selecciona</option>
+        <option *ngFor="let sugar of sugars" [value]="sugar">{{ sugar }}</option>
+      </select>
+  
+      <!-- 🔹 Botones de acción -->
+    <div class="flex flex-col sm:flex-row gap-2">
+        <button (click)="closeModal()"
+                class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md w-full hover:bg-gray-300 transition">
+          Cancelar
+        </button>
+  
+        <button (click)="addToCart()"
+                class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full hover:bg-green-700 transition">
+          Añadir al carrito
+        </button>
+      </div>
+    </div>
+  </div>

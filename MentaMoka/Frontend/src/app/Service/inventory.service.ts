@@ -21,7 +21,8 @@ export class InventoryService {
         stock: ingredient.stock ?? 0,  // 🔥 Asegurar que stock nunca sea undefined
         quantity: ingredient.quantity ?? 1, // 🔥 Asegurar que quantity no sea undefined
         unit: ingredient.unit ?? 'g',  // 🔥 Evitar que unit sea undefined
-        image_url: ingredient.image_url ?? ''
+        image_url: ingredient.image_url ?? '',
+        type: ingredient.type || 'other'
     }));
 }
   

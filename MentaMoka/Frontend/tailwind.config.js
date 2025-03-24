@@ -16,7 +16,9 @@ module.exports = {
           beigeDark: '#EBDAC6',        // alias
           greenSoft: '#bfd992',        // alias
           greenDark: '#81977B',         // inventado para el hover
-          brownDark: '#3A2A25'
+          brownDark: '#3A2A25',
+          terracotaOscuro: '#95200b',
+          verdesuave: '#A3B899'
       },
       container: {
         center: true, // Centrar contenedor globalmente
