@@ -8,6 +8,7 @@ import { ProductListComponent } from './pages/productos-clientes/product-list/pr
 import { CalendarioComponent } from './pages/reservations/calendario.component';
 import { ReservasListComponent } from './pages/reservations/reservas-list.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'; // ✅ Importación agregada
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -17,6 +18,9 @@ export const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reservas', component: ReservasListComponent },
   { path: 'calendario', component: CalendarioComponent },
+
+  // ✅ Ruta agregada para sugerencias
+  { path: 'sugerencias', component: SugerenciasComponent },
 
   // Rutas del admin
   {
@@ -29,7 +33,8 @@ export const appRoutes: Routes = [
     component: AdminCreateUserComponent,
     canActivate: [AuthGuard]
   },
-    // Gestión de productos
+
+  // Gestión de productos
   {
     path: 'admin/products',
     loadComponent: () => import('./pages/productos/product-list.component').then(m => m.ProductListComponent),
@@ -44,7 +49,8 @@ export const appRoutes: Routes = [
     path: 'admin/products/edit/:id',
     loadComponent: () => import('./pages/productos/product-form.component').then(m => m.ProductFormComponent),
     canActivate: [AuthGuard]
-},
+  },
+
   // Gestión de Inventario
   {
     path: 'admin/inventory',
@@ -59,6 +65,14 @@ export const appRoutes: Routes = [
   {
     path: 'admin/inventory/edit/:id',
     loadComponent: () => import('./pages/inventario/inventory-form.component').then(m => m.InventoryFormComponent),
+    canActivate: [AuthGuard]
+  },
+
+  // Gestión de Sugerencias
+
+  {
+    path: 'admin/suggestions',
+    loadComponent: () => import('./pages/admin-suggestions/admin-suggestions.component').then(m => m.AdminSuggestionsComponent),
     canActivate: [AuthGuard]
   },
 

@@ -1,0 +1,121 @@
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-beigeNatural rounded-xl shadow-lg">
+  <h2 class="text-2xl font-bold text-marronTierra mb-6 flex items-center gap-2">
+    ☕ Comparte tu experiencia
+  </h2>
+
+  <!-- 🔔 Indicador de modo edición -->
+  <div *ngIf="editandoId" class="bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-md px-4 py-2 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+    <div class="flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M17.414 2.586a2 2 0 00-2.828 0l-10 10A2 2 0 004 14v2a1 1 0 001 1h2a2 2 0 001.414-.586l10-10a2 2 0 000-2.828l-1-1zM6 15v-1.586l7.293-7.293 1.586 1.586L7.586 15H6z"/>
+      </svg>
+      <span>Estás editando una sugerencia. Al enviar, se actualizará la existente.</span>
+    </div>
+    <button (click)="cancelarEdicion()"
+            class="text-sm px-3 py-1 border border-gray-400 rounded-md bg-white text-gray-600 hover:bg-gray-100 transition-all w-max self-end sm:self-auto">
+      ❌ Cancelar edición
+    </button>
+  </div>
+
+  <!-- Formulario -->
+  <form (ngSubmit)="enviarSugerencia()" #sugerenciaForm="ngForm" class="space-y-5">
+
+    <!-- Correo -->
+    <div>
+      <label for="correo" class="block text-marronTierra font-medium mb-1">Tu correo:</label>
+      <input type="email" id="correo" [(ngModel)]="correo" name="correo" required readonly
+             class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed" />
+    </div>
+
+    <!-- Estrellas -->
+    <div class="flex items-center gap-2">
+      <label class="text-marronTierra font-medium">Tu puntuación:</label>
+      <div class="flex space-x-1">
+        <ng-container *ngFor="let star of estrellas; index as i">
+          <svg (click)="seleccionarEstrella(i + 1)"
+               [ngClass]="{ 'fill-yellow-400': i < estrellasSeleccionadas, 'fill-gray-300': i >= estrellasSeleccionadas }"
+               class="w-6 h-6 cursor-pointer transition-transform hover:scale-110"
+               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 .587l3.668 7.431L24 9.423l-6 5.849L19.335 24 12 20.017 4.665 24 6 15.272 0 9.423l8.332-1.405z"/>
+          </svg>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Comentario -->
+    <div>
+      <label for="comentario" class="block text-marronTierra font-medium mb-1">Tu comentario:</label>
+      <textarea id="comentario" [(ngModel)]="comentario" name="comentario"
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-marronTierra"
+                rows="4" required></textarea>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="flex items-center gap-2">
+      <input type="checkbox" id="permiso" [(ngModel)]="permitePublicar" name="permitePublicar"
+             class="text-marronTierra focus:ring-greenDark" />
+      <label for="permiso" class="text-sm text-marronTierra">¿Podemos publicar tu comentario en la web?</label>
+    </div>
+
+    <!-- Botón -->
+    <button type="submit"
+            class="bg-verdeSalvia text-white font-semibold px-5 py-2 rounded hover:bg-greenDark transition-all">
+      Enviar sugerencia
+    </button>
+  </form>
+
+  <!-- 💬 Opiniones guardadas -->
+  <div class="mt-10">
+    <h3 class="text-xl font-semibold text-marronTierra mb-4">Opiniones recientes</h3>
+
+    <div *ngIf="sugerencias.length === 0" class="text-gray-500">No hay sugerencias aún.</div>
+
+    <div class="space-y-4">
+      <div *ngFor="let s of sugerencias" class="bg-white p-4 rounded-lg shadow transition-all hover:shadow-md">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="flex">
+            <ng-container *ngFor="let star of estrellas; index as i">
+              <svg *ngIf="i < s.estrellas" class="w-5 h-5 fill-yellow-400" xmlns="http://www.w3.org/2000/svg"
+                   viewBox="0 0 24 24">
+                <path d="M12 .587l3.668 7.431L24 9.423l-6 5.849L19.335 24 12 20.017 4.665 24 6 15.272 0 9.423l8.332-1.405z"/>
+              </svg>
+            </ng-container>
+          </div>
+          <span class="text-sm text-gray-500">· {{ s.fecha?.toDate() | date:'mediumDate' }}</span>
+        </div>
+
+        <p class="text-gray-800">{{ s.comentario }}</p>
+
+        <!-- ✅ Respuesta del administrador -->
+        <div *ngIf="s.respuestaAdmin" class="mt-3 bg-green-50 border-l-4 border-green-400 px-4 py-2 rounded">
+          <div class="flex items-center gap-2 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-greenDark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 0a8 8 0 11-16 0 8 8 0 0116 0z" />
+            </svg>
+            <p class="font-semibold text-greenDark">Respuesta del equipo LinMaD:</p>
+          </div>
+          <p class="text-gray-700">{{ s.respuestaAdmin }}</p>
+        </div>
+
+        <!-- Botones editar/eliminar -->
+        <div *ngIf="correo && correo === s.correo" class="mt-3 flex gap-2">
+          <button (click)="editarSugerencia(s)"
+                  class="flex items-center gap-1 text-sm px-3 py-1 rounded-md border border-yellow-400 text-yellow-700 bg-yellow-100 hover:bg-yellow-200 transition-all">
+            ✏️ Editar
+          </button>
+          <button (click)="eliminarSugerencia(s.id)"
+                  class="flex items-center gap-1 text-sm px-3 py-1 rounded-md border border-red-400 text-red-700 bg-red-100 hover:bg-red-200 transition-all">
+            🗑️ Eliminar
+          </button>
+        </div>
+      </div>
+
+      <!-- Botón ver más -->
+      <div *ngIf="mostrarVerMas" class="text-center">
+        <button (click)="cargarMas()" class="text-greenDark underline font-medium hover:text-green-800">
+          Ver más opiniones
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
