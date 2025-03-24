@@ -1,0 +1,76 @@
+<div class="p-6 max-w-6xl mx-auto">
+    <h1 class="text-2xl font-bold text-marronTierra mb-6 flex items-center gap-2">
+      ☕ Administrar sugerencias de usuarios
+    </h1>
+  
+    <div *ngIf="sugerencias.length === 0" class="text-gray-500 text-center mt-10">
+      No hay sugerencias registradas.
+    </div>
+  
+    <div class="space-y-6">
+      <div *ngFor="let s of sugerencias" class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-all border border-gray-200">
+        <div class="flex flex-wrap justify-between items-center">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center">
+              <ng-container *ngFor="let star of estrellas; index as i">
+                <svg *ngIf="i < s.estrellas" class="w-5 h-5 fill-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M12 .587l3.668 7.431L24 9.423l-6 5.849L19.335 24 12 20.017 4.665 24 6 15.272 0 9.423l8.332-1.405z" />
+                </svg>
+              </ng-container>
+            </div>
+            <span class="text-sm text-gray-500">· {{ s.fecha?.toDate() | date:'mediumDate' }}</span>
+          </div>
+          <span class="text-sm px-3 py-1 rounded-full" [ngClass]="s.permitePublicar ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+            {{ s.permitePublicar ? 'Publicable' : 'Privado' }}
+          </span>
+        </div>
+  
+        <p class="mt-3 text-marronTierra text-base font-medium">🗨 {{ s.comentario }}</p>
+        <div class="mt-1 text-sm text-gray-500">✉️ {{ s.correo }}</div>
+  
+        <!-- Respuesta mostrada -->
+        <div *ngIf="s.respuestaAdmin" class="mt-5 p-4 bg-slate-50 border border-slate-200 rounded relative">
+          <div class="text-sm text-marronTierra font-semibold mb-1">Respuesta enviada al usuario:</div>
+          <p class="text-sm text-gray-700 italic mb-2">"{{ s.respuestaAdmin }}"</p>
+  
+          <div class="flex gap-2 text-sm">
+            <button (click)="habilitarEdicionRespuesta(s)" class="px-3 py-1 border border-yellow-500 text-yellow-700 bg-yellow-100 rounded hover:bg-yellow-200 transition">
+              ✏️ Editar
+            </button>
+            <button (click)="eliminarRespuesta(s)" class="px-3 py-1 border border-red-500 text-red-700 bg-red-100 rounded hover:bg-red-200 transition">
+              🗑 Eliminar
+            </button>
+          </div>
+        </div>
+  
+        <!-- Campo para escribir o editar respuesta -->
+        <div class="mt-5" *ngIf="!s.respuestaAdmin || s.editandoRespuesta">
+          <label class="block text-sm text-gray-700 font-medium mb-1">
+            {{ s.editandoRespuesta ? 'Editar respuesta' : 'Responder al usuario:' }}
+          </label>
+          <textarea [(ngModel)]="s.respuestaAdminTemporal"
+                    rows="2"
+                    placeholder="Escribe una respuesta para este usuario..."
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-marronTierra resize-none">
+          </textarea>
+          <button (click)="responder(s)"
+                  class="mt-2 px-4 py-1 bg-verdeSalvia text-white rounded hover:bg-greenDark transition">
+            💬 {{ s.editandoRespuesta ? 'Guardar edición' : 'Enviar respuesta' }}
+          </button>
+        </div>
+  
+        <!-- Acciones -->
+        <div class="mt-5 flex gap-3">
+          <button (click)="eliminarSugerencia(s.id)"
+                  class="px-4 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200 transition">
+            🗑 Eliminar
+          </button>
+          <button (click)="togglePublicar(s)"
+                  class="px-4 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition">
+            {{ s.permitePublicar ? 'Ocultar' : 'Permitir publicación' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
