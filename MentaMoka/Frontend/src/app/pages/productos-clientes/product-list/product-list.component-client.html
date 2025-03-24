@@ -56,7 +56,7 @@
                     
                     <!-- ✅ Menú emergente de selección de tamaño -->
                     <div *ngIf="selectedProduct?.id === product.id" 
-                        class="absolute inset-0 bg-white bg-opacity-95 p-4 flex flex-col justify-center items-center rounded-lg shadow-lg transition-all duration-150 ease-in-out transform scale-95 opacity-0"
+                        class="absolute inset-0 bg-white bg-opacity-95 p-4 flex flex-col justify-start items-center rounded-lg shadow-lg transition-all duration-150 ease-in-out transform scale-95 opacity-0 overflow-y-auto max-h-[90%] max-w-full z-20"
                         [ngClass]="{'scale-100 opacity-100': selectedProduct?.id === product.id}">
 
                         <!-- ❌ Botón de cierre -->
@@ -65,13 +65,30 @@
                             ✕
                         </button>
 
-                        <h2 class="text-lg font-bold mb-2">Tamaño:</h2>
-                        <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-4">
-                            <option value="">Elige una opción</option>
-                            <option value="Pequeño">Pequeño</option>
-                            <option value="Mediano">Mediano</option>
-                            <option value="Grande">Grande</option>
+                        <!-- 🔹 Tamaño -->
+                        <label class="text-sm font-semibold w-full text-left mb-1">Tamaño:</label>
+                            <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-3">
+                                <option value="">Selecciona</option>
+                                <option value="Pequeño">Pequeño</option>
+                                <option value="Mediano">Mediano</option>
+                                <option value="Grande">Grande</option>
+                            </select>
+
+                        <!-- 🔹 Tipo de Leche -->
+                        <label class="text-sm font-semibold w-full text-left mb-1">Tipo de leche:</label>
+                        <select [(ngModel)]="selectedMilk" class="w-full p-2 border rounded mb-3">
+                            <option value="">Selecciona</option>
+                            <option *ngFor="let milk of milks" [value]="milk">{{ milk }}</option>
                         </select>
+                          
+
+                        <!-- 🔹 Nivel de Azúcar -->
+                        <label class="text-sm font-semibold w-full text-left mb-1">Azúcar:</label>
+                        <select [(ngModel)]="selectedSugar" class="w-full p-2 border rounded mb-4">
+                            <option value="">Selecciona</option>
+                            <option *ngFor="let sugar of sugars" [value]="sugar">{{ sugar }}</option>
+                        </select>
+                          
 
                         <button (click)="addToCart()" class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full transition-all duration-150 hover:bg-green-700">
                             Añadir al carrito

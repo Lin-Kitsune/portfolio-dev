@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../Service/product.service';
 import { Product } from '../../../models/product.model';
 import { CartService } from '../../../Service/cart.service'; 
+import { CartItem } from '../../../models/cart-item.model';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -30,17 +31,33 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product | null = null; 
   selectedSize: string = ''; 
 
+  selectedMilk: string = '';
+  selectedSugar: string = '';
+
+  milks: string[] = [];
+  sugars: string[] = [];
+
   constructor(private productService: ProductService, private cartService: CartService, private firestore: Firestore) {
     const categoriesRef = collection(this.firestore, 'categories');
     this.categories$ = collectionData(categoriesRef);
   }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((data) => {
-      this.products = data;
-      this.applyFilters();
-    });
-  }
+  this.productService.getProducts().subscribe((data) => {
+    this.products = data;
+    this.applyFilters();
+  });
+
+  this.loadIngredients(); // Nuevo
+}
+
+loadIngredients() {
+  const ingredientsRef = collection(this.firestore, 'inventory'); // ✅ nombre correcto de la colección
+  collectionData(ingredientsRef, { idField: 'id' }).subscribe((ingredients: any[]) => {
+    this.milks = ingredients.filter(i => i.type === 'milk').map(i => i.name);
+    this.sugars = ingredients.filter(i => i.type === 'sugar').map(i => i.name);
+  });
+}
 
   applyFilters() {
     this.filteredProducts = this.products.filter(product => {
@@ -94,7 +111,10 @@ export class ProductListComponent implements OnInit {
   addToCart() {
     if (this.selectedProduct && this.selectedSize) {
       const productToAdd = { ...this.selectedProduct, size: this.selectedSize };
-      this.cartService.addToCart(productToAdd, this.selectedSize);
+      this.cartService.addToCart(productToAdd, this.selectedSize, {
+        milk: this.selectedMilk,
+        sugar: this.selectedSugar
+      });      
       console.log('🛒 Producto añadido al carrito:', productToAdd);
       this.closeModal();
     } else {
