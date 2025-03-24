@@ -11,6 +11,16 @@
     </div>
 
     <div>
+      <label class="block font-medium text-marronTierra">Tipo de ingrediente:</label>
+      <select [(ngModel)]="ingredient.type" name="type" required
+              class="w-full p-2 border border-beigeMadera rounded-md">
+        <option value="milk">Leche</option>
+        <option value="sugar">Azúcar</option>
+        <option value="other">Otro</option>
+      </select>
+    </div>    
+
+    <div>
       <label class="block font-medium text-marronTierra">Cantidad estándar:</label>
       <input type="number" [(ngModel)]="ingredient.quantity" name="quantity" required
              class="w-full p-2 border border-beigeMadera rounded-md">

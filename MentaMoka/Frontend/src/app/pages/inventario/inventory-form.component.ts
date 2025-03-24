@@ -23,6 +23,7 @@ export class InventoryFormComponent implements OnInit {
     unit: 'units', // ahora TypeScript lo reconoce como válido
     stock: 0,
     image_url: '', 
+    type: 'other' 
   } as Ingredient;  
   
   ingredientId: string | null = null;
