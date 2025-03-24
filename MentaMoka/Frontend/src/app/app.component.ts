@@ -4,7 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FirebaseApp } from '@angular/fire/app';
 import { getAuth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { CartService } from './Service/cart.service';
-import { CartItem } from './Service/cart.service';
+import { Product } from '../app/models/product.model';
+import { CartItem } from './models/cart-item.model';
+
+
 
 @Component({
   selector: 'app-root',
@@ -61,7 +64,7 @@ export class AppComponent implements OnInit {
   }
 
   increaseQuantity(item: CartItem) {
-    this.cartService.addToCart(item, item.size);
+    this.cartService.addToCart(item, item.size, item.selectedOptions ?? {});
   }
 
   decreaseQuantity(item: CartItem) {
@@ -74,9 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   removeFromCart(item: CartItem) {
-    if (item.id && item.size) {
-      this.cartService.removeFromCart(item.id, item.size);
-    }
+    this.cartService.removeFromCart(item.id!, item.size, item.selectedOptions ?? {});
   }
 
   clearCart() {
