@@ -10,6 +10,8 @@ import { ReservasListComponent } from './pages/reservations/reservas-list.compon
 import { ReservaAdminComponent } from './pages/reserva-admin/reserva-admin.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'; // ✅ Importación agregada
+import { CheckoutComponent } from './pages/checkout/checkout.component';
+
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -19,6 +21,8 @@ export const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reservas', component: ReservasListComponent },
   { path: 'calendario', component: CalendarioComponent },
+  { path: 'checkout', component: CheckoutComponent },
+
 
   // ✅ Ruta agregada para sugerencias
   { path: 'sugerencias', component: SugerenciasComponent },

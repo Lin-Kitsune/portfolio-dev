@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { CartService } from './Service/cart.service';
 import { Product } from '../app/models/product.model';
 import { CartItem } from './models/cart-item.model';
-import { WebpayService } from './Service/webpay.service';  // Importa WebpayService
+import { WebpayService } from './Service/webpay.service';  // Lo dejamos para cuando integres WebPay
 
 @Component({
   selector: 'app-root',
@@ -17,9 +17,9 @@ import { WebpayService } from './Service/webpay.service';  // Importa WebpayServ
 })
 export class AppComponent implements OnInit {
   private app = inject(FirebaseApp);
-  isLoggedIn: boolean = false;
   private auth = getAuth();
-  
+  isLoggedIn: boolean = false;
+
   isCartOpen = false;
   isSearchOpen = false;
   cartItems: CartItem[] = [];
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private cartService: CartService,
-    private webpayService: WebpayService // Inyecta el WebpayService
+    private webpayService: WebpayService // Lo mantendremos preparado para el futuro
   ) {}
 
   ngOnInit() {
@@ -91,34 +91,20 @@ export class AppComponent implements OnInit {
     this.isSearchOpen = open;
   }
 
-  // ✅ Función para procesar el pago con WebPay
+  // ✅ Redirigir al resumen de pago (checkout)
   pay() {
-    const orderId = 'ORD-' + new Date().getTime(); // Generar un ID de orden único
+    const user = this.auth.currentUser;
 
-    // Verificar si el carrito tiene productos
+    if (!user) {
+      alert('Debes iniciar sesión para pagar.');
+      return;
+    }
+
     if (this.cartItems.length === 0) {
       alert('El carrito está vacío.');
       return;
     }
-
-    // Llamar al servicio WebPay para crear la transacción
-    this.webpayService.createTransaction(this.cartTotal, orderId).subscribe(response => {
-      if (response && response.token && response.url) {
-        console.log('Redirigiendo a WebPay con URL:', response.url);  // Verifica la URL de redirección
-
-        // Asegúrate de que la URL contiene los parámetros necesarios
-        if (response.url.includes("webpayserver/initTransaction")) {
-          window.location.href = response.url;  // Redirige a WebPay para completar el pago
-        } else {
-          alert('Hubo un problema con la URL de WebPay.');
-        }
-      } else {
-        alert('Hubo un problema al procesar el pago.');
-      }
-    }, error => {
-      console.error('Error en el pago:', error);
-      alert('Error en la transacción.');
-    });
+    this.isCartOpen = false;
+    this.router.navigate(['/checkout']);
   }
-
 }
