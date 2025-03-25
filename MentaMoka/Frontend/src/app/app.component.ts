@@ -107,4 +107,8 @@ export class AppComponent implements OnInit {
     this.isCartOpen = false;
     this.router.navigate(['/checkout']);
   }
+
+  get esPantallaCocina() {
+    return this.router.url.includes('pantalla-cocina');
+  }
 }

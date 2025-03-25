@@ -1,4 +1,6 @@
-export type EstadoPedidoExtendido = 'pendiente' | 'pagado' | 'cancelado' | 'en_preparacion' | 'listo' | 'entregado';
+import { Timestamp } from '@angular/fire/firestore';
+
+export type EstadoPedidoExtendido = 'pendiente' | 'pagado' | 'cancelado' | 'en preparacion' | 'listo' | 'entregado';
 export type TipoPedido = 'tienda' | 'delivery';
 
 export interface Order {
@@ -6,15 +8,14 @@ export interface Order {
   userId: string;
   products: OrderProduct[];
   total: number;
-  createdAt: Date;
+  createdAt: Timestamp;
 
   // Estado del flujo general de pago + preparación
   status: EstadoPedidoExtendido;
 
   // NUEVOS CAMPOS para flujo interno y pantalla de pedidos
   numero?: number; // Número de orden visible en pantalla fast-food
-  tipo?: TipoPedido;
-
+  tipoEntrega?: TipoPedido;
   paymentMethod?: string;
 
   // Datos solo si es delivery
