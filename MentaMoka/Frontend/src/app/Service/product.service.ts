@@ -116,5 +116,9 @@ async updateIngredientStockAfterSale(product: Product): Promise<void> {
   }
 }
 
+getProductoConIngredientes(productId: string) {
+  const productoRef = doc(this.firestore, 'products', productId);
+  return getDoc(productoRef).then(doc => doc.data());
+}
 
 }

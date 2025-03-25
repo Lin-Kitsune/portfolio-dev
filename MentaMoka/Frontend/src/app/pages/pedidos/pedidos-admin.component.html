@@ -1,0 +1,85 @@
+<div class="p-6 max-w-7xl mx-auto">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-4 text-gray-600">
+      <a routerLink="/admin" class="text-verdeSalvia hover:underline">Admin</a>
+      <span class="mx-2">›</span>
+      <span class="text-gray-500">Pedidos</span>
+    </nav>
+  
+    <div class="flex gap-6">
+      <!-- Filtros laterales -->
+      <aside class="w-1/4 bg-white border rounded-lg shadow p-4">
+        <h3 class="text-lg font-bold text-marronTierra mb-4">Filtros</h3>
+  
+        <!-- Tipo -->
+        <label class="block text-sm font-semibold text-marronTierra mb-1">Tipo:</label>
+        <select [(ngModel)]="selectedTipo" (change)="applyFilters()" class="w-full p-2 border rounded mb-4">
+          <option value="">Todos</option>
+          <option value="tienda">Tienda</option>
+          <option value="delivery">Delivery</option>
+        </select>
+  
+        <!-- Estado -->
+        <label class="block text-sm font-semibold text-marronTierra mb-1">Estado:</label>
+        <select [(ngModel)]="selectedEstado" (change)="applyFilters()" class="w-full p-2 border rounded mb-4">
+          <option value="">Todos</option>
+          <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+        </select>
+      </aside>
+  
+      <!-- Tabla de pedidos -->
+      <div class="w-full">
+        <div class="overflow-x-auto rounded-lg shadow">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-verdeSalvia text-white text-sm text-center">
+                <tr>
+                  <th class="px-4 py-3 font-bold uppercase"># Pedido</th>
+                  <th class="px-4 py-3 font-bold uppercase">Fecha</th>
+                  <th class="px-4 py-3 font-bold uppercase">Tipo</th>
+                  <th class="px-4 py-3 font-bold uppercase">Método Pago</th>
+                  <th class="px-4 py-3 font-bold uppercase">Estado</th>
+                  <th class="px-4 py-3 font-bold uppercase">Total</th>
+                  <th class="px-4 py-3 font-bold uppercase">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pedido of pedidosFiltrados">
+                  <td class="px-4 py-3 font-medium">#{{ pedido.numero || pedido.id }}</td>
+                  <td class="px-4 py-3 font-medium">{{ pedido.createdAt.toDate() | date:'short' }}</td>
+                  <td class="px-4 py-3 capitalize">{{ pedido.tipoEntrega || 'N/A' }}</td>
+                  <td class="px-4 py-3 capitalize">{{ pedido.paymentMethod || 'N/A' }}</td>
+                  <td class="px-4 py-3">
+                    <span class="px-2 py-1 rounded text-xs font-semibold"
+                          [ngClass]="{
+                            'bg-[#FFFAEB] text-[#E48711]': pedido.status === 'pendiente',
+                            'bg-[#ECFDF3] text-[#03985E]': pedido.status === 'pagado' || pedido.status === 'en preparacion',
+                            'bg-[#FEF2F2] text-[#DC2626]': pedido.status === 'cancelado',
+                            'bg-[#E0F2FE] text-[#0284C7]': pedido.status === 'listo',
+                            'bg-[#F0FDF4] text-[#15803D]': pedido.status === 'entregado'
+                          }">
+                      {{ pedido.status }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 font-medium">${{ pedido.total }}</td>
+                  <td class="px-4 py-3">
+                    <button
+                      *ngIf="pedido.status !== 'entregado'"
+                      (click)="avanzarEstado(pedido)"
+                      class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+                    >
+                      Marcar siguiente estado
+                    </button>
+                  </td>
+                </tr>
+              </tbody>              
+          </table>
+        </div>
+  
+        <!-- Sin resultados -->
+        <div *ngIf="pedidosFiltrados.length === 0" class="text-center text-gray-500 mt-6">
+          No se encontraron pedidos.
+        </div>
+      </div>
+    </div>
+  </div>
+  

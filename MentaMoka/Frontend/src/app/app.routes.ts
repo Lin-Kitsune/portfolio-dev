@@ -9,9 +9,8 @@ import { CalendarioComponent } from './pages/reservations/calendario.component';
 import { ReservasListComponent } from './pages/reservations/reservas-list.component';
 import { ReservaAdminComponent } from './pages/reserva-admin/reserva-admin.component';
 import { AuthGuard } from './guards/auth.guard';
-import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'; // ✅ Importación agregada
+import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'; 
 import { CheckoutComponent } from './pages/checkout/checkout.component';
-
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -22,8 +21,14 @@ export const appRoutes: Routes = [
   { path: 'reservas', component: ReservasListComponent },
   { path: 'calendario', component: CalendarioComponent },
   { path: 'checkout', component: CheckoutComponent },
+  
 
-
+  // Pantallas Cocina - Cliente
+  {
+    path: 'pantalla-cocina',
+    loadComponent: () => import('./pages/pantallas/pantalla-cocina.component').then(m => m.PantallaCocinaComponent)
+  },
+  
   // ✅ Ruta agregada para sugerencias
   { path: 'sugerencias', component: SugerenciasComponent },
 
@@ -77,13 +82,14 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/reserva-admin/reserva-admin.component').then(m => m.ReservaAdminComponent),
     canActivate: [AuthGuard]
   },
-  
-
-  // Gestión de Sugerencias
-
   {
     path: 'admin/suggestions',
     loadComponent: () => import('./pages/admin-suggestions/admin-suggestions.component').then(m => m.AdminSuggestionsComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin/pedidos-admin',
+    loadComponent: () => import('./pages/pedidos/pedidos-admin.component').then(m => m.PedidosAdminComponent),
     canActivate: [AuthGuard]
   },
 
