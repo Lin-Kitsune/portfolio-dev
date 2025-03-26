@@ -109,6 +109,6 @@ export class AppComponent implements OnInit {
   }
 
   get esPantallaCocina() {
-    return this.router.url.includes('pantalla-cocina');
+    return this.router.url.includes('pantalla-cocina') || this.router.url.includes('pantalla-cliente');
   }
 }
