@@ -11,6 +11,7 @@ import { ReservaAdminComponent } from './pages/reserva-admin/reserva-admin.compo
 import { AuthGuard } from './guards/auth.guard';
 import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'; 
 import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -29,6 +30,8 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/pantallas/pantalla-cocina.component').then(m => m.PantallaCocinaComponent)
   },
   
+  { path: 'perfil', component: PerfilComponent },
+
   // ✅ Ruta agregada para sugerencias
   { path: 'sugerencias', component: SugerenciasComponent },
 

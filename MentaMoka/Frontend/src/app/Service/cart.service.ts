@@ -39,6 +39,7 @@ export class CartService {
   
     if (cartSnap.exists()) {
       const rawData = cartSnap.data() as { items: CartItem[] };
+      this.cart = rawData.items || [];
       this.cartSubject.next(this.cart);
     } else {
       this.cart = [];

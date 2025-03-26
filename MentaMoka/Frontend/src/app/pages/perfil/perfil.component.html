@@ -1,0 +1,62 @@
+<div class="max-w-xl mx-auto mt-12 p-6 border-2 border-beigeMadera rounded-lg bg-blancoAlgodon shadow-lg">
+    <h2 class="text-center text-2xl font-bold text-marronTierra mb-6">Mi Perfil</h2>
+  
+    <form *ngIf="userData" class="flex flex-col gap-4" (ngSubmit)="guardarCambios()">
+  
+      <!-- Nombre -->
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <label class="font-semibold text-verdeSalvia">Nombre:</label>
+          <input [(ngModel)]="userData.firstName" name="firstName"
+            [readonly]="!modoEdicion"
+            class="p-2 w-full border border-beigeMadera rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
+          />
+        </div>
+  
+        <div class="flex-1">
+          <label class="font-semibold text-verdeSalvia">Apellido:</label>
+          <input [(ngModel)]="userData.lastName" name="lastName"
+            [readonly]="!modoEdicion"
+            class="p-2 w-full border border-beigeMadera rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
+          />
+        </div>
+      </div>
+  
+      <!-- Correo -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-verdeSalvia">Correo:</label>
+        <input [(ngModel)]="userData.email" name="email" readonly
+          class="p-2 border border-beigeMadera rounded-md bg-gray-100 text-gray-500 cursor-not-allowed" />
+      </div>
+  
+      <!-- Teléfono -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-verdeSalvia">Teléfono:</label>
+        <input [(ngModel)]="userData.phone" name="phone"
+          [readonly]="!modoEdicion"
+          class="p-2 border border-beigeMadera rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
+      </div>
+  
+      <!-- Acciones -->
+      <div class="flex justify-between items-center mt-4">
+        <button type="button" *ngIf="!modoEdicion"
+          (click)="modoEdicion = true"
+          class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-marronTierra transition">
+          Editar
+        </button>
+  
+        <button *ngIf="modoEdicion"
+          type="submit"
+          class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-greenDark transition">
+          Guardar Cambios
+        </button>
+  
+        <button type="button"
+          (click)="logout()"
+          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+          Cerrar Sesión
+        </button>
+      </div>
+    </form>
+  </div>
+  

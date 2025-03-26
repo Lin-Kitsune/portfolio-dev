@@ -1,47 +1,70 @@
 <div class="max-w-md mx-auto mt-12 p-6 border-2 border-beigeMadera rounded-lg bg-blancoAlgodon shadow-lg">
     <h2 class="text-center text-2xl font-bold text-marronTierra mb-6">Registro de Cliente</h2>
+  
     <form (ngSubmit)="register()" class="flex flex-col gap-4">
-        <div class="flex flex-col gap-1">
-            <label for="name" class="font-semibold text-verdeSalvia">Nombre Completo:</label>
-            <input
-                id="name"
-                type="text"
-                [(ngModel)]="name"
-                name="name"
-                required
-                class="p-2 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
-            />
+      <div *ngIf="errorMessage" class="text-red-500 font-semibold text-sm text-center">
+        {{ errorMessage }}
+      </div>
+  
+      <!-- Nombre y Apellido en una fila -->
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <label for="nombre" class="font-semibold text-verdeSalvia">Nombre:</label>
+          <input id="nombre" type="text" [(ngModel)]="firstName" name="firstName" required
+            class="p-2 w-full border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
         </div>
-
-        <div class="flex flex-col gap-1">
-            <label for="email" class="font-semibold text-verdeSalvia">Correo:</label>
-            <input
-                id="email"
-                type="email"
-                [(ngModel)]="email"
-                name="email"
-                required
-                class="p-2 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
-            />
+        <div class="flex-1">
+          <label for="apellido" class="font-semibold text-verdeSalvia">Apellido:</label>
+          <input id="apellido" type="text" [(ngModel)]="lastName" name="lastName" required
+            class="p-2 w-full border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
         </div>
-
-        <div class="flex flex-col gap-1">
-            <label for="password" class="font-semibold text-verdeSalvia">Contraseña:</label>
-            <input
-                id="password"
-                type="password"
-                [(ngModel)]="password"
-                name="password"
-                required
-                class="p-2 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
-            />
-        </div>
-
-        <button
-            type="submit"
-            class="bg-verdeSalvia text-white font-semibold py-2 rounded-md hover:bg-marronTierra transition"
-        >
-            Registrarse
+      </div>
+  
+      <div class="flex flex-col gap-1">
+        <label for="email" class="font-semibold text-verdeSalvia">Correo:</label>
+        <input id="email" type="email" [(ngModel)]="email" name="email" required
+          class="p-2 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
+      </div>
+  
+      <div class="flex flex-col gap-1">
+        <label for="phone" class="font-semibold text-verdeSalvia">Teléfono (opcional):</label>
+        <input id="phone" type="tel" [(ngModel)]="phone" name="phone"
+          pattern="[0-9]{9}" maxlength="9" placeholder="Ej: 912345678"
+          class="p-2 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
+      </div>
+  
+      <!-- Contraseña -->
+      <div class="flex flex-col gap-1 relative">
+        <label for="password" class="font-semibold text-verdeSalvia">Contraseña:</label>
+        <input [type]="showPassword ? 'text' : 'password'" id="password" [(ngModel)]="password" name="password" required
+          class="p-2 pr-10 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
+        <button type="button" (click)="togglePasswordVisibility('password')" class="absolute right-2 top-[38px]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            [ngClass]="{ 'rotate-180 transition-transform': showPassword }">
+            <path fill="#9c6f48"
+              d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5s5 2.24 5 5s-2.24 5-5 5m0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3s3-1.34 3-3s-1.34-3-3-3" />
+          </svg>
         </button>
+      </div>
+  
+      <!-- Confirmar contraseña -->
+      <div class="flex flex-col gap-1 relative">
+        <label for="confirmPassword" class="font-semibold text-verdeSalvia">Confirmar Contraseña:</label>
+        <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required
+          class="p-2 pr-10 border border-beigeMadera rounded-md focus:outline-none focus:ring-2 focus:ring-verdeSalvia" />
+        <button type="button" (click)="togglePasswordVisibility('confirm')" class="absolute right-2 top-[38px]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            [ngClass]="{ 'rotate-180 transition-transform': showConfirmPassword }">
+            <path fill="#9c6f48"
+              d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5s5 2.24 5 5s-2.24 5-5 5m0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3s3-1.34 3-3s-1.34-3-3-3" />
+          </svg>
+        </button>
+      </div>
+  
+      <button type="submit"
+        class="bg-verdeSalvia text-white font-semibold py-2 rounded-md hover:bg-marronTierra transition">
+        Registrarse
+      </button>
     </form>
-</div>
+  </div>
+  

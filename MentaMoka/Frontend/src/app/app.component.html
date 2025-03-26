@@ -51,7 +51,7 @@
       <div class="flex items-center">
         <!-- Carrito de compras con SVG -->
         <button (click)="toggleCart()" class="relative">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-marronTierra hover:text-greenDark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-marronTierra hover:text-greenDark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5 6m2 7l1 5h8l1-5M9 18h6"/>
           </svg>
           <span *ngIf="cartItemCount > 0" class="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold px-2 rounded-full">
@@ -72,9 +72,12 @@
         <a *ngIf="!isLoggedIn" [routerLink]="'register'" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200 ml-4">
           Registrarse
         </a>
-        <button *ngIf="isLoggedIn" (click)="logout()" class="font-semibold bg-white text-verdeSalvia px-4 py-1 rounded-md hover:bg-gray-200 ml-4">
-          Cerrar Sesión
-        </button>
+        <a *ngIf="isLoggedIn" [routerLink]="'/perfil'" class="ml-4 hover:scale-105 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">
+            <path fill="#9c6f48" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2m0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6m0 14c-2.03 0-4.43-.82-6.14-2.88a9.95 9.95 0 0 1 12.28 0C16.43 19.18 14.03 20 12 20"/>
+          </svg>
+        </a>
+        
       </div>
   
     </div>
