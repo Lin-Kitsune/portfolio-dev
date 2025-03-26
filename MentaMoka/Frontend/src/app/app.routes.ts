@@ -29,6 +29,10 @@ export const appRoutes: Routes = [
     path: 'pantalla-cocina',
     loadComponent: () => import('./pages/pantallas/pantalla-cocina.component').then(m => m.PantallaCocinaComponent)
   },
+  {
+    path: 'pantalla-cliente',
+    loadComponent: () => import('./pages/pantallas/pantalla-cliente.component').then(m => m.PantallaClienteComponent)
+  },
   
   { path: 'perfil', component: PerfilComponent },
 

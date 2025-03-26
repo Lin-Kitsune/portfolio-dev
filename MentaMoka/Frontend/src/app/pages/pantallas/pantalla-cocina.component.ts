@@ -77,18 +77,24 @@ export class PantallaCocinaComponent implements OnInit, OnDestroy {
   }
 
   avanzarEstado(pedido: Order) {
-    const flujo: any[] = ['pagado', 'en preparacion', 'listo'];
+    const flujo: EstadoPedidoExtendido[] = ['pagado', 'en preparacion', 'listo', 'entregado'];
     const index = flujo.indexOf(pedido.status);
     if (index >= 0 && index < flujo.length - 1) {
-      this.orderService.cambiarEstadoPedido(pedido.id!, flujo[index + 1]);
+      const siguienteEstado = flujo[index + 1];
+      this.orderService.cambiarEstadoPedido(pedido.id!, siguienteEstado).then(() => {
+        if (siguienteEstado === 'entregado') {
+          // Forzar actualización visual inmediata
+          this.pedidos = this.pedidos.filter(p => p.id !== pedido.id);
+        }
+      });
     }
-  }
+  }  
 
   getTextoBoton(status: string): string {
     switch (status) {
       case 'pagado': return 'Preparar todo';
       case 'en preparacion': return 'Terminar todo';
-      case 'listo': return 'Confirmar';
+      case 'listo': return 'Entregar pedido';
       default: return 'Acción';
     }
   }

@@ -1,0 +1,30 @@
+<div class="pantalla-cliente">
+    <div class="contenedor-columnas" class="flex justify-center gap-31 mt-4 mb-8">
+      <!-- LISTO -->
+      <div class="columna">
+        <div class="titulo-seccion">LISTO</div>
+        <div class="contenedor-pedidos">
+          <div *ngFor="let pedido of pedidosListo" class="pedido-oval">
+            {{ pedido.numero }}
+          </div>
+          <!-- Botón invisible para desbloquear sonido -->
+            <button
+            (click)="activarSonido()"
+            class="fixed inset-0 w-full h-full opacity-0 z-50"
+            *ngIf="bloqueoSonido">
+            </button>
+        </div>
+      </div>
+  
+      <!-- EN PREPARACIÓN -->
+      <div class="columna">
+        <div class="titulo-seccion">EN PREPARACIÓN</div>
+        <div class="contenedor-pedidos grid-doble">
+          <div *ngFor="let pedido of pedidosPreparacion" class="pedido-oval">
+            {{ pedido.numero }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

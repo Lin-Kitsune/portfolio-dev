@@ -14,7 +14,7 @@ import { OrderService } from '../../Service/order.service';
 export class PedidosAdminComponent implements OnInit {
   pedidos: Order[] = [];
 
-    estados: string[] = ['pendiente', 'pagado', 'en preparacion', 'listo', 'entregado'];
+    estados: string[] = ['pagado', 'en preparacion', 'listo', 'entregado'];
     selectedTipo: string = '';
     selectedEstado: string = '';
     pedidosFiltrados: Order[] = [];
@@ -26,6 +26,8 @@ export class PedidosAdminComponent implements OnInit {
       this.pedidos = data;
       this.applyFilters();
     });
+
+    this.corregirPedidosPendientes();
   }
 
   avanzarEstado(pedido: Order) {
@@ -38,7 +40,7 @@ export class PedidosAdminComponent implements OnInit {
   }   
 
   obtenerSiguienteEstado(actual: EstadoPedidoExtendido): EstadoPedidoExtendido | null {
-    const flujo: EstadoPedidoExtendido[] = ['pendiente', 'pagado', 'en preparacion', 'listo', 'entregado'];
+    const flujo: EstadoPedidoExtendido[] = ['pagado', 'en preparacion', 'listo', 'entregado'];
     const index = flujo.indexOf(actual);
     return index >= 0 && index < flujo.length - 1 ? flujo[index + 1] : null;
   }  
@@ -50,4 +52,15 @@ export class PedidosAdminComponent implements OnInit {
       return coincideTipo && coincideEstado;
     });
   }
+
+  corregirPedidosPendientes() {
+    this.orderService.obtenerPedidosTiempoReal().subscribe(pedidos => {
+      pedidos.forEach(pedido => {
+        if (pedido.status === 'pendiente') {
+          this.orderService.cambiarEstadoPedido(pedido.id!, 'pagado');
+        }
+      });
+    });
+  }
+  
 }
