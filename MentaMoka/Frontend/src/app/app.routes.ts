@@ -22,7 +22,6 @@ export const appRoutes: Routes = [
   { path: 'reservas', component: ReservasListComponent },
   { path: 'calendario', component: CalendarioComponent },
   { path: 'checkout', component: CheckoutComponent },
-  
 
   // Pantallas Cocina - Cliente
   {
@@ -97,6 +96,13 @@ export const appRoutes: Routes = [
   {
     path: 'admin/pedidos-admin',
     loadComponent: () => import('./pages/pedidos/pedidos-admin.component').then(m => m.PedidosAdminComponent),
+    canActivate: [AuthGuard]
+  },
+
+  // ✅ NUEVA RUTA: Historial de compras del administrador
+  {
+    path: 'admin/historial-compras',
+    loadComponent: () => import('./pages/admin-historial/admin-historial.component').then(m => m.AdminHistorialComponent),
     canActivate: [AuthGuard]
   },
 
