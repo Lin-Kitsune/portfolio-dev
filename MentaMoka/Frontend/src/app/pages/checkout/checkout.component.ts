@@ -18,6 +18,7 @@ import {
 import { CartService } from '../../Service/cart.service';
 import { CartItem } from '../../models/cart-item.model';
 import { Order, OrderProduct } from '../../models/order.model';
+import { ProductService } from '../../Service/product.service';
 
 @Component({
   selector: 'app-checkout',
@@ -30,6 +31,7 @@ export class CheckoutComponent implements OnInit {
   private firestore = inject(Firestore);
   private router = inject(Router);
   private cartService = inject(CartService);
+  private productService = inject(ProductService);
 
   cartItems: CartItem[] = [];
   total = 0;
@@ -155,6 +157,23 @@ export class CheckoutComponent implements OnInit {
     try {
       await addDoc(collection(this.firestore, 'orders'), nuevaOrden);
       await deleteDoc(doc(this.firestore, `carts/${user.uid}`));
+
+      // ✅ Descontar ingredientes del stock según lo comprado
+      for (const item of this.cartItems) {
+        if (!item.ingredients || item.ingredients.length === 0) continue;
+      
+        const ingredientesMultiplicados = item.ingredients.map(ing => ({
+          ...ing,
+          quantity: ing.quantity * item.quantity
+        }));
+
+        console.log(`🧾 Descontando stock de ${item.name}`, ingredientesMultiplicados);
+      
+        await this.productService.updateIngredientStockAfterSale({
+          ...item,
+          ingredients: ingredientesMultiplicados
+        });
+      }      
   
       // 💾 Guardar dirección si corresponde
       if (this.guardarDireccion && this.deliveryMethod === 'delivery') {

@@ -78,13 +78,13 @@
       <h2 class="text-lg font-bold mb-4 text-center">Personaliza tu bebida</h2>
   
       <!-- Tamaño -->
-      <label class="text-sm font-semibold w-full text-left mb-1">Tamaño:</label>
-      <select [(ngModel)]="selectedSize" class="w-full p-2 border rounded mb-3">
-        <option value="">Selecciona</option>
-        <option value="Pequeño">Pequeño</option>
-        <option value="Mediano">Mediano</option>
-        <option value="Grande">Grande</option>
-      </select>
+      <label for="size" class="text-sm font-semibold w-full text-left mb-1">Tamaño:</label>
+      <select id="size" [(ngModel)]="selectedSize" required class="w-full p-2 border rounded mb-3">
+        <option value="" disabled selected>Selecciona</option>
+        <option  *ngFor="let s of selectedProduct?.sizes" [value]="s.label">
+          {{ s.label | titlecase }} - ${{ s.price }}
+        </option>
+      </select>             
   
       <!-- Tipo de leche -->
       <label class="text-sm font-semibold w-full text-left mb-1">Tipo de leche:</label>

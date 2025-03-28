@@ -42,14 +42,16 @@ export class InventoryListComponent implements OnInit {
       .filter(ingredient =>
         ingredient.name.toLowerCase().includes(this.searchText.toLowerCase()) &&
         (this.selectedType ? ingredient.type === this.selectedType : true) &&
-        (this.selectedUnit ? ingredient.unit === this.selectedUnit : true) // 👈 NUEVO
+        (this.selectedUnit ? ingredient.unit === this.selectedUnit : true)
       )
       .sort((a, b) => {
         if (this.sortOrder === 'asc') return a.stock - b.stock;
         if (this.sortOrder === 'desc') return b.stock - a.stock;
         return 0;
       });
-  }
+  
+    this.currentPage = 1; // ← 🔥 resetear a la primera página después de filtrar
+  }  
   
   filterIngredients() {
     const query = this.searchText.trim().toLowerCase();

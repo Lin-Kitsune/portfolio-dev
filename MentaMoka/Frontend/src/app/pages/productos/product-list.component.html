@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-100">
-            <tr *ngFor="let product of filteredProducts" class="hover:bg-gray-50 text-center align-middle">
+            <tr *ngFor="let product of visibleProducts" class="hover:bg-gray-50 text-center align-middle">
               <td class="px-4 py-4">
                 <img [src]="product.image_url" alt="{{ product.name }}"
                      class="w-16 h-16 rounded-full object-cover border border-gray-300 mx-auto" />

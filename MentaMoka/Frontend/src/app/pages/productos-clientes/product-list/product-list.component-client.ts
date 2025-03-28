@@ -29,10 +29,11 @@ export class ProductListComponent implements OnInit {
   hovering: string | null | undefined = null;
 
   selectedProduct: Product | null = null; 
-  selectedSize: string = ''; 
 
   selectedMilk: string = '';
   selectedSugar: string = '';
+  
+  selectedSize: 'normal' | 'mediano' | 'grande' | '' = '';
 
   milks: string[] = [];
   sugars: string[] = [];
@@ -109,16 +110,38 @@ loadIngredients() {
   }
 
   addToCart() {
-    if (this.selectedProduct && this.selectedSize) {
-      const productToAdd = { ...this.selectedProduct, size: this.selectedSize };
-      this.cartService.addToCart(productToAdd, this.selectedSize, {
-        milk: this.selectedMilk,
-        sugar: this.selectedSugar
-      });      
-      console.log('🛒 Producto añadido al carrito:', productToAdd);
+    if (
+      this.selectedProduct &&
+      this.selectedSize &&
+      ['normal', 'mediano', 'grande'].includes(this.selectedSize)
+    ) {
+      const sizeConfig = this.selectedProduct.sizes.find(s => s.label === this.selectedSize);
+      const price = sizeConfig?.price ?? this.selectedProduct.price;
+  
+      const item: CartItem = {
+        ...this.selectedProduct,
+        price,
+        size: this.selectedSize as 'normal' | 'mediano' | 'grande',
+        quantity: 1,
+        selectedOptions: {
+          milk: this.selectedMilk,
+          sugar: this.selectedSugar
+        }
+      };
+  
+      this.cartService.addToCart(item);
+      console.log('🛒 Producto añadido al carrito:', item);
       this.closeModal();
     } else {
-      alert("Por favor, selecciona un tamaño.");
+      alert("Por favor, selecciona un tamaño válido.");
     }
+  } 
+  
+  getPrecioSeleccionado(): number {
+    if (!this.selectedProduct || !this.selectedSize) return 0;
+  
+    const size = this.selectedProduct.sizes.find(s => s.label === this.selectedSize);
+    return size?.price ?? this.selectedProduct.price;
   }
+  
 }

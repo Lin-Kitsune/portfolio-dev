@@ -1,9 +1,7 @@
-// src/app/models/cart-item.model.ts
-
-import { Product } from './product.model';
+import { Product, ProductIngredient } from './product.model';
 
 export interface CartItem extends Product {
-  size: string;
+  size: 'normal' | 'mediano' | 'grande';
   quantity: number;
   selectedOptions: {
     milk?: string;

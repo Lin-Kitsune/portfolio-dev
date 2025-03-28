@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
+  visibleProducts: Product[] = [];
 
   searchText: string = '';
   selectedCategory: string = '';
@@ -37,16 +38,16 @@ export class ProductListComponent implements OnInit {
 
   availableCategories: string[] = [];
 
-  ngOnInit(): void {
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        this.products = products;
-        this.availableCategories = [...new Set(products.map(p => p.category))];
-        this.applyFilters();
-      },
-      error: (err) => console.error('❌ Error cargando productos:', err),
-    });
-  }
+  async ngOnInit(): Promise<void> {
+    try {
+      const products = await this.productService.getProductsWithStock();
+      this.products = products;
+      this.availableCategories = [...new Set(products.map(p => p.category))];
+      this.applyFilters();
+    } catch (err) {
+      console.error('❌ Error cargando productos con stock:', err);
+    }
+  }  
 
   applyFilters(): void {
     const filtered = this.products
@@ -59,17 +60,17 @@ export class ProductListComponent implements OnInit {
         if (this.sortOrder === 'desc') return (b.stock ?? 0) - (a.stock ?? 0);        
         return 0;
       });
-
+  
     this.currentPage = 1;
-    this.filteredProducts = filtered;
+    this.filteredProducts = filtered; // ← guarda el total filtrado completo
     this.paginate();
-  }
+  }  
 
   paginate(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    this.filteredProducts = this.filteredProducts.slice(start, end);
-  }
+    this.visibleProducts = this.filteredProducts.slice(start, end); 
+  }  
 
   goToPage(page: number): void {
     this.currentPage = page;

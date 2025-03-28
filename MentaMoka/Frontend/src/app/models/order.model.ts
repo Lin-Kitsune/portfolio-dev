@@ -28,6 +28,9 @@ export interface Order {
 
   // Datos solo si es en tienda
   mesa?: string;
+
+  comentario?: string;
+  email?: string; 
 }
 
 export interface OrderProduct {

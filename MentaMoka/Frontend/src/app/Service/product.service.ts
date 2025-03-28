@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, query, addDoc, doc, updateDoc, deleteDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, query, addDoc, doc, updateDoc, deleteDoc, getDoc, getDocs } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { InventoryService } from './inventory.service';
 import { Product } from '../models/product.model';  // 🔥 Importa desde aquí siempre
@@ -17,21 +17,49 @@ export class ProductService {
     return collectionData(productsCollection, { idField: 'id' }) as Observable<Product[]>;
   }
 
+  // 🆕 Método para cargar productos y calcular stock de inmediato
+  async getProductsWithStock(): Promise<Product[]> {
+    const productsCollection = collection(this.firestore, 'products');
+    const snapshot = await getDocs(productsCollection);
+    const productos: Product[] = [];
+
+    for (const docSnap of snapshot.docs) {
+      const data = docSnap.data() as Product;
+      const product: Product = {
+        ...data,
+        id: docSnap.id,
+        stock: await this.calculateProductStock(data)  // 👈 Agrega stock calculado
+      };
+      productos.push(product);
+    }
+
+    return productos;
+  }
+
   async addProduct(product: Product): Promise<void> {
-    const productsCollection = collection(this.firestore, 'products'); 
-    await addDoc(productsCollection, { ...product, created_at: new Date().toISOString() });
-
-    // 🔥 Descontar ingredientes del inventario
-    await this.updateIngredientStockAfterSale(product);
-}
-
+    const productsCollection = collection(this.firestore, 'products');
+  
+    // Si no trae sizes, los generamos automáticamente a partir del precio base
+    if (!product.sizes || product.sizes.length === 0) {
+      product.sizes = [
+        { label: 'normal', price: product.price, multiplier: 1 },
+        { label: 'mediano', price: product.price * 1.25, multiplier: 1.25 },
+        { label: 'grande', price: product.price * 1.5, multiplier: 1.5 }
+      ];
+    }
+  
+    await addDoc(productsCollection, {
+      ...product,
+      created_at: new Date().toISOString()
+    });
+  }  
 
 async updateProduct(id: string, product: Partial<Product>): Promise<void> {
   const productDoc = doc(this.firestore, 'products', id);
   await updateDoc(productDoc, { ...product });
 
   // 🔥 Descontar ingredientes del inventario si se actualizan
-  await this.updateIngredientStockAfterSale(product as Product);
+  // await this.updateIngredientStockAfterSale(product as Product);
 }
 
 
