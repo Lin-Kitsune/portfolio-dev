@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgClass } from '@angular/common';
+import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common';
 import { FirebaseAuthService } from '../../Service/firebase-auth.service';
 import { FirestoreService } from '../../Service/firestore.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass],
+  imports: [FormsModule, NgIf, NgClass, NgFor, DatePipe],
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss']
 })
@@ -21,7 +21,16 @@ export class PerfilComponent implements OnInit {
   } | null = null;
 
   modoEdicion = false;
-  errorMessage = '';
+  seccion: 'perfil' | 'historial' = 'perfil';
+  pedidos: any[] = [];
+  pedidosFiltrados: any[] = [];
+
+  // Filtros
+  filtroId: string = '';
+  fechaInicio: string = '';
+  fechaFin: string = '';
+  filtroTipoEntrega: string = '';
+  ordenSeleccionado: string = '';
 
   constructor(
     private authService: FirebaseAuthService,
@@ -41,9 +50,37 @@ export class PerfilComponent implements OnInit {
           email: data['email'] || '',
           phone: data['phone'] || ''
         };
+
+        this.pedidos = await this.firestoreService.getPedidosByUserId(user.uid);
+        this.filtrarPedidos();
       }
     } catch (error) {
-      console.error('Error al cargar los datos del usuario', error);
+      console.error('Error al cargar datos del usuario o pedidos', error);
+    }
+  }
+
+  filtrarPedidos() {
+    this.pedidosFiltrados = this.pedidos.filter(pedido => {
+      const idPedido = (pedido.numero || pedido.id)?.toString().toLowerCase();
+      const matchId = this.filtroId ? idPedido?.includes(this.filtroId.toLowerCase()) : true;
+
+      const fecha = pedido.createdAt?.toDate?.();
+      const matchFechaInicio = this.fechaInicio ? new Date(this.fechaInicio) <= fecha : true;
+      const matchFechaFin = this.fechaFin ? new Date(this.fechaFin) >= fecha : true;
+
+      const matchTipo = this.filtroTipoEntrega ? pedido.tipoEntrega === this.filtroTipoEntrega : true;
+
+      return matchId && matchFechaInicio && matchFechaFin && matchTipo;
+    });
+
+    this.ordenarPedidos();
+  }
+
+  ordenarPedidos() {
+    if (this.ordenSeleccionado === 'precio-asc') {
+      this.pedidosFiltrados.sort((a, b) => a.total - b.total);
+    } else if (this.ordenSeleccionado === 'precio-desc') {
+      this.pedidosFiltrados.sort((a, b) => b.total - a.total);
     }
   }
 

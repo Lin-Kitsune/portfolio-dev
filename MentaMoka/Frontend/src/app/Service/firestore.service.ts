@@ -7,6 +7,10 @@ import {
   collectionData,
   getDoc,
   updateDoc,
+  query,
+  where,
+  orderBy,
+  getDocs
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -73,5 +77,27 @@ export class FirestoreService {
   updateReservaStatus(id: string, newStatus: string): Promise<void> {
     const reservaRef = doc(this.firestore, `reservations/${id}`);
     return setDoc(reservaRef, { status: newStatus }, { merge: true });
+  }
+
+  // ✅ Obtener pedidos por ID de usuario
+  async getPedidosByUserId(userId: string): Promise<any[]> {
+    const ref = collection(this.firestore, 'orders');
+    const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  }
+
+  // Obtener todos los pedidos desde firebase :D
+  async getAllPedidos(): Promise<any[]> {
+    const ref = collection(this.firestore, 'orders');
+    const q = query(ref, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
   }
 }
