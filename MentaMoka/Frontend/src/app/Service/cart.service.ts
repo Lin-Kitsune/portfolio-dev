@@ -47,33 +47,28 @@ export class CartService {
     }
   }
   
-  async addToCart(
-    product: Product,
-    size: string,
-    selectedOptions: { [key: string]: string | undefined }
-  )
-   {
+  async addToCart(item: CartItem) {
     if (!this.userId) {
       alert("Debes iniciar sesión para agregar productos al carrito.");
       return;
     }
   
-    console.log("🛒 Agregando al carrito:", this.userId, product, size, selectedOptions);
+    console.log("🛒 Agregando al carrito:", this.userId, item);
   
-    const index = this.cart.findIndex(item => 
-      item.id === product.id && 
-      item.size === size &&
-      JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
+    const index = this.cart.findIndex(existing =>
+      existing.id === item.id &&
+      existing.size === item.size &&
+      JSON.stringify(existing.selectedOptions) === JSON.stringify(item.selectedOptions)
     );
   
     if (index !== -1) {
-      this.cart[index].quantity += 1;
+      this.cart[index].quantity += item.quantity;
     } else {
-      this.cart.push({ ...product, size, selectedOptions, quantity: 1 });
+      this.cart.push({ ...item });
     }
   
     await this.updateCartInFirestore();
-  }
+  }  
   
   async removeFromCart(
     productId: string,

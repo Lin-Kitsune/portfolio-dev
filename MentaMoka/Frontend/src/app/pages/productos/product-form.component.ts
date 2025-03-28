@@ -7,12 +7,14 @@ import { CategoryService, Category } from '../../Service/category.service'; // �
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Ingredient } from '../../models/inventory.model';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './product-form.component.html'
+  imports: [NgSelectModule, FormsModule, CommonModule],
+  templateUrl: './product-form.component.html',
+    styleUrl: './product-form.component.scss'
 })
 export class ProductFormComponent implements OnInit {
   private productService = inject(ProductService);
@@ -34,10 +36,11 @@ export class ProductFormComponent implements OnInit {
       milk: [],
       sugar: []
     },
-    ingredients: [],  
+    ingredients: [],
+    sizes: [],
     created_at: new Date().toISOString()
   };
-
+    
   productId: string | null = null;
   availableIngredients: Ingredient[] = [];
   selectedIngredient: string | null = null;
@@ -56,12 +59,15 @@ export class ProductFormComponent implements OnInit {
     // 🔥 Cargar ingredientes disponibles en inventario
     this.inventoryService.getIngredients().subscribe({
       next: (ingredients) => {
-        this.availableIngredients = ingredients;
+        this.availableIngredients = ingredients.map(i => ({
+          ...i,
+          label: `${i.name} (Stock: ${i.stock})`
+        }));
       },
       error: (err) => {
         console.error("Error cargando ingredientes:", err);
       }
-    });
+    });    
 
     // 🔥 Cargar categorías desde Firestore
     this.categoryService.getCategories().subscribe({

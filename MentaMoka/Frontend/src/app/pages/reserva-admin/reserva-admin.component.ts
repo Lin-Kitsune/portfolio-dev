@@ -19,6 +19,9 @@ export class ReservaAdminComponent implements OnInit {
   selectedStatus: string = '';
   sortOrder: 'recientes' | 'antiguas' | '' = '';
 
+  currentPage = 1;
+  itemsPerPage = 5;
+
   constructor(
     private firestoreService: FirestoreService,
     private firestore: Firestore 
@@ -53,11 +56,40 @@ export class ReservaAdminComponent implements OnInit {
         if (this.sortOrder === 'antiguas') return aTime - bTime;
         return 0;
       });
-  }
+  
+    this.currentPage = 1;
+  }  
 
   cambiarEstado(reserva: Reserva, nuevoEstado: 'pendiente' | 'confirmada' | 'cancelada') {
     this.firestoreService.updateReservaStatus(reserva.id, nuevoEstado).then(() => {
       reserva.status = nuevoEstado;
     });
   }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredReservas.length / this.itemsPerPage);
+  }
+  
+  get totalPagesArray(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+  
+  get paginatedReservas(): Reserva[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredReservas.slice(start, end);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+  }
+  
+  goToPreviousPage() {
+    if (this.currentPage > 1) this.currentPage--;
+  }
+  
+  goToNextPage() {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+  
 }

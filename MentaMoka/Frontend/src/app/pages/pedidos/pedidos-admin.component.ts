@@ -13,11 +13,22 @@ import { OrderService } from '../../Service/order.service';
 })
 export class PedidosAdminComponent implements OnInit {
   pedidos: Order[] = [];
-
+  objectKeys = Object.keys;
     estados: string[] = ['pagado', 'en preparacion', 'listo', 'entregado'];
     selectedTipo: string = '';
     selectedEstado: string = '';
     pedidosFiltrados: Order[] = [];
+
+    currentPage = 1;
+    itemsPerPage = 5;
+
+    pedidoSeleccionado: Order | null = null;
+
+    fechaInicio: string = '';
+    fechaFin: string = '';
+
+    orden: 'fecha' | 'total' = 'fecha';
+    direccion: 'asc' | 'desc' = 'desc';
 
   constructor(private orderService: OrderService) {}
 
@@ -46,12 +57,31 @@ export class PedidosAdminComponent implements OnInit {
   }  
 
   applyFilters() {
-    this.pedidosFiltrados = this.pedidos.filter(pedido => {
+    this.pedidosFiltrados = this.pedidos.filter((pedido: Order) => {
       const coincideTipo = this.selectedTipo ? pedido.tipoEntrega === this.selectedTipo : true;
       const coincideEstado = this.selectedEstado ? pedido.status === this.selectedEstado : true;
       return coincideTipo && coincideEstado;
     });
-  }
+  
+    const fechaInicioMs = this.fechaInicio ? new Date(this.fechaInicio).getTime() : null;
+    const fechaFinMs = this.fechaFin ? new Date(this.fechaFin).getTime() : null;
+  
+    if (fechaInicioMs || fechaFinMs) {
+      this.pedidosFiltrados = this.pedidosFiltrados.filter((p: Order) => {
+        const fechaPedido = p.createdAt.toDate().getTime();
+        return (!fechaInicioMs || fechaPedido >= fechaInicioMs) &&
+               (!fechaFinMs || fechaPedido <= fechaFinMs);
+      });
+    }
+  
+    this.currentPage = 1;
+  
+    this.pedidosFiltrados.sort((a, b) => {
+      let valA = this.orden === 'total' ? a.total : a.createdAt.toDate().getTime();
+      let valB = this.orden === 'total' ? b.total : b.createdAt.toDate().getTime();
+      return this.direccion === 'asc' ? valA - valB : valB - valA;
+    });
+  }   
 
   corregirPedidosPendientes() {
     this.orderService.obtenerPedidosTiempoReal().subscribe(pedidos => {
@@ -62,5 +92,40 @@ export class PedidosAdminComponent implements OnInit {
       });
     });
   }
+
+  get totalPages(): number {
+    return Math.ceil(this.pedidosFiltrados.length / this.itemsPerPage);
+  }
+  
+  get totalPagesArray(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+  
+  get paginatedPedidos(): Order[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.pedidosFiltrados.slice(start, end);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+  }
+  
+  goToPreviousPage() {
+    if (this.currentPage > 1) this.currentPage--;
+  }
+  
+  goToNextPage() {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  } 
+  
+  abrirDetalle(pedido: Order) {
+    this.pedidoSeleccionado = pedido;
+  }
+  
+  cerrarModal() {
+    this.pedidoSeleccionado = null;
+  }
+  
   
 }

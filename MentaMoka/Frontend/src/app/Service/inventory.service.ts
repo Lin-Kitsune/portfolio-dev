@@ -58,7 +58,11 @@ export class InventoryService {
   
   async updateIngredient(id: string, ingredient: Partial<Ingredient>): Promise<void> {
     const docRef = doc(this.firestore, 'inventory', id);
+  
+    // 🔍 Verifica exactamente qué estás mandando a Firestore
+    console.log(`🔥 updateIngredient → ID: ${id}`, ingredient);
+  
     await setDoc(docRef, ingredient, { merge: true });
-  }
-    
+  }  
+   
 }

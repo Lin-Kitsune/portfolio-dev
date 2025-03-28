@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
   }
 
   increaseQuantity(item: CartItem) {
-    this.cartService.addToCart(item, item.size, item.selectedOptions ?? {});
+    this.cartService.addToCart(item);
   }
 
   decreaseQuantity(item: CartItem) {

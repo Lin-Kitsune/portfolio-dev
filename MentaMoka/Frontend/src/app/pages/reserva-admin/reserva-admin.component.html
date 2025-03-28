@@ -54,7 +54,7 @@
           </thead>
           
           <tbody class="bg-white divide-y divide-gray-100 text-center">
-            <tr *ngFor="let reserva of filteredReservas" class="hover:bg-gray-50">
+            <tr *ngFor="let reserva of paginatedReservas" class="hover:bg-gray-50">
               <td class="px-4 py-3 font-medium">{{ reserva.date }}</td> 
               <td class="px-4 py-3 font-medium">{{ reserva.time }}</td> 
               <td class="px-4 py-3">{{ reserva.table_number }}</td>
@@ -140,6 +140,43 @@
             </tr>
           </tbody>          
         </table>
+      </div>
+
+      <!-- 🔽 Paginación -->
+      <div class="flex justify-between items-center mt-6 px-4">
+        <button 
+          (click)="goToPreviousPage()" 
+          [disabled]="currentPage === 1"
+          [ngClass]="{
+            'bg-verdeSalvia text-white': currentPage !== 1,
+            'bg-gray-100 text-gray-400 cursor-not-allowed': currentPage === 1
+          }"
+          class="px-3 py-1 text-sm rounded transition duration-150 hover:bg-verdeSalvia hover:text-white">
+          ← Anterior
+        </button>
+
+        <div class="flex gap-1">
+          <button *ngFor="let page of totalPagesArray"
+                  (click)="goToPage(page)"
+                  [ngClass]="{
+                    'bg-verdeSalvia text-white': currentPage === page,
+                    'bg-gray-100 text-gray-700': currentPage !== page
+                  }"
+                  class="px-3 py-1 text-sm rounded hover:bg-verdeSalvia hover:text-white transition">
+            {{ page }}
+          </button>
+        </div>
+
+        <button 
+          (click)="goToNextPage()" 
+          [disabled]="currentPage === totalPages"
+          [ngClass]="{
+            'bg-verdeSalvia text-white': currentPage !== totalPages,
+            'bg-gray-100 text-gray-400 cursor-not-allowed': currentPage === totalPages
+          }"
+          class="px-3 py-1 text-sm rounded transition duration-150 hover:bg-verdeSalvia hover:text-white">
+          Siguiente →
+        </button>
       </div>
 
       <!-- Sin resultados -->
