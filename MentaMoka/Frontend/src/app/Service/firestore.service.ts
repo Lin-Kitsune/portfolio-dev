@@ -100,4 +100,17 @@ export class FirestoreService {
       ...doc.data()
     }));
   }
+
+  async getPedidosFiltrados(tipo: string, desde: Date): Promise<any[]> {
+    const ref = collection(this.firestore, 'orders');
+    const filtros = [where('createdAt', '>=', desde), where('status', '==', 'entregado')];
+  
+    if (tipo !== 'general') {
+      filtros.push(where('tipoEntrega', '==', tipo));
+    }
+  
+    const q = query(ref, ...filtros, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
 }

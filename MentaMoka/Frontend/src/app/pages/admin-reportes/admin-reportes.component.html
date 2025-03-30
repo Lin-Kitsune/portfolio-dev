@@ -1,0 +1,35 @@
+<div class="p-8 max-w-4xl mx-auto bg-blancoAlgodon rounded-2xl shadow-xl">
+    <h1 class="text-3xl font-bold text-cafe-macchiato mb-6 text-center">
+      📋 Generador de Reportes
+    </h1>
+  
+    <!-- Selector de tipo de reporte -->
+    <div class="mb-4">
+      <label class="block font-semibold text-marronTierra mb-2">Rango de fechas</label>
+      <select [(ngModel)]="rangoSeleccionado" class="w-full p-2 border rounded-xl">
+        <option value="diario">📅 Diario</option>
+        <option value="semanal">🗓️ Semanal</option>
+      </select>
+    </div>
+  
+    <!-- Selector de tipo de entrega -->
+    <div class="mb-6">
+      <label class="block font-semibold text-marronTierra mb-2">Tipo de entrega</label>
+      <select [(ngModel)]="modoSeleccionado" class="w-full p-2 border rounded-xl">
+        <option value="tienda">🏠 Tienda</option>
+        <option value="delivery">🚚 Delivery</option>
+        <option value="general">📊 General</option>
+      </select>
+    </div>
+  
+    <!-- Botón para generar -->
+    <div class="text-center">
+        <button
+        (click)="generarReporte()"
+        class="bg-cafe-macchiato hover:bg-marron-arcilla text-white font-semibold py-2 px-4 rounded-xl w-full"
+      >
+        Generar Reporte PDF
+      </button>
+    </div>
+  </div>
+  
