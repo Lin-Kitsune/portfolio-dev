@@ -97,15 +97,16 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/pedidos/pedidos-admin.component').then(m => m.PedidosAdminComponent),
     canActivate: [AuthGuard]
   },
-
-  // Historial
   {
     path: 'admin/historial-compras',
     loadComponent: () => import('./pages/admin-historial/admin-historial.component').then(m => m.AdminHistorialComponent),
     canActivate: [AuthGuard]
   },
-
-  // ✅ Ruta de REPORTES
+  {
+    path: 'admin/turnos',
+    loadComponent: () => import('./pages/admin/turnos/admin-turnos.component').then(m => m.AdminTurnosComponent),
+    canActivate: [AuthGuard]
+  },
   {
     path: 'admin/reportes',
     loadComponent: () => import('./pages/admin-reportes/admin-reportes.component').then(m => m.AdminReportesComponent),
