@@ -108,6 +108,11 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'admin/clientes',
+    loadComponent: () => import('./pages/admin-clientes/admin-clientes.component').then(m => m.AdminClientesComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'admin/reportes',
     loadComponent: () => import('./pages/admin-reportes/admin-reportes.component').then(m => m.AdminReportesComponent),
     canActivate: [AuthGuard]
