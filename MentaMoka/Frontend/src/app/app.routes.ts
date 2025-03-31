@@ -108,6 +108,11 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/admin/turnos/admin-turnos.component').then(m => m.AdminTurnosComponent),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'admin/clientes',
+    loadComponent: () => import('./pages/admin-clientes/admin-clientes.component').then(m => m.AdminClientesComponent),
+    canActivate: [AuthGuard]
+  },
 
   { path: '**', redirectTo: 'inicio' } // Redirección si la ruta no existe
 ];
