@@ -1,0 +1,69 @@
+<div *ngIf="isOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg relative">
+      <h2 class="text-2xl font-bold mb-4 text-marronTierra">Asignar Turno a Trabajador</h2>
+  
+      <!-- FullCalendar con selector de vista -->
+      <full-calendar [options]="calendarOptions"></full-calendar>
+  
+      <!-- Mini Modal Flotante de Nuevo Turno -->
+      <div *ngIf="showForm" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-lg border border-beigeMadera relative">
+          <h3 class="text-lg font-semibold text-marronTierra mb-4 text-center">Nuevo Turno</h3>
+  
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Selección de trabajador -->
+            <div>
+              <label class="block text-sm font-medium text-marronTierra mb-1">Trabajador:</label>
+              <select [(ngModel)]="selectedEmpleadoId"
+                      class="w-full p-2 border border-beigeMadera rounded-md focus:ring-2 focus:ring-verdeSalvia">
+                <option value="" disabled selected>Seleccione un trabajador</option>
+                <option *ngFor="let emp of empleados" [value]="emp.id">{{ emp.name }}</option>
+              </select>
+            </div>
+  
+            <!-- Fecha -->
+            <div>
+              <label class="block text-sm font-medium text-marronTierra mb-1">Fecha:</label>
+              <input type="text" [value]="fecha" disabled class="w-full p-2 bg-gray-100 rounded-md border border-beigeMadera" />
+            </div>
+  
+            <!-- Hora inicio -->
+            <div>
+              <label class="block text-sm font-medium text-marronTierra mb-1">Hora inicio:</label>
+              <input type="time" [(ngModel)]="start" class="w-full p-2 border border-beigeMadera rounded-md">
+            </div>
+  
+            <!-- Hora fin -->
+            <div>
+              <label class="block text-sm font-medium text-marronTierra mb-1">Hora fin:</label>
+              <input type="time" [(ngModel)]="end" class="w-full p-2 border border-beigeMadera rounded-md">
+            </div>
+          </div>
+  
+          <!-- Botones -->
+          <div class="flex justify-end gap-3 mt-6">
+            <button type="button" (click)="showForm = false" class="text-marronTierra hover:text-[#7a4d32] font-semibold">Cancelar</button>
+            <button (click)="guardarTurno()"
+                    class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-greenDark transition">
+              Guardar Turno
+            </button>
+          </div>
+  
+          <!-- Botón cerrar flotante -->
+          <button (click)="showForm = false" class="absolute top-2 right-3 text-xl text-gray-600 hover:text-black">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="none" stroke="#9C6F48" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m5 19l7-7m0 0l7-7m-7 7L5 5m7 7l7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+  
+      <!-- Botón cerrar modal principal -->
+      <button (click)="cerrar()" class="absolute top-3 right-3 text-xl text-red-500 hover:text-red-700">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" stroke="#9C6F48" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m5 19l7-7m0 0l7-7m-7 7L5 5m7 7l7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  

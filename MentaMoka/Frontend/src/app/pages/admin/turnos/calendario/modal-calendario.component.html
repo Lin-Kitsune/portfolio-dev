@@ -1,0 +1,21 @@
+<div *ngIf="isOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg relative">
+      <h2 class="text-2xl font-bold mb-4 text-marronTierra">Calendario de Turnos: {{ nombre }}</h2>
+      
+      <full-calendar [options]="calendarOptions"></full-calendar>
+      <app-modal-turno
+        [isOpen]="turnoModalOpen"
+        [userId]="selectedUserId"
+        [modo]="modoModal"
+        [turnoIndex]="modoModal === 'editar' ? turnoIndex : undefined"
+        [fechaBase]="fechaBase"
+        [horaBase]="horaBase"
+        (cerrar)="turnoModalOpen = false"
+        (turnoModificado)="refrescarTurnos()"
+      />      
+      <button (click)="close()" class="absolute top-3 right-3 text-xl text-red-500 hover:text-red-700">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#9C6F48" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m5 19l7-7m0 0l7-7m-7 7L5 5m7 7l7 7"/></svg>
+      </button>
+    </div>
+  </div>
+  
