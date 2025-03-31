@@ -9,13 +9,13 @@ import { CalendarioComponent } from './pages/reservations/calendario.component';
 import { ReservasListComponent } from './pages/reservations/reservas-list.component';
 import { ReservaAdminComponent } from './pages/reserva-admin/reserva-admin.component';
 import { AuthGuard } from './guards/auth.guard';
-import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'; 
+import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-  { path: 'inicio', component: HomeComponent }, // Puedes cambiarlo a tu página de inicio real
+  { path: 'inicio', component: HomeComponent },
   { path: 'productos-clientes', component: ProductListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -32,10 +32,8 @@ export const appRoutes: Routes = [
     path: 'pantalla-cliente',
     loadComponent: () => import('./pages/pantallas/pantalla-cliente.component').then(m => m.PantallaClienteComponent)
   },
-  
-  { path: 'perfil', component: PerfilComponent },
 
-  // ✅ Ruta agregada para sugerencias
+  { path: 'perfil', component: PerfilComponent },
   { path: 'sugerencias', component: SugerenciasComponent },
 
   // Rutas del admin
@@ -83,6 +81,7 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/inventario/inventory-form.component').then(m => m.InventoryFormComponent),
     canActivate: [AuthGuard]
   },
+
   {
     path: 'admin/reservas-admin',
     loadComponent: () => import('./pages/reserva-admin/reserva-admin.component').then(m => m.ReservaAdminComponent),
@@ -113,6 +112,11 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/admin-clientes/admin-clientes.component').then(m => m.AdminClientesComponent),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'admin/reportes',
+    loadComponent: () => import('./pages/admin-reportes/admin-reportes.component').then(m => m.AdminReportesComponent),
+    canActivate: [AuthGuard]
+  },
 
-  { path: '**', redirectTo: 'inicio' } // Redirección si la ruta no existe
+  { path: '**', redirectTo: 'inicio' }
 ];

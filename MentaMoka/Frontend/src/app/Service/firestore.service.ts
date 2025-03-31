@@ -100,4 +100,21 @@ export class FirestoreService {
       ...doc.data()
     }));
   }
+
+// 🔍 Obtener pedidos filtrados por tipo de entrega y fecha
+  async getPedidosFiltrados(tipoEntrega: string, desde: Date): Promise<any[]> {
+    const ref = collection(this.firestore, 'orders');
+    const condiciones = [
+      where('createdAt', '>=', desde),
+      orderBy('createdAt', 'desc')
+    ];
+
+    if (tipoEntrega !== 'general') {
+      condiciones.unshift(where('tipoEntrega', '==', tipoEntrega));
+    }
+
+    const q = query(ref, ...condiciones);
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
 }

@@ -1,0 +1,53 @@
+
+<div class="p-8 max-w-3xl mx-auto bg-blancoAlgodon rounded-2xl shadow-xl space-y-6">
+
+  <nav class="text-sm mb-2 text-gray-600">
+    <a  class="text-verdeSalvia hover:underline">Admin</a>
+    <span class="mx-2">›</span>
+    <span class="text-gray-500">Reportes</span>
+  </nav>
+
+  <h1 class="text-4xl font-bold text-center text-cafe-macchiato">📋 Generador de Reportes</h1>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- Selector de fechas -->
+    <div>
+      <label class="block text-marronTierra font-semibold mb-2">📆 Rango de fechas</label>
+      <select [(ngModel)]="rangoSeleccionado" class="w-full border rounded-xl p-2">
+        <option value="diario">Diario</option>
+        <option value="semanal">Semanal</option>
+      </select>
+    </div>
+
+    <!-- Selector de tipo de entrega -->
+    <div>
+      <label class="block text-marronTierra font-semibold mb-2">🚚 Tipo de entrega</label>
+      <select [(ngModel)]="modoSeleccionado" class="w-full border rounded-xl p-2">
+        <option value="tienda">Tienda</option>
+        <option value="delivery">elivery</option>
+        <option value="general">General</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Mensaje de estado -->
+  <div *ngIf="mensaje" class="p-3 rounded-xl text-center" [ngClass]="{
+    'bg-green-100 text-green-800': !error,
+    'bg-red-100 text-red-800': error
+  }">
+    {{ mensaje }}
+  </div>
+
+  <!-- Botón para generar -->
+  <div class="text-center mt-4">
+    <button
+      (click)="generarReporte()"
+      [disabled]="cargando"
+      class="bg-verdeSalvia hover:bg-marronTierra text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition-all duration-300 flex items-center justify-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <span class="text-lg">
+        {{ cargando ? 'Generando...' : 'Generar Reporte PDF' }}
+      </span>
+    </button>
+  </div>
+</div>
