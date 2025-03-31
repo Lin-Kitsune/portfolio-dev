@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component';
+import { AdminDashboardComponent } from './pages/admin/dashboard/admin-dashboard.component';
 import { HomeComponent } from './pages/Home/home.component';
-import { AdminCreateUserComponent } from './pages/admin/admin-create-user.component';
+import { AdminCreateUserComponent } from './pages/admin/crear-user/admin-create-user.component';
 import { ProductListComponent } from './pages/productos-clientes/product-list/product-list.component-client';
 import { CalendarioComponent } from './pages/reservations/calendario.component';
 import { ReservasListComponent } from './pages/reservations/reservas-list.component';
@@ -98,11 +98,14 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./pages/pedidos/pedidos-admin.component').then(m => m.PedidosAdminComponent),
     canActivate: [AuthGuard]
   },
-
-  // ✅ NUEVA RUTA: Historial de compras del administrador
   {
     path: 'admin/historial-compras',
     loadComponent: () => import('./pages/admin-historial/admin-historial.component').then(m => m.AdminHistorialComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin/turnos',
+    loadComponent: () => import('./pages/admin/turnos/admin-turnos.component').then(m => m.AdminTurnosComponent),
     canActivate: [AuthGuard]
   },
 
