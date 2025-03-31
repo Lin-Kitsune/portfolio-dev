@@ -15,12 +15,18 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
   styleUrls: ['./admin-reportes.component.scss']
 })
 export class AdminReportesComponent {
-  rangoSeleccionado: string = 'diario'; // 'diario' o 'semanal'
-  modoSeleccionado: string = 'tienda';  // 'tienda' o 'delivery'
+  rangoSeleccionado: string = 'diario';
+  modoSeleccionado: string = 'tienda';
   firestoreService = inject(FirestoreService);
 
+  cargando: boolean = false;
+  mensaje: string | null = null;
+  error: boolean = false;
+
   async generarReporte() {
-    console.log('🔍 Generando reporte con:', this.rangoSeleccionado, this.modoSeleccionado);
+    this.cargando = true;
+    this.mensaje = null;
+    this.error = false;
 
     const ahora = new Date();
     const desde = new Date();
@@ -33,55 +39,154 @@ export class AdminReportesComponent {
     }
 
     try {
-      const pedidos: any[] = await this.firestoreService.getPedidosFiltrados(this.modoSeleccionado, desde);
-      console.log('📦 Pedidos encontrados:', pedidos.length);
+      const pedidos = await this.firestoreService.getPedidosFiltrados(this.modoSeleccionado, desde);
 
-      const productosMap: { [key: string]: { quantity: number; total: number } } = {};
+      const productosMap: { [key: string]: { quantity: number; total: number; tipoEntrega: string } } = {};
 
       pedidos.forEach((pedido: any) => {
         pedido.products?.forEach((prod: any) => {
-          if (!productosMap[prod.name]) {
-            productosMap[prod.name] = { quantity: 0, total: 0 };
+          const tipo = this.modoSeleccionado === 'general' ? pedido.tipoEntrega : this.modoSeleccionado;
+          const key = `${prod.name}||${tipo}`;
+
+          if (!productosMap[key]) {
+            productosMap[key] = { quantity: 0, total: 0, tipoEntrega: tipo };
           }
-          productosMap[prod.name].quantity += prod.quantity;
-          productosMap[prod.name].total += prod.quantity * prod.price;
+
+          productosMap[key].quantity += prod.quantity;
+          productosMap[key].total += prod.quantity * prod.price;
         });
       });
 
-      const rows = Object.entries(productosMap).map(([name, data]) => [
-        name,
-        data.quantity,
-        `$${data.total.toLocaleString('es-CL')}`
-      ]);
+      const rows = Object.entries(productosMap).map(([key, data]) => {
+        const [name, tipoEntrega] = key.split('||');
+        return [
+          { text: name, style: 'tableText' },
+          { text: tipoEntrega.toUpperCase(), style: 'tableText' },
+          { text: data.quantity.toString(), style: 'tableText' },
+          { text: `$${data.total.toLocaleString('es-CL')}`, style: 'tableText' }
+        ];
+      });
 
       const totalGeneral = Object.values(productosMap).reduce((acc, p) => acc + p.total, 0);
 
+      // Totales por categoría para modo general
+      let totalTienda = 0;
+      let totalDelivery = 0;
+
+      if (this.modoSeleccionado === 'general') {
+        Object.values(productosMap).forEach(p => {
+          if (p.tipoEntrega === 'tienda') totalTienda += p.total;
+          if (p.tipoEntrega === 'delivery') totalDelivery += p.total;
+        });
+      }
+
+      const resumenTotales: any[] = [];
+
+      if (this.modoSeleccionado === 'general') {
+        resumenTotales.push(
+          {
+            text: `Total TIENDA: $${totalTienda.toLocaleString('es-CL')}`,
+            style: 'totalResumen'
+          },
+          {
+            text: `Total DELIVERY: $${totalDelivery.toLocaleString('es-CL')}`,
+            style: 'totalResumen'
+          }
+        );
+      }
+
       const docDefinition = {
+        pageMargins: [40, 60, 40, 60],
         content: [
-          { text: `📄 Reporte ${this.rangoSeleccionado.toUpperCase()} - ${this.modoSeleccionado.toUpperCase()}`, style: 'header' },
-          { text: 'Fecha de generación: ' + new Date().toLocaleDateString(), margin: [0, 10] },
+          { text: 'REPORTE DE VENTAS', style: 'title' },
+          {
+            columns: [
+              { text: `Tipo de entrega: ${this.modoSeleccionado.toUpperCase()}`, style: 'subheader' },
+              { text: `Rango: ${this.rangoSeleccionado.toUpperCase()}`, style: 'subheader', alignment: 'right' }
+            ]
+          },
+          {
+            text: `Fecha de generación: ${new Date().toLocaleDateString()}`,
+            style: 'date',
+            margin: [0, 10]
+          },
           {
             table: {
-              widths: ['*', '*', '*'],
+              widths: ['*', 'auto', 'auto', 'auto'],
               body: [
-                ['Producto', 'Cantidad Vendida', 'Total'],
+                [
+                  { text: 'Producto', style: 'tableHeader' },
+                  { text: 'Categoría', style: 'tableHeader' },
+                  { text: 'Cantidad Vendida', style: 'tableHeader' },
+                  { text: 'Total', style: 'tableHeader' }
+                ],
                 ...rows
               ]
-            }
+            },
+            layout: 'lightHorizontalLines',
+            margin: [0, 10]
           },
-          { text: `\nTotal general: $${totalGeneral.toLocaleString('es-CL')}`, style: 'total' }
+          ...resumenTotales,
+          {
+            text: `Total General: $${totalGeneral.toLocaleString('es-CL')}`,
+            style: 'total'
+          }
         ],
         styles: {
-          header: { fontSize: 22, bold: true, color: '#A67B5B' },
-          total: { fontSize: 16, bold: true, alignment: 'right', margin: [0, 10] }
+          title: {
+            fontSize: 20,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 0, 0, 15],
+            color: '#4B2E2A'
+          },
+          subheader: {
+            fontSize: 12,
+            color: '#444444',
+            margin: [0, 0, 0, 5]
+          },
+          date: {
+            fontSize: 10,
+            italics: true,
+            color: '#666666'
+          },
+          tableHeader: {
+            bold: true,
+            fillColor: '#F2E1C2',
+            color: '#4B2E2A',
+            fontSize: 11,
+            alignment: 'center',
+            margin: [0, 5]
+          },
+          tableText: {
+            fontSize: 10,
+            alignment: 'center'
+          },
+          totalResumen: {
+            fontSize: 11,
+            bold: true,
+            alignment: 'right',
+            color: '#4B2E2A',
+            margin: [0, 5, 0, 0]
+          },
+          total: {
+            fontSize: 12,
+            bold: true,
+            alignment: 'right',
+            margin: [0, 15, 0, 0],
+            color: '#4B2E2A'
+          }
         }
       };
 
-      console.log('✅ Generando PDF...');
       pdfMake.createPdf(docDefinition).download(`reporte-${this.modoSeleccionado}-${this.rangoSeleccionado}.pdf`);
-
+      this.mensaje = 'Reporte generado exitosamente.';
     } catch (error) {
       console.error('❌ Error al generar el reporte:', error);
+      this.error = true;
+      this.mensaje = 'Ocurrió un error al generar el PDF. Intenta nuevamente.';
+    } finally {
+      this.cargando = false;
     }
   }
 }
