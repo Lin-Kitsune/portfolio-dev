@@ -18,7 +18,8 @@ module.exports = {
         greenDark: '#81977B',
         brownDark: '#3A2A25',
         terracotaOscuro: '#95200b',
-        verdesuave: '#A3B899'
+        verdesuave: '#A3B899',
+        Cafe: '#3A2A25'
       },
       container: {
         center: true,

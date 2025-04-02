@@ -3,7 +3,7 @@ import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../Service/product.service';
-import { Product } from '../../models/product.model'
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-product-list',
