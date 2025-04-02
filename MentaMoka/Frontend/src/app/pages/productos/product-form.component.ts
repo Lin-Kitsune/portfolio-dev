@@ -45,6 +45,7 @@ export class ProductFormComponent implements OnInit {
   availableIngredients: Ingredient[] = [];
   selectedIngredient: string | null = null;
   selectedQuantity: number = 1;
+  newCategoryImageUrl: string = '';
 
   // 🔥 Agregamos soporte para categorías
   categories: Category[] = [];
@@ -124,10 +125,11 @@ export class ProductFormComponent implements OnInit {
    */
   async addCategory() {
     if (this.newCategory.trim()) {
-      await this.categoryService.addCategory(this.newCategory);
-      this.newCategory = ''; // 🔥 Limpiar el campo después de agregar
+      await this.categoryService.addCategory(this.newCategory, this.newCategoryImageUrl);
+      this.newCategory = '';
+      this.newCategoryImageUrl = '';
     }
-  }
+  }  
 
   /**
    * ❌ Elimina un ingrediente de la lista

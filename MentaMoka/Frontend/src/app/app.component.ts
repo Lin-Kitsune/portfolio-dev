@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseApp } from '@angular/fire/app';
 import { getAuth, onAuthStateChanged, signOut } from '@angular/fire/auth';
@@ -25,12 +25,20 @@ export class AppComponent implements OnInit {
   cartItems: CartItem[] = [];
   cartItemCount = 0;
   cartTotal = 0;
+  currentRoute: string = '';
+  menuAbierto = false;
 
   constructor(
     private router: Router,
     private cartService: CartService,
     private webpayService: WebpayService // Lo mantendremos preparado para el futuro
-  ) {}
+  ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.urlAfterRedirects;
+      }
+    });    
+  }
 
   ngOnInit() {
     console.log('🔥 Firebase App:', this.app);

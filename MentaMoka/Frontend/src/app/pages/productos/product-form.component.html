@@ -27,7 +27,11 @@
         <input [(ngModel)]="newCategory" name="newCategory" placeholder="Nueva categoría"
                class="w-1/2 p-2 border border-beigeMadera rounded-md bg-white text-gray-700"
                (keydown.enter)="addCategory()">
-    
+
+        <input [(ngModel)]="newCategoryImageUrl" name="newCategoryImageUrl"
+               placeholder="URL imagen"
+               class="w-1/2 p-2 border border-beigeMadera rounded-md bg-white text-gray-700" />
+      
         <!-- Botón para agregar categoría -->
         <button type="button" (click)="addCategory()"
                 class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-marronTierra transition">

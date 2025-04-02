@@ -7,6 +7,7 @@ import { CartService } from '../../../Service/cart.service';
 import { CartItem } from '../../../models/cart-item.model';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -38,19 +39,26 @@ export class ProductListComponent implements OnInit {
   milks: string[] = [];
   sugars: string[] = [];
 
-  constructor(private productService: ProductService, private cartService: CartService, private firestore: Firestore) {
+  constructor(private productService: ProductService, private cartService: CartService, private firestore: Firestore,  private route: ActivatedRoute) {
     const categoriesRef = collection(this.firestore, 'categories');
     this.categories$ = collectionData(categoriesRef);
   }
 
   ngOnInit(): void {
-  this.productService.getProducts().subscribe((data) => {
-    this.products = data;
-    this.applyFilters();
-  });
-
-  this.loadIngredients(); // Nuevo
-}
+    // Leer categoría desde query param
+    this.route.queryParams.subscribe(params => {
+      const categoriaParam = params['categoria'];
+      if (categoriaParam) {
+        this.selectedCategory = categoriaParam;
+      }
+      this.productService.getProducts().subscribe((data) => {
+        this.products = data;
+        this.applyFilters(); // aplicar filtro con la categoría cargada
+      });
+    });
+  
+    this.loadIngredients();
+  }
 
 loadIngredients() {
   const ingredientsRef = collection(this.firestore, 'inventory'); // ✅ nombre correcto de la colección

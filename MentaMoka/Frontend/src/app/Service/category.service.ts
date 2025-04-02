@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface Category {
   id?: string;
   name: string;
+  image_url?: string;
 }
 
 @Injectable({
@@ -20,7 +21,7 @@ export class CategoryService {
   }
 
   // Agregar una nueva categoría a Firestore
-  async addCategory(name: string): Promise<void> {
-    await addDoc(this.categoryCollection, { name });
-  }
+  async addCategory(name: string, image_url?: string): Promise<void> {
+    await addDoc(this.categoryCollection, { name, image_url });
+  }  
 }
