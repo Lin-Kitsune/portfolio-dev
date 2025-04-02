@@ -178,68 +178,71 @@
       </div>
     </footer>         
   </div>
-  <!-- ✅ Modal de Carrito con animación y botón fijo -->
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-end transition-opacity duration-300"
-       [ngClass]="{'opacity-100': isCartOpen, 'opacity-0': !isCartOpen, 'pointer-events-none': !isCartOpen}">
+<!-- ✅ Modal de Carrito con animación y botón fijo -->
+<div class="fixed inset-0 bg-black bg-opacity-50 flex justify-end transition-opacity duration-300"
+     [ngClass]="{'opacity-100': isCartOpen, 'opacity-0': !isCartOpen, 'pointer-events-none': !isCartOpen}">
 
-    <div class="bg-white w-80 h-full p-4 shadow-lg transform transition-transform duration-500 ease-in-out flex flex-col"
-         [ngClass]="{'translate-x-0': isCartOpen, 'translate-x-full': !isCartOpen}">
+  <div class="bg-white w-[350px] h-full p-6 shadow-2xl transform transition-transform duration-500 ease-in-out flex flex-col rounded-l-xl"
+       [ngClass]="{'translate-x-0': isCartOpen, 'translate-x-full': !isCartOpen}">
 
-      <!-- 🔹 Encabezado -->
-      <div class="flex justify-between items-center border-b pb-2">
-        <h2 class="text-lg font-bold">Tienes {{ cartItemCount }} productos</h2>
-        <button (click)="toggleCart()" class="text-gray-500 hover:text-gray-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
+    <!-- 🔹 Encabezado -->
+    <div class="flex justify-between items-center border-b pb-4">
+      <div>
+        <h2 class="text-xl font-semibold text-marronTierra tracking-wide uppercase">
+          Tu pedido
+        </h2>
+        <p class="text-sm text-gray-500 font-medium">({{ cartItemCount }} producto{{ cartItemCount !== 1 ? 's' : '' }})</p>
       </div>
+      <button (click)="toggleCart()" class="text-gray-500 hover:text-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
 
-      <!-- 🔹 Lista de productos -->
-      <div class="flex-1 overflow-y-auto">
-        <div *ngFor="let item of cartItems" class="flex items-center justify-between mt-4 border-b pb-2">
-          <img [src]="item.image_url" alt="{{ item.name }}" class="w-12 h-12 object-cover rounded">
-          <div class="flex-1 ml-2">
-            <p class="text-sm font-semibold">{{ item.name }}</p>
-            <p class="text-xs text-gray-500">Tamaño: {{ item.size }}</p>
-          
-            <div *ngIf="item.selectedOptions">
-              <p class="text-xs text-gray-500" *ngIf="item.selectedOptions.milk">Leche: {{ item.selectedOptions.milk }}</p>
-              <p class="text-xs text-gray-500" *ngIf="item.selectedOptions.sugar">Azúcar: {{ item.selectedOptions.sugar }}</p>
-            </div>
+    <!-- 🔹 Lista de productos -->
+    <div class="flex-1 overflow-y-auto mt-2 space-y-4">
+      <div *ngFor="let item of cartItems" class="p-3 rounded-lg bg-verdeSalvia/20 shadow-sm border border-gray-200 flex items-start space-x-3">
+        <img [src]="item.image_url" alt="{{ item.name }}" class="w-14 h-14 object-cover rounded">
+        <div class="flex-1">
+          <p class="text-sm font-bold text-marronTierra">{{ item.name }}</p>
+          <p class="text-xs font-semibold text-gray-700 mt-1">Tamaño: {{ item.size }}</p>
+          <p *ngIf="item.selectedOptions?.milk" class="text-xs font-semibold text-gray-700">Leche: {{ item.selectedOptions.milk }}</p>
+          <p *ngIf="item.selectedOptions?.sugar" class="text-xs font-semibold text-gray-700">Azúcar: {{ item.selectedOptions.sugar }}</p>
+
+          <div class="flex items-center mt-2 space-x-2">
+            <button (click)="decreaseQuantity(item)" class="w-6 h-6 bg-marronTierra text-white rounded font-bold text-lg flex items-center justify-center hover:brightness-110 transition">−</button>
+            <span class="text-sm font-bold">{{ item.quantity }}</span>
+            <button (click)="increaseQuantity(item)" class="w-6 h-6 bg-verdeSalvia text-white rounded font-bold text-lg flex items-center justify-center hover:brightness-110 transition">+</button>
+            <button (click)="removeFromCart(item)" class="ml-auto bg-red-100 hover:bg-red-200 text-red-500 p-1.5 rounded-full transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6.386c0-.484.345-.877.771-.877h2.665c.529-.016.996-.399 1.176-.965l.03-.1l.115-.391c.07-.24.131-.45.217-.637c.338-.739.964-1.252 1.687-1.383c.184-.033.378-.033.6-.033h3.478c.223 0 .417 0 .6.033c.723.131 1.35.644 1.687 1.383c.086.187.147.396.218.637l.114.391l.03.1c.18.566.74.95 1.27.965h2.57c.427 0 .772.393.772.877s-.345.877-.771.877H3.77c-.425 0-.77-.393-.77-.877"/>
+                <path fill-rule="evenodd" d="M11.596 22h.808c2.783 0 4.174 0 5.08-.886c.904-.886.996-2.339 1.181-5.245l.267-4.188c.1-1.577.15-2.366-.303-2.865c-.454-.5-1.22-.5-2.753-.5H8.124c-1.533 0-2.3 0-2.753.5s-.404 1.288-.303 2.865l.267 4.188c.185 2.906.277 4.36 1.182 5.245c.905.886 2.296.886 5.079.886m-1.35-9.811c-.04-.434-.408-.75-.82-.707c-.413.043-.713.43-.672.864l.5 5.263c.04.434.408.75.82.707c.413-.043.713-.43.672-.864zm4.329-.707c.412.043.713.43.671.864l-.5 5.263c-.04.434-.409.75-.82.707c-.413-.043-.713-.43-.672-.864l.5-5.263c.04-.434.409-.75.82-.707" clip-rule="evenodd"/>
+              </svg>
+            </button>
           </div>
-          
-          <div class="flex items-center space-x-2">
-            <button (click)="decreaseQuantity(item)" class="bg-gray-300 px-2 rounded">−</button>
-            <span>{{ item.quantity }}</span>
-            <button (click)="increaseQuantity(item)" class="bg-verdeSalvia text-white px-2 rounded">+</button>
-          </div>
-          <button (click)="removeFromCart(item)" class="text-red-500 p-2 rounded-full hover:bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M9 6V5a3 3 0 013-3h0a3 3 0 013 3v1m4 0h-6m-4 0H5m2 0h10M4 6h16m-3 4v10a2 2 0 01-2 2H9a2 2 0 01-2-2V10m4 0v10m4-10v10"/>
-            </svg>
-          </button>
         </div>
       </div>
+    </div>
 
-      <!-- 🔹 Acciones (fijo en la parte inferior) -->
-      <div class="pb-4 pt-2 border-t mt-2">
-        <button (click)="clearCart()" class="bg-red-500 text-white w-full py-2 rounded-md font-semibold hover:bg-red-600 transition-all">
-          Vaciar carrito 🗑️
-        </button>
-        <div class="mt-2 flex justify-between">
-          <p class="text-lg font-bold">Subtotal</p>
-          <p class="text-lg font-bold">{{ cartTotal | currency:'CLP $':'symbol':'1.0-0' }}</p>
-        </div>
+    <!-- 🔹 Acciones (subtotal + limpiar) -->
+    <div class="border-t pt-4 mt-4">
+      <button (click)="clearCart()" class="bg-red-500 text-white w-full py-2 rounded-md font-semibold hover:bg-red-600 transition">
+        Vaciar carrito
+      </button>
+
+      <div class="mt-4 px-3 py-3 bg-[#f8f4ef] rounded-md flex justify-between items-center text-marronTierra font-semibold">
+        <span>Subtotal</span>
+        <span class="text-lg font-bold">{{ cartTotal | currency:'CLP $':'symbol':'1.0-0' }}</span>
       </div>
+    </div>
 
-      <!-- 🔹 Botón de pago (Fijo en la parte inferior) -->
-      <div class="p-2 bg-white shadow-md">
-        <button (click)="pay()" class="bg-verdeSalvia text-white w-full py-3 rounded-md font-semibold hover:bg-opacity-80 transition-all">
-          Pagar 💳
-        </button>
-      </div>
-
+    <!-- 🔹 Botón de pago -->
+    <div class="p-2 mt-4 bg-white shadow-md">
+      <button (click)="pay()" 
+        class="bg-gradient-to-r from-[#6f4e37] to-[#4b2e1f] text-white w-full py-3 rounded-lg text-lg font-bold uppercase tracking-wide shadow hover:brightness-110 transition">
+       PAGAR
+      </button>
     </div>
   </div>
 </div>
