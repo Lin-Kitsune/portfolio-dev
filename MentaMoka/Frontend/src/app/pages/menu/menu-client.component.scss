@@ -1,0 +1,69 @@
+.linea-punteada {
+  flex-grow: 1;
+  height: 2px;
+  margin: 0 12px;
+  border: none;
+  background-image: repeating-linear-gradient(to right, #FAF9F7 0 2px, transparent 2px 8px);
+  background-size: auto 2px;
+  background-repeat: repeat-x;
+  background-position: center;
+  opacity: 0.9;
+}
+
+.precio-producto {
+  font-weight: bold;
+  font-size: 16px;
+  color: #FAF9F7;
+}
+
+@media (max-width: 640px) {
+  .menu-box .flex.items-start {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .menu-box img {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  .menu-box .flex-1 {
+    width: 100%;
+  }
+
+  .menu-box .uppercase {
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .menu-box .linea-punteada {
+    display: none !important;
+  }
+
+  .menu-box .precio-producto {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 0.25rem;
+  }
+
+  .menu-box .text-sm {
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  /* Asegura scroll y tamaño adaptable en celular */
+  .right-panel {
+    overflow-x: hidden;
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  .wrapper-container {
+    overflow-x: hidden;
+  }
+}
