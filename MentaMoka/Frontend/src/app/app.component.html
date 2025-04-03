@@ -93,8 +93,8 @@
   
   <div class="app-container">
     <main [ngClass]="{
-      'p-0': currentRoute === '/home' || currentRoute === '/inicio',
-      'p-6 md:p-12': currentRoute !== '/home' && currentRoute !== '/inicio'
+      'p-0': currentRoute === '/home' || currentRoute === '/inicio' || currentRoute === '/menu',
+      'p-6 md:p-12': currentRoute !== '/home' && currentRoute !== '/inicio' && currentRoute !== '/menu'
     }">    
       <router-outlet></router-outlet>
     </main>
