@@ -95,4 +95,17 @@ export class FirebaseAuthService {
     }
     return null;
  } 
+
+ /**
+ * ✅ Espera a que Firebase confirme el estado del usuario (ideal para F5)
+ */
+getCurrentUserPromise(): Promise<User | null> {
+  return new Promise((resolve) => {
+    const unsubscribe = this.auth.onAuthStateChanged((user) => {
+      unsubscribe(); // Deja de escuchar
+      resolve(user);
+    });
+  });
+}
+
 }

@@ -4,6 +4,7 @@ import { NgIf, NgClass } from '@angular/common';
 import { FirebaseAuthService } from '../../Service/firebase-auth.service';
 import { FirestoreService } from '../../Service/firestore.service';
 import { Router } from '@angular/router';
+import { fetchSignInMethodsForEmail, getAuth } from 'firebase/auth';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,8 @@ export class RegisterComponent {
   showPassword = false;
   showConfirmPassword = false;
   errorMessage = '';
+  emailExists = false;
+  emailValid = false;
 
   constructor(
     private authService: FirebaseAuthService,
@@ -87,5 +90,21 @@ export class RegisterComponent {
     } else {
       this.showConfirmPassword = !this.showConfirmPassword;
     }
+  }
+
+  async checkEmail() {
+    this.emailValid = this.validateEmail(this.email);
+
+    if (this.emailValid) {
+      const methods = await this.getSignInMethodsForEmail(this.email);
+      this.emailExists = methods && methods.length > 0;
+    } else {
+      this.emailExists = false;
+    }
+  }
+
+  private getSignInMethodsForEmail(email: string) {
+    const auth = getAuth();
+    return fetchSignInMethodsForEmail(auth, email);
   }
 }

@@ -93,11 +93,11 @@
   
   <div class="app-container">
     <main [ngClass]="{
-      'p-0': currentRoute === '/home' || currentRoute === '/inicio' || currentRoute === '/menu',
-      'p-6 md:p-12': currentRoute !== '/home' && currentRoute !== '/inicio' && currentRoute !== '/menu'
-    }">    
+      'p-0': currentRoute === '/home' || currentRoute === '/inicio' || currentRoute === '/menu' || currentRoute === '/login' || currentRoute === '/register',
+      'p-6 md:p-12': currentRoute !== '/home' && currentRoute !== '/inicio' && currentRoute !== '/menu' && currentRoute !== '/login' && currentRoute !== '/register'
+    }">
       <router-outlet></router-outlet>
-    </main>
+    </main>    
 
     <footer *ngIf="!esPantallaCocina"  class="bg-marronTierra text-beigeMadera pt-6">
       <!-- Línea superior -->
