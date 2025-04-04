@@ -40,7 +40,7 @@ export class PerfilComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const user = await this.authService.getCurrentUser();
+      const user = await this.authService.getCurrentUserPromise();
       if (user) {
         const data = await this.firestoreService.getUserById(user.uid);
         const [firstName, ...lastNameParts] = (data['name'] || '').split(' ');
