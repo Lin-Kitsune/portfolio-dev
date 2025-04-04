@@ -13,6 +13,7 @@ import { SugerenciasComponent } from './pages/sugerencias/sugerencias.component'
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { MenuWrapperComponent } from './pages/menu/menu-wrapper.component';
+import { AboutComponent } from './pages/nosotros/about.component';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -24,6 +25,7 @@ export const appRoutes: Routes = [
   { path: 'calendario', component: CalendarioComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'menu', component: MenuWrapperComponent },
+  { path: 'nosotros', component: AboutComponent },
 
   // Pantallas Cocina - Cliente
   {
