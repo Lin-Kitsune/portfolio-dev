@@ -40,8 +40,8 @@
         <a [routerLink]="'/menu'" class="nav-link text-sm">Menú</a>
         <a [routerLink]="'/reservas'" class="nav-link text-sm">Reservas</a>
         <a [routerLink]="'/home'" class="text-lg font-bold text-marronTierra uppercase tracking-wide">LinMad Macchiato</a>
-        <a [routerLink]="'/productos-clientes'" class="nav-link text-sm">Productos</a>
-        <a [routerLink]="'/shop'" class="nav-link text-sm">Shop</a>
+        <a [routerLink]="'/productos-clientes'" class="nav-link text-sm">Tienda</a>
+        <a [routerLink]="'/nosotros'" class="nav-link text-sm">Nosotros</a>
         <a [routerLink]="'/sugerencias'" class="nav-link text-sm">Sugerencias</a>
       </div>
   
@@ -93,9 +93,9 @@
   
   <div class="app-container">
     <main [ngClass]="{
-      'p-0': currentRoute === '/home' || currentRoute === '/inicio' || currentRoute === '/menu' || currentRoute === '/login' || currentRoute === '/register',
-      'p-6 md:p-12': currentRoute !== '/home' && currentRoute !== '/inicio' && currentRoute !== '/menu' && currentRoute !== '/login' && currentRoute !== '/register'
-    }">
+      'p-0': currentRoute === '/home' || currentRoute === '/inicio' || currentRoute === '/menu' || currentRoute === '/login' || currentRoute === '/register' || currentRoute === '/nosotros',
+      'p-6 md:p-12': currentRoute !== '/home' && currentRoute !== '/inicio' && currentRoute !== '/menu' && currentRoute !== '/login' && currentRoute !== '/register' && currentRoute !== '/nosotros'
+    }">    
       <router-outlet></router-outlet>
     </main>    
 

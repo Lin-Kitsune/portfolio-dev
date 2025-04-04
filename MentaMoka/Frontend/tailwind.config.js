@@ -39,7 +39,13 @@ module.exports = {
       animation: {
         'fade-in-down': 'fade-in-down 0.6s ease-out',
         'fade-in-up': 'fade-in-up 0.6s ease-out',
-      }
+      },
+      safelist: [
+        'object-[47%]',
+        'object-[48%]',
+        'object-[49%]',
+        'object-[50%]'
+      ]      
     }
   },
   plugins: [],
