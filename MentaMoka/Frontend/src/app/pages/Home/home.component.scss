@@ -1,11 +1,14 @@
 @import 'keen-slider/keen-slider.min.css';
 
-.keen-slider__slide {
-  min-width: 220px; /* o el mismo ancho que definiste en Tailwind w-[210px] */
-  max-width: 220px;
-  margin-right: 1rem; /* simula el gap */
-  scroll-snap-align: start;
-  transition: transform 0.8s ease-in-out;
+.keen-slider {
+  overflow: hidden;
 }
+
+.keen-slider__slide {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+
 
 
