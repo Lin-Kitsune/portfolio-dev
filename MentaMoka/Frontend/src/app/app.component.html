@@ -1,13 +1,13 @@
 <div class="w-full max-w-full min-h-screen bg-blancoAlgodon text-marronTierra font-sans">
   <header *ngIf="!esPantallaCocina" class="bg-greenSoft shadow-md fixed w-full z-50 min-h-[70px]">
     <div class="container mx-auto max-w-[1440px] flex justify-between items-center px-4 py-3">
-  
+
       <!-- IZQUIERDA: BUSCADOR -->
-      <div class="flex items-center">
-        <div class="relative" (mouseleave)="toggleSearch(false)">
+      <div class="flex items-center" #searchContainer>
+        <div class="relative">
           <div class="relative flex items-center transition-all duration-500 ease-in-out"
                [ngClass]="{ 'w-56': isSearchOpen, 'w-24': !isSearchOpen }">
-  
+
             <!-- Botón Search -->
             <button *ngIf="!isSearchOpen" (click)="toggleSearch(true)"
                     class="absolute left-0 flex items-center space-x-2 text-marronTierra w-full transition-all duration-500 ease-in-out"
@@ -16,23 +16,50 @@
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <span class="text-sm font-medium uppercase tracking-wider">Search</span>
+              <span class="text-sm font-medium uppercase tracking-wider">Buscador</span>
             </button>
-  
-            <!-- Input -->
+
+            <!-- Input + sugerencias -->
             <div *ngIf="isSearchOpen"
-                 class="absolute left-0 flex items-center w-0 opacity-0 transition-all duration-700 ease-out transform scale-90"
-                 [ngClass]="{ 'w-56 opacity-100 scale-100': isSearchOpen }">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-marronTierra" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" placeholder="Buscar..."
-                    class="ml-3 text-lg bg-transparent outline-none border-b-2 border-marronTierra focus:border-mostazaSuave w-full text-marronTierra placeholder-marronTierra transition-all duration-300">
+                class="absolute left-0 flex flex-col items-start w-0 opacity-0 transition-all duration-700 ease-out transform scale-90 z-50"
+                [ngClass]="{ 'w-56 opacity-100 scale-100': isSearchOpen }">
+
+              <!-- Input -->
+              <div class="flex items-center w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-marronTierra" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Buscar..."
+                      [(ngModel)]="searchTerm"
+                      (input)="onSearchChange()"
+                      (keyup.enter)="goToSearch()"
+                      class="ml-3 text-lg bg-transparent outline-none border-b-2 border-marronTierra focus:border-mostazaSuave w-full text-marronTierra placeholder-marronTierra transition-all duration-300">
+              </div>
+
+                <!-- Sugerencias tipo tarjetita -->
+                <div *ngIf="searchResults.length > 0"
+                  class="absolute top-full left-0 mt-2 w-[360px] bg-white rounded-lg shadow-xl border border-gray-300 z-50 space-y-2 p-2">
+                <div *ngFor="let product of searchResults"
+                    (click)="selectProduct(product)"
+                    class="flex items-center p-2 bg-[#fdfaf7] hover:bg-verdeSalvia hover:text-white rounded-lg cursor-pointer transition-all duration-200 space-x-4 shadow-sm border border-gray-200">
+                
+                <!-- Imagen del producto -->
+                <img [src]="product.image_url || 'assets/img/default.png'" 
+                      alt="{{ product.name }}"
+                      class="w-12 h-12 rounded-md object-cover border border-gray-300"/>
+
+                <!-- Info -->
+                <div class="flex-1">
+                  <p class="text-sm font-semibold text-marronTierra truncate">{{ product.name }}</p>
+                </div>
+                </div>
+                </div>
             </div>
           </div>
         </div>
       </div>
+
   
       <!-- CENTRO: NOMBRE Y NAVEGACIÓN -->
       <div class="hidden md:flex items-center gap-10">
@@ -111,7 +138,7 @@
             <span class="font-bold">Productos</span>
           </h3>
           <ul class="mt-2 space-y-1">
-            <li><a href="#" class="nav-link-footer">Tienda</a></li>
+            <li><a [routerLink]="'/productos-clientes'" class="nav-link-footer">Tienda</a></li>
           </ul>
         </div>
     
@@ -121,9 +148,11 @@
             <span class="font-bold">Categoría</span>
           </h3>
           <ul class="mt-2 space-y-1">
-            <li><a href="#" class="nav-link-footer">Menú</a></li>
-            <li><a href="#" class="nav-link-footer">Novedades</a></li>
-            <li><a href="#" class="nav-link-footer">Selección Semanal</a></li>
+            <li><a [routerLink]="'/menu'" class="nav-link-footer">Menú</a></li>
+            <li><a [routerLink]="['/productos-clientes']"  class="nav-link-footer">Novedades</a></li>
+            <li><a [routerLink]="['/inicio']" fragment="top-cafes" class="nav-link-footer">Top Vendidos</a></li>
+
+            
           </ul>
         </div>
     
@@ -133,7 +162,7 @@
             <span class="font-bold">Información</span>
           </h3>
           <ul class="mt-2 space-y-1">
-            <li><a href="#" class="nav-link-footer">Sobre Nosotros</a></li>
+            <li><a [routerLink]="'/nosotros'" class="nav-link-footer">Sobre Nosotros</a></li>
             <li><a href="#" class="nav-link-footer">Contacto</a></li>
             <li><a href="#" class="nav-link-footer">Opciones de Pago</a></li>
             <li><a href="#" class="nav-link-footer">Términos y Condiciones</a></li>

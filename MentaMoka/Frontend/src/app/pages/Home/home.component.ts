@@ -11,6 +11,9 @@ import { Product } from '../../models/product.model';
 import { CartService } from '../../Service/cart.service';
 import { CartItem } from '../../models/cart-item.model';
 
+import { ViewportScroller } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -62,7 +65,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private productService = inject(ProductService);
   private firestore = inject(Firestore);
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,  
+    private route: ActivatedRoute,
+    private viewportScroller: ViewportScroller
+  ) {}
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
@@ -261,7 +268,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(waitForCafes, 100);
       }
     };
-
+  
     const waitForComida = () => {
       if (this.comidaTop.length > 0 && this.comidaSliderRef?.nativeElement) {
         this.initComidaSlider();
@@ -269,11 +276,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(waitForComida, 100);
       }
     };
-
+  
     waitForCategories();
     waitForCafes();
     waitForComida();
-  }  
+  
+    // 🌀 Scroll suave si hay un fragmento en la URL (como #top-cafes)
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        const element = document.getElementById(fragment);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 300); // Le damos un poquito de tiempo extra por seguridad
+        }
+      }
+    });
+  }
+  
 
   ngOnDestroy(): void {
     clearInterval(this.intervalIdCategory);

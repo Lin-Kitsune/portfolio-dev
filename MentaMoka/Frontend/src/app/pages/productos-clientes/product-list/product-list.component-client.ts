@@ -45,20 +45,32 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Leer categoría desde query param
+    // Leer categoría y término de búsqueda desde query params
     this.route.queryParams.subscribe(params => {
       const categoriaParam = params['categoria'];
+      const buscarParam = params['buscar'];
+  
       if (categoriaParam) {
         this.selectedCategory = categoriaParam;
       }
+  
+      if (buscarParam) {
+        this.searchQuery = buscarParam.trim(); // ✅ asigna el término de búsqueda
+      }
+  
+      // Cargar productos y aplicar filtros
       this.productService.getProducts().subscribe((data) => {
         this.products = data;
-        this.applyFilters(); // aplicar filtro con la categoría cargada
+        this.applyFilters(); // ✅ aplica filtros con categoría y/o búsqueda
       });
     });
   
+    // Cargar ingredientes (leche, azúcar)
     this.loadIngredients();
   }
+  
+
+
 
 loadIngredients() {
   const ingredientsRef = collection(this.firestore, 'inventory'); // ✅ nombre correcto de la colección
