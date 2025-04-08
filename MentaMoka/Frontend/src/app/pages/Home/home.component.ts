@@ -29,8 +29,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('productSlider') productSliderRef!: ElementRef<HTMLElement>;
   sliderProduct!: KeenSliderInstance;  
 
-  @ViewChild('opinionesSlider') opinionesSliderRef!: ElementRef<HTMLElement>;
-  opinionesSlider!: KeenSliderInstance;
+  @ViewChild('opinionesScroll') opinionesScrollRef!: ElementRef<HTMLElement>;
+  isDragging = false;
+  startX = 0;
+  scrollLeft = 0;
+  
 
   selectedProduct: Product | null = null; 
   selectedSize: 'normal' | 'mediano' | 'grande' | '' = '';
@@ -69,7 +72,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.loadSugerenciasPublicas();
   }
 
-  loadSugerenciasPublicas() {
+  async loadSugerenciasPublicas() {
     const sugerenciasRef = collection(this.firestore, 'suggestions');
     const q = query(
       sugerenciasRef,
@@ -77,14 +80,52 @@ export class HomeComponent implements OnInit, AfterViewInit {
       orderBy('fecha', 'desc')
     );
   
-    getDocs(q).then((snapshot: any) => {
-      this.publicas = snapshot.docs.map((doc: any) => doc.data());
+    try {
+      const snapshot = await getDocs(q);
+      const sugerencias = snapshot.docs.map(doc => doc.data());
+  
+      const usersRef = collection(this.firestore, 'users');
+      const usersSnapshot = await getDocs(usersRef);
+      const users = usersSnapshot.docs.map(doc => doc.data());
+  
+      this.publicas = sugerencias.map(sug => {
+        const usuario = users.find(u =>
+          u['email'].toLowerCase() === sug['correo'].toLowerCase());
+        console.log('Opinión:', sug['correo'], '| Usuario encontrado:', usuario?.['name']);
+        return {
+          ...sug,
+          nombre: usuario?.['name'] || 'Usuario',
+        };
+      });
+      
+  
       this.actualizarOpinionesVisibles();
-      this.iniciarRotacion();             
-    }).catch((error: any) => {
+    } catch (error) {
       console.error('Error al cargar opiniones públicas:', error);
-    });
+    }
   }
+  
+
+  startDrag(event: MouseEvent) {
+    this.isDragging = true;
+    const slider = this.opinionesScrollRef.nativeElement;
+    this.startX = event.pageX - slider.offsetLeft;
+    this.scrollLeft = slider.scrollLeft;
+  }
+  
+  onDrag(event: MouseEvent) {
+    if (!this.isDragging) return;
+    event.preventDefault();
+    const slider = this.opinionesScrollRef.nativeElement;
+    const x = event.pageX - slider.offsetLeft;
+    const walk = (x - this.startX) * 1.5; // sensibilidad
+    slider.scrollLeft = this.scrollLeft - walk;
+  }
+  
+  endDrag() {
+    this.isDragging = false;
+  }
+  
 
   actualizarOpinionesVisibles() {
     const total = this.publicas.length;
@@ -168,32 +209,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       },
       
     });
-    this.opinionesSlider = new KeenSlider(this.opinionesSliderRef.nativeElement, {
-      loop: true,
-      slides: {
-        origin: 'center',
-        perView: 3,
-        spacing: 15
-      },
-      breakpoints: {
-        '(max-width: 768px)': {
-          slides: { perView: 1.5, spacing: 10 }
-        },
-        '(max-width: 480px)': {
-          slides: { perView: 1, spacing: 8 }
-        }
-      },
-      created: (slider) => {
-        setInterval(() => slider.next(), 4000);
-      }
-    });
+      
   }  
-
-  iniciarRotacion() {
-    this.intervaloOpiniones = setInterval(() => {
-      this.actualizarOpinionesVisibles();
-    }, 8000); // cambia cada 8 segundos
-  }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalIdCategory);

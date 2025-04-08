@@ -28,7 +28,7 @@
         <p class="text-sm sm:text-base md:text-lg mb-6">
           Disfruta de la mejor experiencia en café con nosotros.
         </p>
-        <a href="/productos-clientes"
+        <a href="/menu"
            class="bg-[#A8BBA1] hover:bg-[#88a58d] text-white font-semibold px-6 py-2 rounded-full transition">
           Explorar
         </a>
@@ -164,32 +164,41 @@
   </div>
 </div>
 
-  <!-- OPINIONES DE CLIENTES -->
-  <section class="text-center my-16">
-    <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">OPINIONES DE CLIENTES</h2>
-    <p class="text-gray-600 text-sm mb-10">Lo que dicen nuestros clientes sobre su experiencia</p>
-  
-    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 px-4">
-      <div *ngFor="let op of publicas.slice(0, 5)" class="w-full sm:w-72 md:w-80 bg-white rounded-2xl shadow-md text-left p-5">
-        <div class="flex items-center mb-3">
-          <img src="data:image/png;base64,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" alt="user-male-circle" class="w-10 h-10 rounded-full mr-3" />
-          <div>
-            <p class="font-semibold text-[#4A3C2F] text-sm truncate max-w-[200px]">{{ op.correo }}</p>
-            <div class="flex text-yellow-500 text-sm">
-              <ng-container *ngFor="let _ of [].constructor(op.estrellas)">
-                <span>★</span>
-              </ng-container>
-              <ng-container *ngFor="let _ of [].constructor(5 - op.estrellas)">
-                <span class="text-gray-300">★</span>
-              </ng-container>
-            </div>
-          </div>
-        </div>
-        <p class="text-sm text-gray-700 italic">"{{ op.comentario }}"</p>
+
+
+<!-- OPINIONES DE CLIENTES -->
+<section class="text-center my-16 bg-[#1C1C1C] py-16 relative select-none">
+  <h2 class="text-3xl font-bold text-white mb-2">OPINIONES DE CLIENTES</h2>
+  <p class="text-gray-300 text-sm mb-10">Lo que dicen nuestros clientes sobre su experiencia</p>
+
+  <!-- Contenedor draggable -->
+  <div
+    class="flex gap-6 px-6 overflow-hidden cursor-grab active:cursor-grabbing"
+    #opinionesScroll
+    (mousedown)="startDrag($event)"
+    (mousemove)="onDrag($event)"
+    (mouseup)="endDrag()"
+    (mouseleave)="endDrag()"
+  >
+    <div
+      *ngFor="let op of publicas"
+      class="bg-white rounded-2xl shadow-md px-10 py-12 text-center flex flex-col items-center justify-between transition hover:shadow-lg w-[340px] min-h-[340px] shrink-0"
+
+    >
+      <h3 class="text-[#4A3C2F] font-semibold text-xl mb-1 truncate w-full">{{ op.nombre }}</h3>
+      <p class="text-xs text-gray-400 mb-4">Cliente verificado</p>
+      <p class="text-base text-gray-800 font-semibold mb-6">"{{ op.comentario }}"</p>
+      <div class="flex justify-center gap-1">
+        <ng-container *ngFor="let _ of [].constructor(op.estrellas)">
+          <span class="text-[#FFA500] text-lg">★</span>
+        </ng-container>
+        <ng-container *ngFor="let _ of [].constructor(5 - op.estrellas)">
+          <span class="text-gray-300 text-lg">★</span>
+        </ng-container>
       </div>
     </div>
-  
-    <div class="mt-16"></div> <!-- Espacio inferior amplio -->
-  </section>
-  
+  </div>
+</section>
+
+
 </div>
