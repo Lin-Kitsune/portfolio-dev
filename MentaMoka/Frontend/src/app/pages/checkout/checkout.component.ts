@@ -85,9 +85,10 @@ export class CheckoutComponent implements OnInit {
     }
   
     // 🛒 Preparar productos para la orden
-    const productos: OrderProduct[] = this.cartItems.map((item: CartItem) => {
+    const productos: OrderProduct[] = this.cartItems.map((item: CartItem, i) => {
       const variantesLimpias: { [key: string]: string } = {};
-      if (item.selectedOptions) {
+      
+      if (item.selectedOptions && typeof item.selectedOptions === 'object') {
         for (const key in item.selectedOptions) {
           const valor = item.selectedOptions[key];
           if (typeof valor === 'string') {
@@ -95,15 +96,20 @@ export class CheckoutComponent implements OnInit {
           }
         }
       }
-  
-      return {
-        productId: item.id || '',
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price,
-        variants: Object.keys(variantesLimpias).length > 0 ? variantesLimpias : undefined
+    
+      const productoLimpio: OrderProduct = {
+        productId: item.id ?? `producto_sin_id_${i}`,
+        name: item.name ?? 'Producto sin nombre',
+        quantity: item.quantity ?? 1,
+        price: item.price ?? 0
       };
-    });
+    
+      if (Object.keys(variantesLimpias).length > 0) {
+        productoLimpio.variants = variantesLimpias;
+      }
+    
+      return productoLimpio;
+    });    
   
     // 🔢 Obtener número de orden consecutivo
     const ordersRef = collection(this.firestore, 'orders');
@@ -135,7 +141,7 @@ export class CheckoutComponent implements OnInit {
             mesa: this.mesa || 'sin asignar'
           })
     };
-  
+      
     // ❌ Limpiar campos innecesarios para evitar errores
     if (this.deliveryMethod === 'delivery') {
       delete (nuevaOrden as any).mesa;
@@ -152,6 +158,22 @@ export class CheckoutComponent implements OnInit {
       tipoEntrega: typeof nuevaOrden.tipoEntrega,
       datosEntrega: typeof (nuevaOrden as any).datosEntrega,
       mesa: typeof (nuevaOrden as any).mesa
+    });
+
+    // ✅ Limpieza de campos undefined
+    Object.keys(nuevaOrden).forEach((key) => {
+      const value = (nuevaOrden as any)[key];
+      if (value === undefined) {
+        delete (nuevaOrden as any)[key];
+      }
+    });
+
+    productos.forEach((prod, i) => {
+      Object.entries(prod).forEach(([k, v]) => {
+        if (v === undefined) {
+          console.warn(`⚠️ Producto #${i} tiene ${k} undefined`);
+        }
+      });
     });
   
     try {

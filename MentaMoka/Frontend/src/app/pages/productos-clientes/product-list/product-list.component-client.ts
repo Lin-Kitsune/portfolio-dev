@@ -151,5 +151,20 @@ loadIngredients() {
     const size = this.selectedProduct.sizes.find(s => s.label === this.selectedSize);
     return size?.price ?? this.selectedProduct.price;
   }
+
+  esBebida(product: Product): boolean {
+    const categoriasCafe = ['café especial', 'cafés con leche', 'café vegano', 'café clasico'];
+    return categoriasCafe.includes(product.category?.trim().toLowerCase());
+  }
   
+  addToCartDirecto(product: Product) {
+    const item: CartItem = {
+      ...product,
+      price: product.price,
+      quantity: 1,
+      selectedOptions: {} // sin leche ni azúcar
+    };
+    this.cartService.addToCart(item);
+    console.log('🛒 Producto agregado sin personalización:', item);
+  }
 }

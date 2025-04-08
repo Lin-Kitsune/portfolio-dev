@@ -60,7 +60,7 @@
               <p class="text-lg font-bold text-green-600 mt-2">{{ product.price | currency:'CLP $':'symbol':'1.0-0' }}</p>
       
               <!-- Botón "Añadir al carrito" que abre el modal -->
-              <button (click)="openModal(product)" 
+              <button (click)="esBebida(product) ? openModal(product) : addToCartDirecto(product)" 
                       class="bg-verdeSalvia text-white py-2 px-6 rounded-md mt-4 self-center w-full opacity-0 transition-all duration-150 ease-in-out transform group-hover:opacity-100 flex items-center justify-center h-10">
                 <span class="transition-opacity duration-150 ease-in-out"
                       [ngClass]="{'opacity-100': hovering !== product.id, 'opacity-0': hovering === product.id}">
@@ -73,7 +73,7 @@
 </div>
 
 <!-- ✅ Modal flotante fuera del *ngFor -->
-<div *ngIf="selectedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+<div *ngIf="selectedProduct && esBebida(selectedProduct)" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">
       <h2 class="text-lg font-bold mb-4 text-center">Personaliza tu bebida</h2>
   
