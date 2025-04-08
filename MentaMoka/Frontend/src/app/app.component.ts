@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
   }
 
   removeFromCart(item: CartItem) {
-    this.cartService.removeFromCart(item.id!, item.size, item.selectedOptions ?? {});
+    this.cartService.removeFromCart(item.id!, item.size ?? '', item.selectedOptions ?? {});
   }
 
   clearCart() {
