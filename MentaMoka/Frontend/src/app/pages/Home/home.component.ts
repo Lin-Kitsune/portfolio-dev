@@ -22,6 +22,8 @@ import { CartItem } from '../../models/cart-item.model';
 export class HomeComponent implements OnInit, AfterViewInit {
   topProducts: Product[] = [];
   categories: Category[] = [];
+  cafesTop: Product[] = [];
+  comidaTop: Product[] = [];
   products: Product[] = [];
   
   @ViewChild('categorySlider') categorySliderRef!: ElementRef<HTMLElement>;
@@ -29,11 +31,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('productSlider') productSliderRef!: ElementRef<HTMLElement>;
   sliderProduct!: KeenSliderInstance;  
 
+  @ViewChild('comidaSlider') comidaSliderRef!: ElementRef;
+  @ViewChild('cafeSlider') cafeSliderRef!: ElementRef;
+
+
   @ViewChild('opinionesScroll') opinionesScrollRef!: ElementRef<HTMLElement>;
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
-  
+
 
   selectedProduct: Product | null = null; 
   selectedSize: 'normal' | 'mediano' | 'grande' | '' = '';
@@ -49,6 +55,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private intervalIdCategory: any;
   private intervalIdProduct: any;
+  sliderComida: KeenSliderInstance | undefined;
+  intervalIdComida: any;
   private cartService = inject(CartService);
   private categoryService = inject(CategoryService);
   private productService = inject(ProductService);
@@ -59,18 +67,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
-      this.topProducts = [...data]
+  
+      const topVendidos = [...data]
         .filter(p => p.stock && p.stock > 0)
-        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
-        .slice(0, 6);
+        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+  
+      // Filtrar cafés
+      this.cafesTop = topVendidos.filter(p =>
+        p.category?.toLowerCase().includes('café') ||
+        p.category?.toLowerCase().includes('cafés')
+      );      
+  
+      // Filtrar comida
+      const categoriasComida = ['bagels', 'ensaladas', 'para comer', 'dulces'];
+      this.comidaTop = topVendidos.filter(p =>
+        categoriasComida.includes(p.category?.toLowerCase())
+      ).slice(0, 6);
     });
   
-    this.categoryService.getCategories().subscribe((data) => {
-      this.categories = data;
-    });
+    this.categoryService.getCategories().subscribe(data => this.categories = data);
     this.loadIngredients();
     this.loadSugerenciasPublicas();
   }
+  
 
   async loadSugerenciasPublicas() {
     const sugerenciasRef = collection(this.firestore, 'suggestions');
@@ -147,45 +166,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    const categoryEl = this.categorySliderRef.nativeElement;
-    const productEl = this.productSliderRef.nativeElement;
-  
-    // 👉 Slider categorías
-    this.sliderCategory = new KeenSlider(categoryEl, {
+  initCategorySlider() {
+    const perView = this.categories.length < 6 ? 3 : 5;
+    this.sliderCategory = new KeenSlider(this.categorySliderRef.nativeElement, {
       loop: true,
       slides: {
-        origin: 'auto',
-        spacing: 15,
-        perView: 4,
+        origin: 'center',
+        perView,
+        spacing: 10,
+
       },
       breakpoints: {
-        '(max-width: 768px)': {
-          slides: { perView: 2, spacing: 10 },
+        '(max-width: 1024px)': {
+          slides: { perView: 3, spacing: 10 },
         },
-        '(max-width: 480px)': {
+        '(max-width: 640px)': {
           slides: { perView: 1.3, spacing: 8 },
         },
       },
-      created: (slider) => {
-        const play = () => {
-          this.intervalIdCategory = setInterval(() => slider.next(), 3000);
-        };
-        const pause = () => clearInterval(this.intervalIdCategory);
+    }, [AutoplayPlugin]);
+  }
   
-        categoryEl.addEventListener('mouseenter', pause);
-        categoryEl.addEventListener('mouseleave', play);
-  
-        play(); // iniciar auto-scroll
-      },
-    });
-  
-    // 👉 Slider productos
-    this.sliderProduct = new KeenSlider(productEl, {
+  initProductSlider() {
+    this.sliderProduct = new KeenSlider(this.productSliderRef.nativeElement, {
       loop: true,
       slides: {
-        origin: 'auto',
-        spacing: 15,
+        origin: 'center',
+        spacing: 10,
         perView: 4,
       },
       breakpoints: {
@@ -201,15 +208,71 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.intervalIdProduct = setInterval(() => slider.next(), 3500);
         };
         const pause = () => clearInterval(this.intervalIdProduct);
-  
-        productEl.addEventListener('mouseenter', pause);
-        productEl.addEventListener('mouseleave', play);
-  
-        play(); // iniciar auto-scroll
+        const el = this.productSliderRef.nativeElement;
+        el.addEventListener('mouseenter', pause);
+        el.addEventListener('mouseleave', play);
+        play();
       },
-      
     });
-      
+  }
+  
+  initComidaSlider() {
+    this.sliderComida = new KeenSlider(this.comidaSliderRef.nativeElement, {
+      loop: true,
+      slides: {
+        origin: 'center',
+        spacing: 10,
+        perView: 4,
+      },
+      breakpoints: {
+        '(max-width: 768px)': {
+          slides: { perView: 2, spacing: 10 },
+        },
+        '(max-width: 480px)': {
+          slides: { perView: 1.3, spacing: 8 },
+        },
+      },
+      created: (slider) => {
+        const play = () => {
+          this.intervalIdComida = setInterval(() => slider.next(), 3500);
+        };
+        const pause = () => clearInterval(this.intervalIdComida);
+        const el = this.comidaSliderRef.nativeElement;
+        el.addEventListener('mouseenter', pause);
+        el.addEventListener('mouseleave', play);
+        play();
+      },
+    });
+  }  
+
+  ngAfterViewInit(): void {
+    const waitForCategories = () => {
+      if (this.categories.length > 0 && this.categorySliderRef?.nativeElement) {
+        this.initCategorySlider();
+      } else {
+        setTimeout(waitForCategories, 100);
+      }
+    };
+  
+    const waitForCafes = () => {
+      if (this.cafesTop.length > 0 && this.productSliderRef?.nativeElement) {
+        this.initProductSlider();
+      } else {
+        setTimeout(waitForCafes, 100);
+      }
+    };
+
+    const waitForComida = () => {
+      if (this.comidaTop.length > 0 && this.comidaSliderRef?.nativeElement) {
+        this.initComidaSlider();
+      } else {
+        setTimeout(waitForComida, 100);
+      }
+    };
+
+    waitForCategories();
+    waitForCafes();
+    waitForComida();
   }  
 
   ngOnDestroy(): void {
@@ -318,9 +381,7 @@ function AutoplayPlugin(slider: KeenSliderInstance) {
   function nextTimeout() {
     clearTimeout(timeout);
     if (mouseOver) return;
-    timeout = setTimeout(() => {
-      slider.next();
-    }, 3000); // ← cambia velocidad aquí si quieres
+    timeout = setTimeout(() => slider.next(), 3000);
   }
 
   slider.on("created", () => {
@@ -338,4 +399,5 @@ function AutoplayPlugin(slider: KeenSliderInstance) {
   slider.on("animationEnded", nextTimeout);
   slider.on("updated", nextTimeout);
 }
+
 

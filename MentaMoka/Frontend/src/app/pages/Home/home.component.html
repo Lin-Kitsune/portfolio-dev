@@ -48,40 +48,53 @@
   </section>    
   
   <!-- TOP CATEGORÍAS -->
-  <section class="text-center mb-16 container mx-auto px-4">
-    <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP CATEGORÍAS</h2>
-    <p class="text-sm text-gray-600 mb-10">Explora nuestras especialidades de café</p>
-  
-    <div class="flex flex-wrap justify-center gap-6">
-      <div *ngFor="let cat of categories" class="w-72 sm:w-64 md:w-56 lg:w-60 xl:w-64">
-        <div class="relative rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-          <img [src]="cat.image_url || 'https://via.placeholder.com/300x180?text=Café'"
-               alt="{{ cat.name }}"
-               class="w-full h-36 object-cover" />
-  
-          <!-- Overlay de texto -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP CATEGORÍAS</h2>
+  <p class="text-sm text-gray-600 mb-10">Explora nuestras especialidades de café</p>
+
+  <!-- Escritorio -->
+  <div class="hidden lg:block px-2" #categorySlider>
+    <div class="keen-slider flex overflow-hidden" #categorySlider>
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let cat of categories">
+        <div class="relative w-full h-[140px] rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+          <img [src]="cat.image_url" alt="{{ cat.name }}" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">
             <h3 class="text-lg font-semibold mb-1">{{ cat.name }}</h3>
-            <button class="text-sm text-lime-300 hover:underline" (click)="verCategoria(cat.name)">
-              Ver Más
-            </button>
+            <button class="text-sm text-lime-300 hover:underline" (click)="verCategoria(cat.name)">Ver Más</button>
           </div>
         </div>
       </div>
     </div>
-  </section>  
+  </div>
 
-  <!-- TOP CAFÉS -->
-  <section class="text-center mb-16 container mx-auto px-4">
-    <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP CAFÉS</h2>
-    <p class="text-gray-600 text-sm mb-10">Lo más vendido esta semana</p>
-  
-    <!-- 🟤 Carrusel solo en escritorio -->
-    <div class="hidden lg:flex keen-slider overflow-hidden justify-center" #productSlider>
-      <div class="keen-slider__slide" *ngFor="let prod of topProducts">
-        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow w-56 mx-2 px-4 py-6 flex flex-col justify-between text-center">
-          <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-40 w-full object-cover rounded-lg mb-3" />
-          <h3 class="text-sm font-semibold text-gray-800 min-h-[3.5rem] flex items-center justify-center">
+  <!-- Móviles -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let cat of categories" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="relative h-[130px] rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+        <img [src]="cat.image_url" alt="{{ cat.name }}" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">
+          <h3 class="text-lg font-semibold mb-1">{{ cat.name }}</h3>
+          <button class="text-sm text-lime-300 hover:underline" (click)="verCategoria(cat.name)">Ver Más</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP CAFÉS -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP CAFÉS</h2>
+  <p class="text-gray-600 text-sm mb-10">Lo más vendido esta semana</p>
+
+  <!-- Carrusel escritorio -->
+  <div class="hidden lg:block px-4" #productSlider>
+    <div class="keen-slider flex overflow-hidden">
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let prod of cafesTop">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-4 flex flex-col justify-between text-center">
+          <div class="aspect-square w-full rounded-lg overflow-hidden mb-3">
+            <img [src]="prod.image_url" alt="{{ prod.name }}" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
             {{ prod.name }}
           </h3>
           <div class="flex justify-center items-center gap-2 mt-2">
@@ -97,13 +110,45 @@
         </div>
       </div>
     </div>
-  
-    <!-- 🟢 Grilla responsiva para móviles y tablets -->
-    <div class="flex lg:hidden flex-wrap justify-center gap-6">
-      <div *ngFor="let prod of topProducts" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
-        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow px-4 py-6 flex flex-col justify-between text-center">
-          <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-40 w-full object-cover rounded-lg mb-3" />
-          <h3 class="text-sm font-semibold text-gray-800 min-h-[3.5rem] flex items-center justify-center">
+  </div>
+
+  <!-- Móviles -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let prod of cafesTop" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition px-4 py-4 flex flex-col justify-between text-center">
+        <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-36 w-full object-cover rounded-lg mb-2" />
+        <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+          {{ prod.name }}
+        </h3>
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <p class="text-[#A67B5B] font-bold text-sm">
+            $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+          </p>
+          <button (click)="openModal(prod)"
+            class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+            style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+            COMPRAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP COMIDA -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP COMIDA</h2>
+  <p class="text-gray-600 text-sm mb-10">Lo más vendido esta semana</p>
+
+  <!-- Escritorio -->
+  <div class="hidden lg:block px-4" #comidaSlider>
+    <div class="keen-slider flex overflow-hidden">
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let prod of comidaTop">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-4 flex flex-col justify-between text-center">
+          <div class="aspect-square w-full rounded-lg overflow-hidden mb-3">
+            <img [src]="prod.image_url" alt="{{ prod.name }}" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
             {{ prod.name }}
           </h3>
           <div class="flex justify-center items-center gap-2 mt-2">
@@ -111,15 +156,39 @@
               $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
             </p>
             <button (click)="openModal(prod)"
-                    class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
-                    style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+              class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+              style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
               COMPRAR
             </button>
           </div>
         </div>
       </div>
     </div>
-  </section>  
+  </div>
+
+  <!-- Móvil -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let prod of comidaTop" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition px-4 py-4 flex flex-col justify-between text-center">
+        <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-36 w-full object-cover rounded-lg mb-2" />
+        <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+          {{ prod.name }}
+        </h3>
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <p class="text-[#A67B5B] font-bold text-sm">
+            $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+          </p>
+          <button (click)="openModal(prod)"
+            class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+            style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+            COMPRAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- ✅ Modal flotante fuera del *ngFor -->
 <div *ngIf="selectedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
