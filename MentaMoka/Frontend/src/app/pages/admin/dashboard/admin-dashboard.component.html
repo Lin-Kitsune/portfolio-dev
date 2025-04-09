@@ -1,5 +1,10 @@
-<div class="p-8 max-w-6xl mx-auto bg-blancoAlgodon">
-  <h1 class="text-4xl font-bold text-marronTierra mb-6 text-center">Panel de Administración</h1>
+<div [ngClass]="{
+  'bg-blancoAlgodon w-full': true,
+  'p-8 max-w-6xl mx-auto': activeTab === 'gestion',
+  'p-1': activeTab === 'operativo'
+}">
+
+  <h1 class="text-4xl font-bold text-marronTierra mb-6 text-center mt-[65px]">Panel de Administración</h1>
 
   <!-- Botones de selección de pestañas -->
   <div class="flex justify-center gap-4 mb-6">
@@ -8,38 +13,40 @@
   </div>
 
   <!-- Zona Operativa -->
-  <div *ngIf="activeTab === 'operativo'" class="menu-container">
-    <div class="menu-item" routerLink="/admin/products">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvElEQVR4nO2av2sUQRTHBxVFC0G0NGjhj8ZWVGxFiQh2go1VBC0kZQrF0t4if4E2CYqF1iIqYqk2dkYj2BhD7nTf+763wSdznJicyd1tduZmb9kPPDi42Tf7vZmd9+XdOtfQ0FALcuCiCi2osP0NAf1W4c8KfgDgmKsTKry4VmxvCEhyYNLVBRX+2k9wV3TLrLW/aG4AR1X4sYDaPof/zMxHQo3fEjkwqUKfBolW0N0ieVWzUwJe+v/H4yVVOlNsfHbaxcTMtinoTo/gD8NenzOfE9DPPjvmV858fqvjo2C2sk9A+dqJiejQoOsAXBYQD/GYiAhdKTo+qmgBv1w3sfLNvuOFpwS0OvDx+CditfB44evRBCtoZt2EQs82H4vpbjmzmNGZAzQTRbCInOiZjMxsj6sz2mNKvFFxdUZAsz2rPOvqbz157XO06OqMme0WUBb7MAoYX3LmC6VEi9DTCggpELRQSrAq30gvYvgQ4W+lBBPRxChqbLAAz5US3Fll0PsxWuGp0oJF+F5qIcMGMx8uv8JKZ1MLGS7oowuBmW0X8Pfqb2e670Kh4IepBQ2KHLgUTLAIXa306oLUzPZGbQpUKQT8wkVvCkiFAnQ7elNAqxSanYzeFNCKhICXfSVxo2gKaF3s5LBNgdrYyQJNgXrYyfFpCgSyk+PSFAhqJ8ehKRDUTla9KRDcTvZDQe+SCxZ67kaFAtMVEHxtZILNbFfK1o+AX0VzV5uRZdnBFFtbwG/M2gdcCsxspzLfEvDbmPXZ/2ku4NfeVZnZjiRiGxoa6gMRTajwo+57Vm0VfgLgeFXyRbCa/GOD8rHsv0udLzh+JfqUlPnU+YLT3XKb1c9W6nzBGXCDK6nzBccfKCEbbKHzBcefnv5A2eCQWfJ+O3W+KHTLyLx/xjqv/4Lnytxc6HwNDQ0NDa6i/AGNnVRbxYF7EQAAAABJRU5ErkJggg==" alt="Productos">
-      <span>PRODUCTOS</span>
+  <div *ngIf="activeTab === 'operativo'">
+    <div class="flex justify-center flex-wrap gap-4 mb-8">
+        <div class="menu-item" routerLink="/admin/products">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvElEQVR4nO2av2sUQRTHBxVFC0G0NGjhj8ZWVGxFiQh2go1VBC0kZQrF0t4if4E2CYqF1iIqYqk2dkYj2BhD7nTf+763wSdznJicyd1tduZmb9kPPDi42Tf7vZmd9+XdOtfQ0FALcuCiCi2osP0NAf1W4c8KfgDgmKsTKry4VmxvCEhyYNLVBRX+2k9wV3TLrLW/aG4AR1X4sYDaPof/zMxHQo3fEjkwqUKfBolW0N0ieVWzUwJe+v/H4yVVOlNsfHbaxcTMtinoTo/gD8NenzOfE9DPPjvmV858fqvjo2C2sk9A+dqJiejQoOsAXBYQD/GYiAhdKTo+qmgBv1w3sfLNvuOFpwS0OvDx+CditfB44evRBCtoZt2EQs82H4vpbjmzmNGZAzQTRbCInOiZjMxsj6sz2mNKvFFxdUZAsz2rPOvqbz157XO06OqMme0WUBb7MAoYX3LmC6VEi9DTCggpELRQSrAq30gvYvgQ4W+lBBPRxChqbLAAz5US3Fll0PsxWuGp0oJF+F5qIcMGMx8uv8JKZ1MLGS7oowuBmW0X8Pfqb2e670Kh4IepBQ2KHLgUTLAIXa306oLUzPZGbQpUKQT8wkVvCkiFAnQ7elNAqxSanYzeFNCKhICXfSVxo2gKaF3s5LBNgdrYyQJNgXrYyfFpCgSyk+PSFAhqJ8ehKRDUTla9KRDcTvZDQe+SCxZ67kaFAtMVEHxtZILNbFfK1o+AX0VzV5uRZdnBFFtbwG/M2gdcCsxspzLfEvDbmPXZ/2ku4NfeVZnZjiRiGxoa6gMRTajwo+57Vm0VfgLgeFXyRbCa/GOD8rHsv0udLzh+JfqUlPnU+YLT3XKb1c9W6nzBGXCDK6nzBccfKCEbbKHzBcefnv5A2eCQWfJ+O3W+KHTLyLx/xjqv/4Lnytxc6HwNDQ0NDa6i/AGNnVRbxYF7EQAAAABJRU5ErkJggg==" alt="Productos">
+          <span>PRODUCTOS</span>
+        </div>
+    
+        <div class="menu-item" routerLink="/admin/inventory">
+          <img src="data:image/png;base64,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" alt="Inventario">
+          <span>INVENTARIO</span>
+        </div>
+    
+        <div class="menu-item" routerLink="/admin/reservas-admin">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAACjUlEQVR4nO2asWoVQRSGJxY2og+gEY0KKSw0MYWiIqnsjaSWFLY+QjRPIZYWFiFwG4laqE1QfIEk1oqoSQSvFsbmkxNGuE5m3dmd2Z0ZMh9cuOxyZ86/58yZs+eOUoVCoVAoFJIGOAmsAEPSQ2waAJMhxe6QPt/E1hCCV8iH5RCCh+TD9xCC/0ElRnD7CD1gYIpgXygeTosS0r5QQvqAhXTqFMFNITMaCzQhM5QvZEYR3JQWD/kpcAIYB1b7vh9D8LjRLen1fu6CTwGfgIfAAjBjsW8GuAM8Aj7GELyqw03EPGtx/zkwoec+ChxqYOtYDMG+vAYueBuegeBfwL0gXspA8A5wuWL+MeASsKS9vwn81J8Nfe0BMJ2L4C3gfIXQeeB9g7HkYdz2ihK620ePAy+Aa5Y5zwLvaM/bv4mvMR1vO/s8AcwC24SJnBtJCa4Q+5tw7DYW3cE+K9dOV4RxCM/aPD3hIzgEA0uCcl2zdTnCxhvnREY33DTmkGzsSt2SqWIuluAPo+Wi9q7z1uNh30YswY8txb8znvZNxdiH7xrjSwXVl+D7Mbalc8b4Uhr2JfhlDMHHjPGr1u9epNQauN/e/2XvzRj78GHHEwaVBYqDzVXZe9hGsC9HDprgM44hvRcpLcXaIss5pEMfarlijP+qyY/7SFoDwrJgjC8v730JXnQRPKkPfYXiiTH+dI+CL9YKHlkXy3IOCn8+jxbyurSUTkXXgtdVKui2TNcvD7dUKmgvS1vGhbp93sZa9G6oiTQFgK+EZ1uaCypFpB2j2zKh2AWuq5QBrgJfAnl2VuWA9KB0W6Yta7a+WdLoRDan/11wZT2pbKxaIp0KeXmX0lA/gB/6I9/l2qJrUfEHTujfnhAVgTcAAAAASUVORK5CYII=" alt="calendar-plus">
+          <span>RESERVAS</span>
+        </div>
+    
+        <div class="menu-item disabled">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAACXklEQVR4nO2aMWsUQRiGt4sWBhITG89CEdNJgoja5wcIIZ0YoohYxR8g9mIlgtiLRYIgAT2tlHA/QktNkTQqGkSt8sjgJg53u3ffzHyTu9nMU27une99wiWzA1MUmUwmk8lkMpkDBDgFvAB2CMes8RKYGZV5VcO/os83s/aw5/VQ/qZjsTbseT0ofa3q+DHseT0IF/oELAHHgSlgGfgsCXrO86YYhGCNDWCiIjcBdFwL6GjFE/4AHOuTHQc+uhTQ1dMV3gUuCfJXXAroK+oJvx4Y/r/GW2mBOJo6wtcchJekBeJo6gifdhA+Iy1Q8ZFXwEnpLGudFtDWFD7iMPxogHDLVbbrrU1NeMph8HQThC87DK79Ty2Y1/aRLmXfaAo/chj+OEBYlSJA+A8wJ8ifB35JC8TR1BE2bAGzfbJzwDZ9SE3Y8Bu4VZG7DvxkACkK73HbytxBiNY+XLfvxhTuWJmOonArZBuKKfzOyrw/DMLrVmZdUVi0D9ftuzGFn1mZ54rCqhSKwk+szFPfAiQk/MDKPPQtQELC96zMfd8CJCS8YmXu+hYY5fNwNzeszE2EpHQ87GbByixwCITnrcy8ovDInIe7uWBlLiIkYJ4XhaLwWStzzrcACQlPW5kTvgVISHjMyoz5FiAh4ZbLqaWuAAkJt8vNXnRqqSvACAjvHGSBmLOA7xJhcyGkKcKrEuGZ8kJI6sJfxC8w5d/lmrkjkaCw6bwa8ooahLkxAFzduxlQ8XPDZvk+Xnu7IDn4dwdks+K5kZ0smgiwWPFs/9TVOIDximfN+RpnMplMpgjjL2MnUE5dTq/5AAAAAElFTkSuQmCC" alt="restaurant-menu">
+          <span>MENÚ</span>
+        </div>
+    
+        <div class="menu-item" routerLink="/admin/pedidos-admin">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB4ElEQVR4nO2avW5TQRCF9xmAIkBc51WAKFR5i5SOpUgU8Dw0NIi8QVIkzxAXThUEwtbd2TOzxaI1NDgozs2u9+7ac6SRrtwcf7Nz51z/GKNSqVQqlUql2rA8cCjsboVdKFkMWgi7LwAOTEkJu1lp2H/B3U8iGu0MsPypz8WAPfB2aGgGzU0rstbuM9O3VGjTkohopMC8pSdMRCNmOm/mhP1AOZxp2YHhrgB7/GhgqSOW0su5k50CZpANXbfXRA5LLmh2n0xteSvJUPTVWvvatJK3klix8UVgawE2reWtDA3sG8vhZGBpbEMrcF/5xnLY5JatJG+LAdcSPwrMG2oQVZK3G5sI31gOJwNLQxs6F3DY5jIKzMOfgp4w60gHvYe559LywDthmvb5DlhA49B1L2PF6+Vrhe7Fp/vTNH5AMr0fNkDjexseNCm2gNL8Z70fOGJXVw2tta9KASf6z/5+Dqab7QemG+/cG7NODHe5MlKn60aK4S5MJhX3F9CH/yyN09jVZWdBk3tLA3SWCjqYfwjz5wz3/bEjx3B3Ifx6lgt4EH8ARwzy683Ix5jLBTuoP4D38a9FD3T2R3xjWcxq8Q9h8SL+Midw1wzqYsVrAX2Mo5fVrEJ/lUqlUqlUJkm/AZsRwfI3P/kNAAAAAElFTkSuQmCC" alt="in-transit">
+          <span>PEDIDOS</span>
+        </div>
     </div>
-
-    <div class="menu-item" routerLink="/admin/inventory">
-      <img src="data:image/png;base64,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" alt="Inventario">
-      <span>INVENTARIO</span>
-    </div>
-
-    <div class="menu-item" routerLink="/admin/reservas-admin">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAACjUlEQVR4nO2asWoVQRSGJxY2og+gEY0KKSw0MYWiIqnsjaSWFLY+QjRPIZYWFiFwG4laqE1QfIEk1oqoSQSvFsbmkxNGuE5m3dmd2Z0ZMh9cuOxyZ86/58yZs+eOUoVCoVAoFJIGOAmsAEPSQ2waAJMhxe6QPt/E1hCCV8iH5RCCh+TD9xCC/0ElRnD7CD1gYIpgXygeTosS0r5QQvqAhXTqFMFNITMaCzQhM5QvZEYR3JQWD/kpcAIYB1b7vh9D8LjRLen1fu6CTwGfgIfAAjBjsW8GuAM8Aj7GELyqw03EPGtx/zkwoec+ChxqYOtYDMG+vAYueBuegeBfwL0gXspA8A5wuWL+MeASsKS9vwn81J8Nfe0BMJ2L4C3gfIXQeeB9g7HkYdz2ihK620ePAy+Aa5Y5zwLvaM/bv4mvMR1vO/s8AcwC24SJnBtJCa4Q+5tw7DYW3cE+K9dOV4RxCM/aPD3hIzgEA0uCcl2zdTnCxhvnREY33DTmkGzsSt2SqWIuluAPo+Wi9q7z1uNh30YswY8txb8znvZNxdiH7xrjSwXVl+D7Mbalc8b4Uhr2JfhlDMHHjPGr1u9epNQauN/e/2XvzRj78GHHEwaVBYqDzVXZe9hGsC9HDprgM44hvRcpLcXaIss5pEMfarlijP+qyY/7SFoDwrJgjC8v730JXnQRPKkPfYXiiTH+dI+CL9YKHlkXy3IOCn8+jxbyurSUTkXXgtdVKui2TNcvD7dUKmgvS1vGhbp93sZa9G6oiTQFgK+EZ1uaCypFpB2j2zKh2AWuq5QBrgJfAnl2VuWA9KB0W6Yta7a+WdLoRDan/11wZT2pbKxaIp0KeXmX0lA/gB/6I9/l2qJrUfEHTujfnhAVgTcAAAAASUVORK5CYII=" alt="calendar-plus">
-      <span>RESERVAS</span>
-    </div>
-
-    <div class="menu-item disabled">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAACXklEQVR4nO2aMWsUQRiGt4sWBhITG89CEdNJgoja5wcIIZ0YoohYxR8g9mIlgtiLRYIgAT2tlHA/QktNkTQqGkSt8sjgJg53u3ffzHyTu9nMU27une99wiWzA1MUmUwmk8lkMpkDBDgFvAB2CMes8RKYGZV5VcO/os83s/aw5/VQ/qZjsTbseT0ofa3q+DHseT0IF/oELAHHgSlgGfgsCXrO86YYhGCNDWCiIjcBdFwL6GjFE/4AHOuTHQc+uhTQ1dMV3gUuCfJXXAroK+oJvx4Y/r/GW2mBOJo6wtcchJekBeJo6gifdhA+Iy1Q8ZFXwEnpLGudFtDWFD7iMPxogHDLVbbrrU1NeMph8HQThC87DK79Ty2Y1/aRLmXfaAo/chj+OEBYlSJA+A8wJ8ifB35JC8TR1BE2bAGzfbJzwDZ9SE3Y8Bu4VZG7DvxkACkK73HbytxBiNY+XLfvxhTuWJmOonArZBuKKfzOyrw/DMLrVmZdUVi0D9ftuzGFn1mZ54rCqhSKwk+szFPfAiQk/MDKPPQtQELC96zMfd8CJCS8YmXu+hYY5fNwNzeszE2EpHQ87GbByixwCITnrcy8ovDInIe7uWBlLiIkYJ4XhaLwWStzzrcACQlPW5kTvgVISHjMyoz5FiAh4ZbLqaWuAAkJt8vNXnRqqSvACAjvHGSBmLOA7xJhcyGkKcKrEuGZ8kJI6sJfxC8w5d/lmrkjkaCw6bwa8ooahLkxAFzduxlQ8XPDZvk+Xnu7IDn4dwdks+K5kZ0smgiwWPFs/9TVOIDximfN+RpnMplMpgjjL2MnUE5dTq/5AAAAAElFTkSuQmCC" alt="restaurant-menu">
-      <span>MENÚ</span>
-    </div>
-
-    <div class="menu-item" routerLink="/admin/pedidos-admin">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB4ElEQVR4nO2avW5TQRCF9xmAIkBc51WAKFR5i5SOpUgU8Dw0NIi8QVIkzxAXThUEwtbd2TOzxaI1NDgozs2u9+7ac6SRrtwcf7Nz51z/GKNSqVQqlUql2rA8cCjsboVdKFkMWgi7LwAOTEkJu1lp2H/B3U8iGu0MsPypz8WAPfB2aGgGzU0rstbuM9O3VGjTkohopMC8pSdMRCNmOm/mhP1AOZxp2YHhrgB7/GhgqSOW0su5k50CZpANXbfXRA5LLmh2n0xteSvJUPTVWvvatJK3klix8UVgawE2reWtDA3sG8vhZGBpbEMrcF/5xnLY5JatJG+LAdcSPwrMG2oQVZK3G5sI31gOJwNLQxs6F3DY5jIKzMOfgp4w60gHvYe559LywDthmvb5DlhA49B1L2PF6+Vrhe7Fp/vTNH5AMr0fNkDjexseNCm2gNL8Z70fOGJXVw2tta9KASf6z/5+Dqab7QemG+/cG7NODHe5MlKn60aK4S5MJhX3F9CH/yyN09jVZWdBk3tLA3SWCjqYfwjz5wz3/bEjx3B3Ifx6lgt4EH8ARwzy683Ix5jLBTuoP4D38a9FD3T2R3xjWcxq8Q9h8SL+Midw1wzqYsVrAX2Mo5fVrEJ/lUqlUqlUJkm/AZsRwfI3P/kNAAAAAElFTkSuQmCC" alt="in-transit">
-      <span>PEDIDOS</span>
-    </div>
-
     <!-- Graficos -->
-
+    <app-operational-graphics></app-operational-graphics>
+    
   </div>
 
   <!-- Zona de Gestión -->
-  <div *ngIf="activeTab === 'gestion'" class="menu-container">
+  <div *ngIf="activeTab === 'gestion'" class="flex flex-wrap justify-center gap-4">
     <!-- <div class="menu-item" (click)="crearUsuario('trabajador')">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAADtElEQVR4nO2aX2iOURzHn9nGLiTl32KYTS5QzMqNP7Oh1C7UrJGSoiQh5UK5mZnEhVKUktxwM0UuNFHzfySX2B9FJIpQZsn8++g3Z1qn53nf5zl/3r2v3k+t1tNzvr/3+5zznOd3fucEQZ48efLk+U8BJgKHgcdAP/AF6AGuAbuAaYa6k4AjwBOl2+9C1wqgEnhDar4Dx4BxCXRn+9C1BrhDfF7IA4qpe9eHrhFAI3Ab+ERy3gIVEbpNwD01dJ3pWgGcwJ5OoFDT3e5D19bsVtyxU9Ne5EPXxmyJGjaueB7Sy10+dG3eW9es0WIc96FrBHAG9xzVYqz3oWsE8Aj3dGoxFvjQNQL4gHtehWRWznWNAAZwz1ctxhgfukao/Ng1n7UYY33oGgE8wz1PtRgVPnSNAM7hntNajHofukYADbinXovR4kPXCGA+8Bt3/ALmajG2+dA1AujAPde1GPN86Boh3zbc8zJk0e9c1wh5avjv4SofukYAe3DPbi3GDh+6NsvDW7jjhmRWWoyLPnStAC44+FFtIbry/v5M0eYdcB7YpIa+VEqLgNHABFVAWGHnLgRgowPDG0J010bc2w4sB0YFIwFQLKmbhVlpWxyiWwj0DrtPXp9FQTYArDZMQqTNyhS6dWpVtn/EejQK4JCB4dYYujMirhcA1cBB4KbagRjajehW11q8jQpgFHAygdkTJr2mjDZpwz0dPaoGV+DDeCwstnEeYs4DYFZOGAaWqk+RLVKaqstqw0Ct2ihzxQBQk5WGZQgC73HPB0lubM0uSxBwVcwJKu47e0X2h4EylZzE4b7xRAaMT7g1IgnH5DSaMhvHpWxYu+kJ2q0z7VmTot6zqAlE9W7sT09I+7h0xzVZpL5tLioforFY05ekggwYFqpSGZ0K7PNQ8diixWnNoOEDYUZLgbPAD/xQrcWT1DBThjuCkPrwR/xSqsXsTTUbRw7B6JGZavbuGX5jY5qFuCtKtB/Yl242NjAdNXv3Dd0wx/BASc4avkzmmBJzSLebmFZmr0Zo9sgNMx3vLCT6NKjiW2xCDCahQxrsJbNsttlXsjTcLA3ayCynbI4tWRpe6OrIUBJeD0/kVWoplQrfhruGGvhYkqWjxuJolOnioWGo0TcyzyXNcIEqy8RhcPZOMxvr3PNS57IBKPdYAKgMshEZ6o5PDQ3IkjbIZoAlDot4tUEuoOpbUpYxRd7Z8iCXUBPZOrW7EJeuf7NxLsPfbdIDqmIiD0AOy8mf/C/XmgeTihj8AUW1IVOgoVTwAAAAAElFTkSuQmCC" alt="add-user-group-man-man">
       <span>NUEVO EMPLEADO</span>
