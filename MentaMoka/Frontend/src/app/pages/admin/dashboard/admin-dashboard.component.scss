@@ -24,10 +24,9 @@
   // Contenedor de los botones
   .menu-container {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 1rem;
-  }
+  }  
   
   // Diseño de cada botón con degradado
   .menu-item {

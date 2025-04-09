@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { OperationalGraphicsComponent } from '../graphics/operational-graphics.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,6 +11,7 @@ import { CommonModule } from '@angular/common';
   [
     RouterModule, 
     CommonModule,
+    OperationalGraphicsComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'
