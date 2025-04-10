@@ -117,4 +117,10 @@ export class FirestoreService {
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
+
+  getUsers(): Observable<any[]> {
+    const usersRef = collection(this.firestore, 'users');
+    return collectionData(usersRef, { idField: 'id' });
+  }
+  
 }

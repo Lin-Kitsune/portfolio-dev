@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OperationalGraphicsComponent } from '../graphics/operational-graphics.component';
+import { ManagementGraphicsComponent } from '../graphics/management-graphics.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,6 +13,7 @@ import { OperationalGraphicsComponent } from '../graphics/operational-graphics.c
     RouterModule, 
     CommonModule,
     OperationalGraphicsComponent,
+    ManagementGraphicsComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'

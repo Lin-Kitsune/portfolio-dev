@@ -7,12 +7,18 @@
     <span class="text-gray-500">Reportes</span>
   </nav>
 
-  <h1 class="text-4xl font-bold text-center text-cafe-macchiato">📋 Generador de Reportes</h1>
+  <h1 class="text-4xl font-bold text-center text-cafe-macchiato flex items-center justify-center space-x-2">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADAElEQVR4nO2YT0gUURzHv7q7Lv6hboqHuuShS2bSqaAOWS4EhR46tAtBSYeIIP8gRAUVLfbP0EPgQUR9855sQuBBugRJJyFQbOcZgXTskqesbC1evHXGtmlm3iirO0PzhS8PZt68+fzm9968xw8IFSrUf6tyAAMAvgNII4DwwwCE4RUEGF4AGISPlDamxYABq4IfNvvR97RR46xTtiihVuzgVPDjnLYRTn+cuXxWRCKRwj7SUwAixjhJyzuER695XWuDNpBRFbzGWU7jTMQr404A+43xZ7YALzaz1v750lW7qj57gZf2QwacposS3nBOXs+Pku8z0Ux01q1x1lssE511U50egkLl+xobZgvhj7Ud/zU6T9rlTcJZuwpevsSmT7GcI1nS5BrByNxI08nkqZ+xeEy0phKCZOn6gzp9ooLPB7lIu7YJXhjuVGUBlNPTRKerqq9hhd+JDIy9mzioDMBDELbwG1nIkiaNs1uaTvuKZaLTm57hFUG4wvtO48ZmJeFle/XRtSsAugA0ICgii+QA4fR6S7LlHIBl4w+1hICpuQDedwE0KKaFFX7ZuOYbLbmAOcKPzY9VE52yx9P931pTibloNHoDQK+DrQv/iEtf0z1e15oZgDUIBTx7LRd37Z5ar2ebE8a4dQBWPT7jaaragV7wAu+XAOyCEF7gpftfPhWJVOJjWaTsIYA+G6cdptA9h/6mb2/2d90crYj9deytrK5cq99bf9SE1zidse7MMiB5T/aZ/jAdJzqbNPeOYpmsj/dcju8aQcfdjjs1u2vy8LK9P5kWEpou0DoVvJTGtY7tPMyN6/SiawCZbKYi/eLBbLInlZ8afx6mX1XwUkRnl0oagNTQ26kqwtkr95SyN5lspgYWyRTLVG/PFKIZ5RTyEoQTvO80ZBNEYOBNmbst4fTL6AJhsYrYs7C0WAKFpcUglhaFwp8AHC5gqAWw4LfSosr9BQzn/VZa3NEMSIWlRamwtMiV56KwtCjC0mIpS4uBqotaS4uy3bgYClvWb3NUzc1FhIKdAAAAAElFTkSuQmCC" alt="todo-list" style="width: 24px; height: 24px;">
+    <span>Generador de Reportes</span>
+  </h1>
 
   <div class="grid md:grid-cols-2 gap-6">
     <!-- Selector de fechas -->
     <div>
-      <label class="block text-marronTierra font-semibold mb-2">📆 Rango de fechas</label>
+      <label class="block text-marronTierra font-semibold mb-2">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACkUlEQVR4nO2ZTWsTURSG35mk7rqoLlyJbSLaaHWtqSCNK7Fb3YngHxBJgivrRgrajZsWS9LRdr60S/0Nog2ulJmdO+1PaCmkHLnDdHoTZtrJnY+O5b5wuJAbzjnPnHPvwBlASupEdAlA01+L5Cu2fgMgfy2Sr9gizorkK1INAJsAtgHsRwS9AeDP0N6o1gfw1481hxR0BoB2TNADvUqYPIXYmp+DsN7HCJJmBSjEOknahnf0AcA0ABXAnv8bW5Nqj/PFfNcA6EOx74g43uQcrA/tLQLY9dekWozwZXDxP4o43uYcXEH+qnHx2cEeWX3OQYnfICJFd6wnpmP/MB1713RtStv0X2bQQoqi7LOYqdzPzJHhWOtZJG0OGZ+D4VraqBChABcuX/yqqEraNw0dZ15VXOtxUoBzeScODsBw7a3EFZidv90/qQoYjrWTGCCP3jdDzgD3mwQgWQFXtlAsyUNsnpZbqLncpqlrU1QeKw8kVR4rU2WmQq2VdnEBmsutWC+qVghEIQDYE44DUJmpFhOAb5tuTxvY6/a0gXYqJEBYEnH3IQEgK0BHnYHO1lrxz8B/fwu1VtqxANrvnhcT4ACCPeGwN3H1ejU0+TQAQscqIgBJxypqSRUC4Adb03kDvPmyFABMnD8rBMCPFvW8AerzswHAzXu3hADYfJ7vQzarvMpKm2XbvP68RPX79YH+f7GxIAQAfz5PadtkbZJWv3W8hBb0lzQ+MR7538bDu0Hyo45V4H9c6GQB8fTtMy+puQeNI5Pf+GkcArj2dwiKzec/sQ8YbNCaVQXUkuodWNbzfNscVsB+hKTyhruupeV1mM3ArK7IhDoSgg1aTdfqsb7MKmnDsXbYPDSVJy8ldUr1D5rRmthNBcxBAAAAAElFTkSuQmCC" alt="delivery" style="width: 24px; height: 24px;">
+        Rango de fechas
+      </label>
       <select [(ngModel)]="rangoSeleccionado" class="w-full border rounded-xl p-2">
         <option value="diario">Diario</option>
         <option value="semanal">Semanal</option>
@@ -21,10 +27,13 @@
 
     <!-- Selector de tipo de entrega -->
     <div>
-      <label class="block text-marronTierra font-semibold mb-2">🚚 Tipo de entrega</label>
+      <label class="block text-marronTierra font-semibold mb-2">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFDElEQVR4nO1ZWWhcZRT+4sxksiftxNQGF5qCVtqntu4BMYu1mba+NamIpII+KIK2CdXJYhQVcQGNic2UJsbMXSStUJA+qWjFPkinbWpzb2KlD0FafBAfxNIm0PxyLvfe/Llz18nQTDAHDsP9l/Of72z/MsAqrdIqedHjAD4CkAZwFcAcgCsAzujt9QAKkIfUBOAXAMwHE5gG5AmFAfQBuOlTeZ6T+vxlpXctSl0DMKB7ZD2ACIBa/Zva/7WMPwEgtJwAhizKrPMYT6COW0B8jGWkGID3AbTbJOd7AK7rvzzRuA8tIJ5AHtKsrhz9wgbEcUti5111YhzbUQ2Af7gxVGJXFADoie1Wqch7ZwEk9IKQdwCaA5Td07kCQWVvs4/yxy9+m8OY2oB7RyIXAL7RhdGvnyQmHnYAEeXG3LDpJ4t3cGPSuQBwTRdGu2+Fy7h+i/Xo280DdGayo0Kf3pkDMA2gG0CRG4Bz3KRH+Y5xNh4SFblTUOVzqUnp8iMtj5lVprCocF5U5Ms8HxzsvGr0373pnhvWfoOzOKac0oHb0gg3kDYkkwRF6hZVmRksTEpsx7NPsUg0wva8+LTZbnDzM0+ai8b378roNzgLAAzAAScATdygvwCsNTpEVZpxUsLKg6cOs2hx1FywV+jzBUA0jKPKl2zyJcGN/dMplCgZL3EDRxcA+FNeUCT2QPODplJ1W+q0tkAAFGneRjcCMcONf8HJCzst7urzC4AUpXDh53d90e06xw6AqLE0buWd7S0T3PhplxK+KBeI5cM/Jz3Dhrc8ccv+uCdoZwByBg+fGWEl5SX8nD1OAMhdJ3nhRSVFWtK+MZzQlP3yQooN/Pg5e/1oQktYPuaJtzVsZ6mLYk4BiKrMdj2/e2FOAX6CC4X143TgKtGwt5GNXRR8KRQUwMAPgywcCfPzHnYDYeQEvz84MiWsV8z7AfDSBy9neNSFj8AHFZBiLe1xtmHzBlZ1e5VmhTU1a1jdlo1arFOpdKs2QQBs2n6/b29HohGqTN6HuqCK3UIPMF+HulsJQAw4L3UhdacVgPGUcnMlABBUiV5QFlGGe/IZgKhI0ysbgKp9/08ADJ0+whpbm1jsjhgLhUPaL31/+t1nSwYwFEB2VgBoL6iMVdqWsqLSYpYY6VoSgMoAsr0A8Hde7fZD1nFawOCKtRXM69DnBgA+ZdM5zGinDdUOAH906CQQ5EqjLba+WvPG2K8C6029yaprq82+5n3NSwIQ85BNyrcd2Ge20cnADkCXmzW6R3sWKUHuNfpoQaOdrpqhUMi3leEh245bX2uzBRDRH5tsJ5EV+EVGJ8bMvkhhxGwPeBxgXrKtfO/W+zRP2QHg76FnLTnBesZ6Fy1CVsuVB3pcZBsxT2HT+mqbqbyoyOaJwZHqd9f/zccpuZasQwvwcdrUFiwHiBv3NrKlyBZUedITQMfQoVeKy4pdrUf9/d8H3w8++bafZSubHgAERW6FH4o/Fz9UWlF63W4Buqtm7gPS76Iip/3wwcGO38qqyue8ZAuqNLswT/panBJ3IIt/bujpfCYUDs2Ti6m82VlHUqSHgsquuWvdMQojinUH2eeRKxJU6R3H0FDkP5LpZOAn82Q6GREU+YqTXEGR3s4ZgKNTJ8pFVZrITCppVlBkuktnRZIqxbVQyQRwfnxyvCxnAAwQZBUCQk+C9ACVUr/aulS54pS4TVTlY7rMCUGR3qK1cqN1HtJ/DVtJBmqF7RUAAAAASUVORK5CYII=" alt="delivery" style="width: 24px; height: 24px;">
+        Tipo de entrega
+      </label>
       <select [(ngModel)]="modoSeleccionado" class="w-full border rounded-xl p-2">
         <option value="tienda">Tienda</option>
-        <option value="delivery">elivery</option>
+        <option value="delivery">Delivery</option>
         <option value="general">General</option>
       </select>
     </div>
