@@ -14,6 +14,7 @@ import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { MenuWrapperComponent } from './pages/menu/menu-wrapper.component';
 import { AboutComponent } from './pages/nosotros/about.component';
+import { PagoExitosoComponent } from './pages/pago-exitoso/pago-exitoso.component';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -26,6 +27,7 @@ export const appRoutes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'menu', component: MenuWrapperComponent },
   { path: 'nosotros', component: AboutComponent },
+  { path: 'pago-exitoso', component: PagoExitosoComponent },
 
   // Pantallas Cocina - Cliente
   {

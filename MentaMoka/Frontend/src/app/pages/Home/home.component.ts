@@ -78,26 +78,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
   
+      // Filtrar productos con stock disponible
       const topVendidos = [...data]
-        .filter(p => p.stock && p.stock > 0)
-        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
-  
+      .filter(p => p.stock && p.stock > 0)
+      .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+
+      // Filtrar cafés
       this.cafesTop = topVendidos.filter(p =>
         p.category?.toLowerCase().includes('café') ||
         p.category?.toLowerCase().includes('cafés')
       );
-  
-      const categoriasComida = ['bagels', 'ensaladas', 'para comer', 'dulces'];
+      
+      // Filtrar comida con las categorías correctas
+      const categoriasComida = ['para comer', 'dulces', 'bagels', 'ensaladas']; // Ajustado a tus categorías
       this.comidaTop = topVendidos.filter(p =>
         categoriasComida.includes(p.category?.toLowerCase())
-      ).slice(0, 6);
-  
-      // 🆕 Novedades (últimos 5 productos creados)
+      );
+
+      console.log('🍔 Productos comida filtrados:', this.comidaTop);
+
+      // Novedades (últimos 5 productos creados)
       this.novedades = [...data]
-        .filter(p => p.stock && p.stock > 0)
-        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
-        .slice(0, 5);
-    });
+      .filter(p => p.stock && p.stock > 0)
+      .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+      .slice(0, 5);
+      });
   
     this.categoryService.getCategories().subscribe(data => this.categories = data);
     this.loadIngredients();

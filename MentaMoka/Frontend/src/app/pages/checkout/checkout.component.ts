@@ -179,42 +179,72 @@ export class CheckoutComponent implements OnInit {
     try {
       await addDoc(collection(this.firestore, 'orders'), nuevaOrden);
       await deleteDoc(doc(this.firestore, `carts/${user.uid}`));
-
-      // ✅ Descontar ingredientes del stock según lo comprado
+    
+      // Descontar stock
       for (const item of this.cartItems) {
         if (!item.ingredients || item.ingredients.length === 0) continue;
-      
         const ingredientesMultiplicados = item.ingredients.map(ing => ({
           ...ing,
           quantity: ing.quantity * item.quantity
         }));
-
-        console.log(`🧾 Descontando stock de ${item.name}`, ingredientesMultiplicados);
-      
+    
         await this.productService.updateIngredientStockAfterSale({
           ...item,
           ingredients: ingredientesMultiplicados
         });
-      }      
-  
-      // 💾 Guardar dirección si corresponde
+      }
+    
+      // Guardar dirección si corresponde
       if (this.guardarDireccion && this.deliveryMethod === 'delivery') {
         await addDoc(collection(this.firestore, `users/${user.uid}/direcciones`), {
           direccion: this.direccion,
           fecha: new Date()
         });
       }
-  
-      // ✅ Limpiar carrito y mostrar modal
+    
+      // ✅ Si es WebPay, redirigir al formulario de pago real
+      if (this.paymentMethod === 'WebPay') {
+        const response = await fetch('http://localhost:3000/webpay/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            amount: this.total,
+            buyOrder: `orden_${nuevoNumero}`,
+            sessionId: user.uid
+          })
+        });
+    
+        const data = await response.json();
+    
+        // 📝 Crear formulario dinámicamente
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.url;
+    
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'token_ws';
+        input.value = data.token;
+        form.appendChild(input);
+    
+        document.body.appendChild(form);
+        form.submit();
+        return; // Detener ejecución aquí
+      }
+    
+      // ✅ Otros métodos de pago siguen con modal y redirección
       this.cartService.clearCart();
       this.mostrarModal = true;
       setTimeout(() => {
         this.router.navigate(['/pago-exitoso']);
       }, 2000);
+    
     } catch (error) {
       console.error('❌ Error al confirmar pedido:', error);
       alert('Ocurrió un error al guardar tu orden.');
-    }
+    }    
   }
   
   
