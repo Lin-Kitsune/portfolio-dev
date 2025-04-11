@@ -1,0 +1,14 @@
+@import 'keen-slider/keen-slider.min.css';
+
+.keen-slider {
+  overflow: hidden;
+}
+
+.keen-slider__slide {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+
+
+

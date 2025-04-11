@@ -1,0 +1,56 @@
+<div class="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-marronTierra mb-4">
+    {{ ingredientId ? 'Editar Ingrediente' : 'Agregar Ingrediente' }}
+  </h2>
+
+  <form (ngSubmit)="saveIngredient()" class="space-y-4">
+    <div>
+      <label class="block font-medium text-marronTierra">Nombre:</label>
+      <input type="text" [(ngModel)]="ingredient.name" name="name" required
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">Tipo de ingrediente:</label>
+      <select [(ngModel)]="ingredient.type" name="type" required
+              class="w-full p-2 border border-beigeMadera rounded-md">
+        <option value="milk">Leche</option>
+        <option value="sugar">Azúcar</option>
+        <option value="other">Otro</option>
+      </select>
+    </div>    
+
+    <div>
+      <label class="block font-medium text-marronTierra">Cantidad estándar:</label>
+      <input type="number" [(ngModel)]="ingredient.quantity" name="quantity" required
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">Unidad de medida:</label>
+      <select [(ngModel)]="ingredient.unit" name="unit" required
+              class="w-full p-2 border border-beigeMadera rounded-md">
+        <option value="units">Unidades</option>
+        <option value="g">Gramos (g)</option>
+        <option value="ml">Mililitros (ml)</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">Imagen (URL):</label>
+      <input type="text" [(ngModel)]="ingredient.image_url" name="image_url"
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>    
+
+    <div>
+      <label class="block font-medium text-marronTierra">Stock actual (opcional):</label>
+      <input type="number" [(ngModel)]="ingredient.stock" name="stock"
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <button type="submit"
+            class="w-full bg-verdeSalvia text-white font-bold py-2 rounded-md hover:bg-marronTierra transition">
+      Guardar Ingrediente
+    </button>
+  </form>
+</div>

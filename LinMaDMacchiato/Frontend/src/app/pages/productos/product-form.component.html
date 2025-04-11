@@ -1,0 +1,146 @@
+<div class="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-marronTierra mb-4">
+    {{ productId ? 'Editar Producto' : 'Agregar Producto' }}
+  </h2>
+
+  <form (ngSubmit)="saveProduct()" class="space-y-4">
+    <!-- Campos de producto -->
+    <div>
+      <label class="block font-medium text-marronTierra">Nombre:</label>
+      <input type="text" [(ngModel)]="product.name" name="name" required
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <!-- 🔥 Categoría con Select -->
+    <div>
+      <label class="block font-medium text-marronTierra">Categoría:</label>
+      <div class="flex gap-2">
+        <!-- Select de Categorías -->
+        <select [(ngModel)]="product.category" name="category"
+                class="w-full p-2 border border-beigeMadera rounded-md bg-white text-gray-700">
+          <option *ngFor="let category of categories" [value]="category.name">
+            {{ category.name }}
+          </option>
+        </select>
+    
+        <!-- Input para nueva categoría -->
+        <input [(ngModel)]="newCategory" name="newCategory" placeholder="Nueva categoría"
+               class="w-1/2 p-2 border border-beigeMadera rounded-md bg-white text-gray-700"
+               (keydown.enter)="addCategory()">
+
+        <input [(ngModel)]="newCategoryImageUrl" name="newCategoryImageUrl"
+               placeholder="URL imagen"
+               class="w-1/2 p-2 border border-beigeMadera rounded-md bg-white text-gray-700" />
+      
+        <!-- Botón para agregar categoría -->
+        <button type="button" (click)="addCategory()"
+                class="bg-verdeSalvia text-white px-4 py-2 rounded-md hover:bg-marronTierra transition">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                  width="24" height="24" viewBox="0 0 24 24">
+                  <g fill="none"><circle cx="12" cy="12" r="9" fill="#fff" fill-opacity="0.25"/>
+                  <path stroke="#9C6F48" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.2" d="M12 8v8m4-4H8"/></g>
+                </svg>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">Descripción:</label>
+      <textarea [(ngModel)]="product.description" name="description" required
+                class="w-full p-2 border border-beigeMadera rounded-md"></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block font-medium text-marronTierra">Precio:</label>
+        <input type="number" [(ngModel)]="product.price" name="price" required
+               class="w-full p-2 border border-beigeMadera rounded-md">
+      </div>
+      <div class="mt-2 text-sm text-gray-600">
+        <p><strong>Precios estimados por tamaño:</strong></p>
+        <ul class="ml-4 list-disc">
+          <li>Normal: CLP {{ product.price }}</li>
+          <li>Mediano: CLP {{ product.price * 1.25 | number:'1.0-0' }}</li>
+          <li>Grande: CLP {{ product.price * 1.5 | number:'1.0-0' }}</li>
+        </ul>
+      </div>
+      <div *ngIf="product.sizes?.length" class="mt-4 text-sm text-gray-700">
+        <p><strong>Tamaños registrados:</strong></p>
+        <ul class="ml-4 list-disc">
+          <li *ngFor="let size of product.sizes">
+            {{ size.label }} – CLP {{ size.price }} (x{{ size.multiplier }})
+          </li>
+        </ul>
+      </div>            
+    </div>
+
+    <div>
+      <label class="block font-medium text-marronTierra">URL de Imagen:</label>
+      <input type="text" [(ngModel)]="product.image_url" name="image_url" required
+             class="w-full p-2 border border-beigeMadera rounded-md">
+    </div>
+
+    <!-- 🔥 Sección para seleccionar ingredientes -->
+    <div>
+      <label class="block font-medium text-marronTierra">Ingredientes:</label>
+      <div class="flex items-center gap-4">
+        <ng-select
+        [items]="availableIngredients"
+        bindLabel="label"
+        bindValue="id"
+        [(ngModel)]="selectedIngredient"
+        name="selectedIngredient"
+        placeholder="Buscar ingrediente..."
+        class="w-full h-12 p-2 border border-beigeMadera rounded-md bg-white text-gray-700"
+        [virtualScroll]="true"
+        [searchable]="true"
+        [clearable]="false"
+        [dropdownPosition]="'bottom'"
+      >
+      </ng-select>           
+        <input type="number" [(ngModel)]="selectedQuantity"
+        class="w-28 p-2 border border-beigeMadera rounded-md"
+        min="1"
+        placeholder="Cantidad" /> 
+        <button type="button" (click)="addIngredient()"
+                class="bg-verdeSalvia text-white px-3 py-2 rounded-md hover:bg-marronTierra">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <g fill="none"><circle cx="12" cy="12" r="9" fill="#fff" fill-opacity="0.25"/>
+                    <path stroke="#9C6F48" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.2" d="M12 8v8m4-4H8"/></g>
+                </svg>
+        </button>
+      </div>
+
+      <!-- Lista de ingredientes agregados -->
+      <ul class="mt-2 space-y-2">
+        <li *ngFor="let ingredient of product.ingredients" class="flex justify-between items-center bg-gray-100 p-2 rounded-md">
+          <span>{{ ingredient.name }} - {{ ingredient.quantity }} {{ ingredient.unit }}</span>
+      
+          <button type="button"
+                  (click)="removeIngredient(ingredient.id!)"
+                  class="p-1 hover:bg-red-100 rounded transition">
+            <!-- Ícono SVG personalizado -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+              <defs>
+                <mask id="ipTDeleteFive0">
+                  <g fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4">
+                    <path stroke-linecap="round" d="M8 11h32M18 5h12"/>
+                    <path fill="#555555" d="M12 17h24v23a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3z"/>
+                    <path stroke-linecap="round" d="m20 25l8 8m0-8l-8 8"/>
+                  </g>
+                </mask>
+              </defs>
+              <path fill="#DC2626" d="M0 0h48v48H0z" mask="url(#ipTDeleteFive0)"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit"
+            [disabled]="product.price <= 0 || product.ingredients.length === 0"
+            class="w-full bg-verdeSalvia text-white font-bold py-2 rounded-md hover:bg-marronTierra transition">
+      Guardar Producto
+    </button>
+  </form>
+</div>
