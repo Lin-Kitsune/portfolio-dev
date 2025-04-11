@@ -1,0 +1,182 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <!-- Breadcrumb -->
+  <nav class="text-sm mb-4 text-gray-600">
+    <a routerLink="/inicio" class="text-verdeSalvia hover:underline">Inicio</a>
+    <span class="mx-2">›</span>
+    <span class="text-gray-500">Perfil</span>
+  </nav>
+
+  <!-- Título y botones -->
+  <div class="mb-4">
+    <h2 class="text-3xl font-extrabold text-marronTierra tracking-wide flex items-center gap-2">
+      <i class="fa fa-user-circle text-4xl text-verdeSalvia"></i>
+      Mi Perfil
+    </h2>
+
+    <!-- Botones debajo del título -->
+    <div class="flex gap-4 mt-4">
+      <button
+        class="flex items-center gap-2 px-4 py-2 rounded-md font-bold text-white bg-verdeSalvia hover:bg-marronTierra transition"
+        [ngClass]="{ 'bg-marronTierra': seccion === 'perfil' }"
+        (click)="seccion = 'perfil'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M7 9h10V7H7zM5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v6.45q-.575-1.125-1.65-1.787T17 9q-1.125 0-2.1.525T13.275 11H7v2h5.525q-.05.5 0 1t.225 1H7v2h3.925q-.475.55-.7 1.213T10 19.6V21zm7 0v-1.4q0-.6.313-1.112t.887-.738q.9-.375 1.863-.562T17 17t1.938.188t1.862.562q.575.225.888.738T22 19.6V21zm5-5q-1.05 0-1.775-.725T14.5 13.5t.725-1.775T17 11t1.775.725t.725 1.775t-.725 1.775T17 16"/></svg>
+        Datos del perfil
+      </button>
+
+      <button
+        class="flex items-center gap-2 px-4 py-2 rounded-md font-bold text-white bg-verdeSalvia hover:bg-marronTierra transition"
+        [ngClass]="{ 'bg-marronTierra': seccion === 'historial' }"
+        (click)="seccion = 'historial'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v7.7l-3.65 3.65l-2.125-2.125l-4.25 4.225l2.55 2.55zm6-8h6v-2h-6zm0-4h6V7h-6zm6.35 13l-3.55-3.55l1.425-1.4l2.125 2.125l4.25-4.25L23 16.35zM8 13q.425 0 .713-.288T9 12t-.288-.712T8 11t-.712.288T7 12t.288.713T8 13m0-4q.425 0 .713-.288T9 8t-.288-.712T8 7t-.712.288T7 8t.288.713T8 9"/></svg>
+        Historial de compras
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="border-1 rounded-lg bg-blancoAlgodon shadow-lg p-6">
+    <!-- Sección de datos del perfil -->
+    <form *ngIf="seccion === 'perfil' && userData" (ngSubmit)="guardarCambios()" class="space-y-6">
+      <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-marronTierra">INFORMACIÓN PERSONAL</h3>
+          <button *ngIf="!modoEdicion" type="button"
+              class="flex items-center gap-2 text-sm font-semibold text-white bg-verdeSalvia px-4 py-2 rounded-md hover:bg-marronTierra transition"
+              (click)="modoEdicion = true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path fill="white" d="M3 21v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z"/>
+              </svg>
+            Editar
+          </button>
+        </div>
+    
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Nombre -->
+          <div>
+            <label class="block text-base font-semibold text-verdeSalvia">Nombre</label>
+            <div *ngIf="!modoEdicion" class="mt-1 text-base text-marronTierra">{{ userData.firstName }}</div>
+            <input *ngIf="modoEdicion" [(ngModel)]="userData.firstName" name="firstName"
+                  class="mt-1 w-full rounded-md border border-beigeMadera bg-white p-2.5 text-base text-marronTierra placeholder:text-gray-400 focus:ring-2 focus:ring-verdeSalvia focus:outline-none" />
+          </div>
+          <!-- Apellido -->
+          <div>
+            <label class="block text-base font-semibold text-verdeSalvia">Apellido</label>
+            <div *ngIf="!modoEdicion" class="mt-1 text-base text-marronTierra">{{ userData.lastName }}</div>
+            <input *ngIf="modoEdicion" [(ngModel)]="userData.lastName" name="lastName"
+                  class="mt-1 w-full rounded-md border border-beigeMadera bg-white p-2.5 text-sm text-marronTierra placeholder:text-gray-400 focus:ring-2 focus:ring-verdeSalvia focus:outline-none" />
+          </div>
+
+          <!-- Correo -->
+          <div>
+            <label class="block text-base font-semibold text-verdeSalvia">Correo</label>
+            <div class="mt-1 text-base text-gray-500">{{ userData.email }}</div>
+          </div>
+
+          <!-- Teléfono -->
+          <div>
+            <label class="block text-base font-semibold text-verdeSalvia">Teléfono</label>
+            <div *ngIf="!modoEdicion" class="mt-1 text-base text-marronTierra">{{ userData.phone || 'Sin número' }}</div>
+            <input *ngIf="modoEdicion" [(ngModel)]="userData.phone" name="phone"
+                  class="mt-1 w-full rounded-md border border-beigeMadera bg-white p-2.5 text-sm text-marronTierra placeholder:text-gray-400 focus:ring-2 focus:ring-verdeSalvia focus:outline-none" />
+          </div>
+        </div>
+    
+        <div class="flex justify-end gap-4 mt-6">
+          <button type="button" (click)="logout()"
+                  class="flex items-center gap-2 bg-red-500 text-sm font-semibold text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path fill="white" d="m17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5M4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4z"/>
+                  </svg>
+                  Cerrar Sesión
+          </button>
+    
+          <button *ngIf="modoEdicion" type="submit"
+                  class="bg-verdeSalvia text-sm font-semibold text-white px-4 py-2 rounded-md hover:bg-greenDark transition">
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </form>        
+
+    <!-- Historial de compras -->
+    <div *ngIf="seccion === 'historial'" class="mt-10 flex items-start gap-6">
+      <!-- Filtros laterales -->
+      <aside class="w-1/4 bg-white p-4 border rounded-lg shadow-sm">
+        <h3 class="text-lg font-semibold mb-4">Filtrar</h3>
+        <div class="mb-4">
+          <label class="text-sm font-medium text-verdeSalvia">ID Pedido</label>
+          <input type="text" [(ngModel)]="filtroId" (input)="filtrarPedidos()"
+                 class="w-full p-2 border rounded mt-1" placeholder="Buscar por ID...">
+        </div>
+        <div class="mb-4">
+          <label class="text-sm font-medium text-verdeSalvia">Rango de Fecha</label>
+          <div class="flex gap-2 mt-1">
+            <input type="date" [(ngModel)]="fechaInicio" (change)="filtrarPedidos()" class="p-2 border rounded w-1/2">
+            <input type="date" [(ngModel)]="fechaFin" (change)="filtrarPedidos()" class="p-2 border rounded w-1/2">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="text-sm font-medium text-verdeSalvia">Tipo de entrega</label>
+          <select [(ngModel)]="filtroTipoEntrega" (change)="filtrarPedidos()" class="w-full p-2 border rounded mt-1">
+            <option value="">Todos</option>
+            <option value="tienda">Tienda</option>
+            <option value="delivery">Delivery</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- Tabla y ordenamiento -->
+      <div class="flex-1">
+        <div class="flex justify-end mb-4">
+          <select [(ngModel)]="ordenSeleccionado" (change)="ordenarPedidos()"
+                  class="p-2 border rounded bg-white">
+            <option value="">Ordenar por</option>
+            <option value="precio-asc">Precio (Menor a mayor)</option>
+            <option value="precio-desc">Precio (Mayor a menor)</option>
+          </select>
+        </div>
+
+        <div *ngIf="pedidosFiltrados.length === 0" class="text-center text-gray-500">
+          <i class="fa fa-box-open text-5xl mb-4"></i>
+          <p class="text-lg">No se encontraron compras con esos filtros.</p>
+        </div>
+
+        <div *ngIf="pedidosFiltrados.length > 0" class="overflow-x-auto rounded-lg shadow-sm border border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-verdeSalvia text-white text-sm text-center">
+              <tr>
+                <th class="px-4 py-3 font-bold uppercase"># Pedido</th>
+                <th class="px-4 py-3 font-bold uppercase">Fecha</th>
+                <th class="px-4 py-3 font-bold uppercase">Tipo</th>
+                <th class="px-4 py-3 font-bold uppercase">Método Pago</th>
+                <th class="px-4 py-3 font-bold uppercase">Estado</th>
+                <th class="px-4 py-3 font-bold uppercase">Total</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+              <tr *ngFor="let pedido of pedidosFiltrados" class="text-center hover:bg-gray-50 transition">
+                <td class="px-4 py-3 font-medium">#{{ pedido.numero || pedido.id }}</td>
+                <td class="px-4 py-3 font-medium">{{ pedido.createdAt?.toDate() | date:'short' }}</td>
+                <td class="px-4 py-3 capitalize">{{ pedido.tipoEntrega || 'N/A' }}</td>
+                <td class="px-4 py-3 capitalize">{{ pedido.paymentMethod || 'N/A' }}</td>
+                <td class="px-4 py-3">
+                  <span class="px-2 py-1 rounded text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-[#FFFAEB] text-[#E48711]': pedido.status === 'pendiente',
+                      'bg-[#ECFDF3] text-[#03985E]': pedido.status === 'pagado' || pedido.status === 'en preparacion',
+                      'bg-[#FEF2F2] text-[#DC2626]': pedido.status === 'cancelado',
+                      'bg-[#E0F2FE] text-[#0284C7]': pedido.status === 'listo',
+                      'bg-[#F0FDF4] text-[#15803D]': pedido.status === 'entregado'
+                    }">
+                    {{ pedido.status }}
+                  </span>
+                </td>
+                <td class="px-4 py-3 font-medium">${{ pedido.total }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

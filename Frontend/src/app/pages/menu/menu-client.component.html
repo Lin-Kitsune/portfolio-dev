@@ -1,0 +1,60 @@
+<div class="bg-[#3A2A25] min-h-screen px-6 py-3 w-full font-sans text-[#FAF9F7]">
+  
+    <!-- Botones de categoría -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <button
+        *ngFor="let cat of categoriasConProductos"
+        class="bg-transparent border border-[#FAF9F7] text-[#FAF9F7] hover:bg-[#FAF9F7] hover:text-[#3A2A25] transition-all font-semibold px-4 py-2 rounded-full text-sm"
+        [ngClass]="{ 'bg-[#FAF9F7] text-[#3A2A25]': cat.nombre === selectedCategory }"
+        (click)="selectCategory(cat.nombre)">
+        {{ cat.nombre }}
+      </button>
+    </div>
+  
+    <!-- Menú por categoría -->
+    <div *ngFor="let categoria of categoriasConProductos">
+      <div *ngIf="!selectedCategory || categoria.nombre === selectedCategory" class="mb-16">
+  
+        <!-- Título categoría -->
+        <h2 class="text-2xl text-center font-bold tracking-widest text-[#FAF9F7] relative mb-10 uppercase">
+          <span class="relative z-10 bg-[#3A2A25] px-4">{{ categoria.nombre }}</span>
+          <div class="absolute left-0 right-0 top-1/2 border-t border-[#FAF9F7] z-0"></div>
+        </h2>
+  
+        <!-- Lista de productos -->
+        <div *ngFor="let producto of categoria.productos" class="flex items-start gap-6 mb-10">
+  
+          <!-- Imagen del producto -->
+          <img
+            [src]="producto.image_url"
+            [alt]="producto.name"
+            class="w-32 h-32 object-cover shadow-sm rounded-lg"
+          />
+  
+          <!-- Detalles del producto -->
+          <div class="flex-1">
+            <div class="flex items-center">
+  
+              <!-- Nombre -->
+              <span class="uppercase font-semibold text-[#FAF9F7] text-[15px] whitespace-nowrap">
+                {{ producto.name }}
+              </span>
+  
+              <!-- Línea punteada -->
+              <div class="linea-punteada"></div>
+  
+              <!-- Precio -->
+              <span class="precio-producto">$ {{ producto.price }}</span>
+            </div>
+  
+            <!-- Descripción -->
+            <p class="text-sm italic mt-2 text-[#FAF9F7]">
+              {{ producto.description }}
+            </p>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  

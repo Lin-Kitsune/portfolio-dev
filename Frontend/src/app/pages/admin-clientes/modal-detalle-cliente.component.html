@@ -1,0 +1,110 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white w-full max-w-md p-6 rounded-xl shadow-lg relative border-4 border-verdeSalvia">
+  
+      <!-- 🔹 Título con ícono -->
+      <h2 class="text-2xl font-bold text-black mb-6 flex items-center justify-center gap-2">
+        Información del Cliente
+      </h2>
+  
+      <!-- 🔸 Cuerpo con íconos -->
+      <div class="text-base space-y-5 bg-cream p-4 rounded-lg shadow-inner">
+
+        <!-- Nombre -->
+        <p class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+            <g fill="none" stroke="#A8BBA1" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+              <circle cx="24" cy="11" r="7" fill="#A8BBA1" />
+              <path d="M4 41c0-8.837 8.059-16 18-16" />
+              <path fill="#A8BBA1" d="m31 42l10-10l-4-4l-10 10v4z" />
+            </g>
+          </svg>
+            <span class="font-semibold text-marronTierra">Nombre: </span>
+            <span class="text-black font-medium">{{ cliente?.name || 'Sin nombre' }}</span>
+        </p>
+  
+        <!-- Correo -->
+        <p class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#A8BBA1" fill-opacity="0" d="M12 11l-8 -5h16l-8 5Z">
+              <animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.15s" values="0;0.3"/>
+            </path>
+            <g fill="none" stroke="#A8BBA1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path stroke-dasharray="64" stroke-dashoffset="64" d="M4 5h16c0.55 0 1 0.45 1 1v12c0 0.55 -0.45 1 -1 1h-16c-0.55 0 -1 -0.45 -1 -1v-12c0 -0.55 0.45 -1 1 -1Z">
+                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/>
+              </path>
+              <path stroke-dasharray="24" stroke-dashoffset="24" d="M3 6.5l9 5.5l9 -5.5">
+                <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="24;0"/>
+              </path>
+            </g>
+          </svg>
+            <span class="font-semibold text-marronTierra">Correo: </span>
+            <span class="text-black font-medium">{{ cliente?.email }}</span>
+        </p>
+  
+        <!-- Teléfono -->
+        <p *ngIf="cliente?.phone" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#A8BBA1" fill-opacity="0" stroke="#A8BBA1" stroke-dasharray="64" stroke-dashoffset="64"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 3c0.5 0 2.5 4.5 2.5 5c0 1 -1.5 2 -2 3c-0.5 1 0.5 2 1.5 3c0.39 0.39 2 2 3 1.5c1 -0.5 2 -2 3 -2c0.5 0 5 2 5 2.5c0 2 -1.5 3.5 -3 4c-1.5 0.5 -2.5 0.5 -4.5 0c-2 -0.5 -3.5 -1 -6 -3.5c-2.5 -2.5 -3 -4 -3.5 -6c-0.5 -2 -0.5 -3 0 -4.5c0.5 -1.5 2 -3 4 -3Z">
+              <animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.15s" values="0;0.3"/>
+              <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/>
+            </path>
+          </svg>
+          <span class="font-semibold text-marronTierra">Teléfono: </span>
+          <span class="text-black font-medium">{{ cliente.phone }}</span>
+        </p>
+  
+        <!-- Dirección -->
+        <p *ngIf="cliente?.address" class="flex items-center gap-2">
+            <!-- Ícono Dirección -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#A8BBA1" fill-opacity="0" d="M5 8.5l7 -5.5l7 5.5v12.5h-4v-8l-1 -1h-4l-1 1v8h-4v-12.5Z">
+                <animate fill="freeze" attributeName="fill-opacity" begin="1.1s" dur="0.15s" values="0;0.3"/>
+              </path>
+              <g fill="none" stroke="#A8BBA1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path stroke-dasharray="16" stroke-dashoffset="16" d="M4.5 21.5h15">
+                  <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.2s" values="16;0"/>
+                </path>
+                <path stroke-dasharray="16" stroke-dashoffset="16" d="M4.5 21.5v-13.5M19.5 21.5v-13.5">
+                  <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.2s" dur="0.2s" values="16;0"/>
+                </path>
+                <path stroke-dasharray="28" stroke-dashoffset="28" d="M2 10l10 -8l10 8">
+                  <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.4s" dur="0.4s" values="28;0"/>
+                </path>
+                <path stroke-dasharray="24" stroke-dashoffset="24" d="M9.5 21.5v-9h5v9">
+                  <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.7s" dur="0.4s" values="24;0"/>
+                </path>
+              </g>
+            </svg>
+            <span class="font-semibold text-marronTierra">Dirección: </span>
+            <span class="text-black font-medium">{{ cliente.address }}</span>
+          </p>          
+  
+        <!-- Promociones -->
+        <p class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#A8BBA1"
+              d="M6.559 4.984c.013.637.457 1.266 1.391 1.266h3.007a6 6 0 0 0-.439-.855C9.964 4.498 9.152 3.75 7.95 3.75c-.555 0-.89.183-1.085.39a1.18 1.18 0 0 0-.306.844m6.484 1.266h3.007c.541 0 .882-.181 1.09-.396c.215-.223.332-.531.332-.854s-.117-.63-.333-.854c-.207-.215-.548-.396-1.089-.396c-1.202 0-2.014.748-2.568 1.645c-.182.293-.327.59-.44.855m7.707 6.5V19A2.75 2.75 0 0 1 18 21.75H6A2.75 2.75 0 0 1 3.25 19v-6.25H3a.75.75 0 0 1-.75-.75V9A2.75 2.75 0 0 1 5 6.25h.37a2.85 2.85 0 0 1-.311-1.234a2.68 2.68 0 0 1 .716-1.906c.513-.543 1.26-.86 2.175-.86c1.948 0 3.161 1.252 3.844 2.355q.11.18.206.356q.096-.176.206-.356c.683-1.103 1.896-2.355 3.844-2.355c.907 0 1.651.319 2.168.854c.509.527.754 1.219.754 1.896c0 .426-.097.857-.295 1.25H19A2.75 2.75 0 0 1 21.75 9v3a.75.75 0 0 1-.75.75zm-1.5 0h-6.5v7.5H18c.69 0 1.25-.56 1.25-1.25zm-8 7.5v-7.5h-6.5V19c0 .69.56 1.25 1.25 1.25z"/>
+          </svg>
+          <span class="font-semibold text-brown">Promociones: </span>
+            <span
+                [ngClass]="cliente?.aceptaPromos ? 'text-greenSoft font-medium' : 'text-terracotaOscuro font-medium'">
+                {{ cliente?.aceptaPromos ? '✅ Sí' : '❌ No' }}
+            </span>
+        </p>
+  
+      </div>
+  
+      <!-- ❌ Botón cerrar -->
+      <button (click)="cerrar.emit()"
+              class="absolute top-3 right-3 text-xl text-terracotaOscuro hover:text-red-700 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" stroke="#9C6F48" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="m5 19l7-7m0 0l7-7m-7 7L5 5m7 7l7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  

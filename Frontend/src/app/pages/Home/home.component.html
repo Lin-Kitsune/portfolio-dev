@@ -1,0 +1,344 @@
+<div class="w-full max-w-full min-h-screen bg-blancoAlgodon space-y-10 overflow-x-hidden pt-[75px]">
+  <section class="relative w-full overflow-hidden bg-white">
+    <!-- Imagen de fondo -->
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+         style="background-image: url('https://www.eatiqbar.com/cdn/shop/articles/hot-coffee-latte-with-latte-art-milk-foam-cup-mug-wood-desk-top-view-as-breakfast-coffee-shop-cafeduring-business-work-concept.jpg?v=1695665318&width=1500');">
+    </div>
+  
+    <!-- Capa oscura -->
+    <div class="absolute inset-0 z-10 bg-black/30"></div>
+  
+    <!-- Ola superior -->
+    <svg preserveAspectRatio="none" viewBox="0 0 2000 120" xmlns="http://www.w3.org/2000/svg"
+         class="absolute top-0 left-0 w-full h-[100px] z-20">
+      <path fill="#FAF9F7" d="M0,0V46.29c99.72,28,203.64,49.06,
+               329,49.06,194.93,0,329-54.52,
+               503-54.52,156.66,0,268.26,40.19,
+               380.76,40.19,187.28,0,370.92-50.07,
+               570.6-49.07,125.9.64,248.13,16.34,
+               317,36.1V0Z"></path>
+    </svg>
+  
+    <!-- Contenido -->
+    <div class="relative z-30 flex items-center justify-start min-h-[360px] sm:min-h-[420px] md:min-h-[500px] px-6 sm:px-10 md:px-20 lg:px-32 pt-10 sm:pt-16 pb-32 text-left">
+      <div class="max-w-2xl text-white">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">
+          Bienvenido a LinMaD Macchiato
+        </h1>
+        <p class="text-sm sm:text-base md:text-lg mb-6">
+          Disfruta de la mejor experiencia en café con nosotros.
+        </p>
+        <a href="/menu"
+           class="bg-[#A8BBA1] hover:bg-[#88a58d] text-white font-semibold px-6 py-2 rounded-full transition">
+          Explorar
+        </a>
+      </div>
+    </div>
+  
+    <!-- Ola inferior -->
+    <svg preserveAspectRatio="none" viewBox="0 0 2000 120" xmlns="http://www.w3.org/2000/svg"
+         class="absolute bottom-0 left-0 w-full h-[100px] z-20">
+      <path fill="#FAF9F7" d="M0,120V73.71c99.72-28,203.64-49.06,
+               329-49.06,194.93,0,329,54.52,
+               503,54.52,156.66,0,268.26-40.19,
+               380.76-40.19,187.28,0,370.92,50.07,
+               570.6,49.07,125.9-.64,248.13-16.34,
+               317-36.1V120Z"></path>
+    </svg>
+  </section>    
+  
+  <!-- TOP CATEGORÍAS -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP CATEGORÍAS</h2>
+  <p class="text-sm text-gray-600 mb-10">Explora nuestras especialidades de café</p>
+
+  <!-- Escritorio -->
+  <div class="hidden lg:block px-2" #categorySlider>
+    <div class="keen-slider flex overflow-hidden" #categorySlider>
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let cat of categories">
+        <div class="relative w-full h-[140px] rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+          <img [src]="cat.image_url" alt="{{ cat.name }}" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">
+            <h3 class="text-lg font-semibold mb-1">{{ cat.name }}</h3>
+            <button class="text-sm text-lime-300 hover:underline" (click)="verCategoria(cat.name)">Ver Más</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Móviles -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let cat of categories" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="relative h-[130px] rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+        <img [src]="cat.image_url" alt="{{ cat.name }}" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">
+          <h3 class="text-lg font-semibold mb-1">{{ cat.name }}</h3>
+          <button class="text-sm text-lime-300 hover:underline" (click)="verCategoria(cat.name)">Ver Más</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP CAFÉS -->
+<section id="top-cafes" class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP CAFÉS</h2>
+  <p class="text-gray-600 text-sm mb-10">Lo más vendido esta semana</p>
+
+  <!-- Carrusel escritorio -->
+  <div class="hidden lg:block px-4" #productSlider>
+    <div class="keen-slider flex overflow-hidden">
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let prod of cafesTop">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-4 flex flex-col justify-between text-center">
+          <div class="aspect-square w-full rounded-lg overflow-hidden mb-3">
+            <img [src]="prod.image_url" alt="{{ prod.name }}" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+            {{ prod.name }}
+          </h3>
+          <div class="flex justify-center items-center gap-2 mt-2">
+            <p class="text-[#A67B5B] font-bold text-sm">
+              $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+            </p>
+            <button (click)="openModal(prod)"
+                    class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+                    style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+              COMPRAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Móviles -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let prod of cafesTop" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition px-4 py-4 flex flex-col justify-between text-center">
+        <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-36 w-full object-cover rounded-lg mb-2" />
+        <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+          {{ prod.name }}
+        </h3>
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <p class="text-[#A67B5B] font-bold text-sm">
+            $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+          </p>
+          <button (click)="openModal(prod)"
+            class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+            style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+            COMPRAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP COMIDA -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">TOP COMIDA</h2>
+  <p class="text-gray-600 text-sm mb-10">Lo más vendido esta semana</p>
+
+  <!-- Escritorio -->
+  <div class="hidden lg:block px-4" #comidaSlider>
+    <div class="keen-slider flex overflow-hidden">
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let prod of comidaTop">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-4 flex flex-col justify-between text-center">
+          <div class="aspect-square w-full rounded-lg overflow-hidden mb-3">
+            <img [src]="prod.image_url" alt="{{ prod.name }}" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+            {{ prod.name }}
+          </h3>
+          <div class="flex justify-center items-center gap-2 mt-2">
+            <p class="text-[#A67B5B] font-bold text-sm">
+              $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+            </p>
+            <button (click)="openModal(prod)"
+              class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+              style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+              COMPRAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Móvil -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let prod of comidaTop" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition px-4 py-4 flex flex-col justify-between text-center">
+        <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-36 w-full object-cover rounded-lg mb-2" />
+        <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+          {{ prod.name }}
+        </h3>
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <p class="text-[#A67B5B] font-bold text-sm">
+            $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+          </p>
+          <button (click)="openModal(prod)"
+            class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+            style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+            COMPRAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- NOVEDADES -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">NOVEDADES</h2>
+  <p class="text-gray-600 text-sm mb-10">¡Recién salidos del horno!</p>
+
+  <!-- Escritorio (Carrusel) -->
+  <div class="hidden lg:block px-4" #novedadesSlider>
+    <div class="keen-slider flex overflow-hidden">
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let prod of novedades">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-4 flex flex-col justify-between text-center relative">
+
+          <div class="aspect-square w-full rounded-lg overflow-hidden mb-3 relative">
+            <img [src]="prod.image_url" alt="{{ prod.name }}" class="w-full h-full object-cover" />
+            <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow z-10">
+              NUEVO
+            </span>
+          </div>
+
+          <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+            {{ prod.name }}
+          </h3>
+
+          <div class="flex justify-center items-center gap-2 mt-2">
+            <p class="text-[#A67B5B] font-bold text-sm">
+              $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+            </p>
+            <button (click)="openModal(prod)"
+              class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+              style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+              COMPRAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Móvil -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let prod of novedades" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition px-4 py-4 flex flex-col justify-between text-center relative">
+
+        <div class="relative">
+          <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-36 w-full object-cover rounded-lg mb-2" />
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow z-10">
+            NUEVO
+          </span>
+        </div>
+
+        <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+          {{ prod.name }}
+        </h3>
+
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <p class="text-[#A67B5B] font-bold text-sm">
+            $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+          </p>
+          <button (click)="openModal(prod)"
+            class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+            style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+            COMPRAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <!-- ✅ Modal flotante fuera del *ngFor -->
+<div *ngIf="selectedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">
+    <h2 class="text-lg font-bold mb-4 text-center">Personaliza tu bebida</h2>
+
+    <!-- Tamaño -->
+    <label for="size" class="text-sm font-semibold w-full text-left mb-1">Tamaño:</label>
+    <select id="size" [(ngModel)]="selectedSize" required class="w-full p-2 border rounded mb-3">
+      <option value="" disabled selected>Selecciona</option>
+      <option *ngFor="let s of selectedProduct?.sizes" [value]="s.label">
+        {{ s.label | titlecase }} - ${{ s.price }}
+      </option>
+    </select>
+
+    <!-- Tipo de leche -->
+    <label class="text-sm font-semibold w-full text-left mb-1">Tipo de leche:</label>
+    <select [(ngModel)]="selectedMilk" class="w-full p-2 border rounded mb-3">
+      <option value="">Selecciona</option>
+      <option *ngFor="let milk of milks" [value]="milk">{{ milk }}</option>
+    </select>
+
+    <!-- Azúcar -->
+    <label class="text-sm font-semibold w-full text-left mb-1">Azúcar:</label>
+    <select [(ngModel)]="selectedSugar" class="w-full p-2 border rounded mb-4">
+      <option value="">Selecciona</option>
+      <option *ngFor="let sugar of sugars" [value]="sugar">{{ sugar }}</option>
+    </select>
+
+    <!-- 🔹 Botones de acción -->
+    <div class="flex flex-col sm:flex-row gap-2">
+      <button (click)="closeModal()"
+              class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md w-full hover:bg-gray-300 transition">
+        Cancelar
+      </button>
+
+      <button (click)="addToCart()"
+              class="bg-verdeSalvia text-white py-2 px-4 rounded-md w-full hover:bg-green-700 transition">
+        Añadir al carrito
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- OPINIONES DE CLIENTES -->
+<section class="text-center my-16 bg-[#1C1C1C] py-16 relative select-none">
+  <h2 class="text-3xl font-bold text-white mb-2">OPINIONES DE CLIENTES</h2>
+  <p class="text-gray-300 text-sm mb-10">Lo que dicen nuestros clientes sobre su experiencia</p>
+
+  <!-- Contenedor draggable -->
+  <div
+    class="flex gap-6 px-6 overflow-hidden cursor-grab active:cursor-grabbing"
+    #opinionesScroll
+    (mousedown)="startDrag($event)"
+    (mousemove)="onDrag($event)"
+    (mouseup)="endDrag()"
+    (mouseleave)="endDrag()"
+  >
+    <div
+      *ngFor="let op of publicas"
+      class="bg-white rounded-2xl shadow-md px-10 py-12 text-center flex flex-col items-center justify-between transition hover:shadow-lg w-[340px] min-h-[340px] shrink-0"
+
+    >
+      <h3 class="text-[#4A3C2F] font-semibold text-xl mb-1 truncate w-full">{{ op.nombre }}</h3>
+      <p class="text-xs text-gray-400 mb-4">Cliente verificado</p>
+      <p class="text-base text-gray-800 font-semibold mb-6">"{{ op.comentario }}"</p>
+      <div class="flex justify-center gap-1">
+        <ng-container *ngFor="let _ of [].constructor(op.estrellas)">
+          <span class="text-[#FFA500] text-lg">★</span>
+        </ng-container>
+        <ng-container *ngFor="let _ of [].constructor(5 - op.estrellas)">
+          <span class="text-gray-300 text-lg">★</span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</div>

@@ -1,0 +1,281 @@
+<div class="w-full px-4 py-6 grid grid-cols-[240px_1fr_240px] gap-4 max-w-screen-2xl mx-auto">
+    <!-- Columna izquierda -->
+    <div class="flex flex-col gap-4">
+        <!-- EN PREPARACIÓN -->
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#fcd9a8] to-[#fcbf75] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+          <div class="bg-[#C2751E] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACCUlEQVR4nO3ZvWoUURiH8UEsFKMRMRYKqWxEEgvxAy0s9BZi6W1oIxhtBFtREaONoBG8AhuJojaighKDoOBHwCYiEl2NyU+GvIEhxmQTN9lzwjwwMDt75uz/mZn37JmZoqipqampWS2gFxcxjPFYhmNbT5E6WIcrmPJvJnGpbFukCNZjKMI2cBWHsCWWwxjAz2hzP0kZXI+An7B3nnYH8TnaXitSwnS4qTjavU2034eJ2Gd/kVBdDMYRfhfrD/EmPo/F8ja2ld/dxvvYZ7Btlxj2oB8Poh7+l0bUV3/Z93KH34ZTGLH8jOAkulop0B1DaiuO/GJp4HKZoWVCNSsNOqPYXsWUIlXG8RJnsGmuQn4tP4axtSpyQ74MVEVG5ctoVeSFfHleFenA6Zj/5MJEZO6Ya+Q6Jx/OzjcE75YPu+YT2SgfOhb6Y8yCYo7gT+JeoZzZdsmHrshcZn80IzJDO2a4S6VRWX9ciqzBMdzBb/kwiXvow9rZl9lO+dC9Oot9NjKhWAiZUNQiiVHUZyTDM/JF+ow1I/JM+jxtRuSC9DnfjEiPtJkqbwAXFAmZW9LlZlMSIbIj0aIfw/amRULmSOV9Xwr8wtFFSVRkjuNHuw1MZ+hbkkRF5gA+tlHiQ8veM2JDvEH6toIC38th9q8n7i0S2owTuBuP9r+2MHjZV9ln2Xf5G52LCfcHt8hgeJVI2iwAAAAASUVORK5CYII=" alt="En preparación" class="w-6 h-6">
+          </div>
+          <div>
+            <p class="text-lg font-bold text-[#C2751E]">{{ pedidosEnPreparacion }}</p>
+            <p class="text-sm text-[#C2751E] font-semibold">En preparación</p>
+          </div>
+        </div>
+      
+        <!-- LISTOS -->
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#a7f3d0] to-[#34d399] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+          <div class="bg-[#059669] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACDklEQVR4nO2XzU4TURTHj7bKgo/ENWsXIEvXJiTCiggL6gp4gqa26o6QuGJjfAPjAkh8DN/BUGgIyAuQkPAVYeHPnHgmTqad26l89FDvL5lkeufce89//vfcuRWJ3BNwikQhzpDoiDMkOuIMiY4MsiNyyxCFdACnSK/gFIlCnCHREWdIdMQZEh1xhkRHBtkRCcT2PNE15+7KfyGkn0gU4gwZFEeAxzcmJBTb8xv7O8YC8KOAEI2ZdycEeAh8TA2xDdSBZ8CwXXrfAJqpuE/Ag2sJuSUugSpQCuRUAmrAVSLGmxAV8bIHF2dSYhY8CakWFDAEvLb7N6mayd8A7lDEdmg5JWg9AJvWZxUoAzv2uyJ5hGYOxeYO2N5ny7rUC8Z/sPhjLX5re2ttX/sppGVdJgvELgG/rJamU+1TNsbBPwm5YUYzb30ik8cL4KcJWc48G7Uxzt0I0SLmD2fqgLU9BY6sfa1DjomQEw9CkvWuH76kbpTPwJ7df8nJMVlaLQ9CGpl5V4CL1PNvedsr8N5iNjwIaWa3X+A5cAh8B8Zy8tPtd9fGWPQgRKl1mP8JMB7IT89e2PJ75EWIHjdmcpNpz23W+uhO9qpb8F2jiemxoxzIqWxOJOes9SKq+0XTvti6I43YpffvUkcSdWJd/wKIN4A5K/BuaE2El1O/saVTse/Jvn6xgVNzQg+Mi3mF/RsXnXj6MwODKQAAAABJRU5ErkJggg==" alt="Listos" class="w-6 h-6">
+          </div>
+          <div>
+            <p class="text-lg font-bold text-[#059669]">{{ pedidosListos }}</p>
+            <p class="text-sm text-[#059669] font-semibold">Listos</p>
+          </div>
+        </div>
+      
+        <!-- ATRASADOS -->
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#fca5a5] to-[#ef4444] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+          <div class="bg-[#B91C1C] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADH0lEQVR4nO2aTU8TURSGJ1IFoyB+VWOicS3d6UpdCoREhYUb9C8QSlGiS90Qo24MJu6FX6CC+heMK7XSijt1YSQk4kZG42OOOU0m5c4wc3tn2jG+ySTTzP04T8+5d+45ref91z8qYC8wBtwFFoEasAZs6CX3y/pM2owC/V4nCOgGrgAvgF8kl/R5BlyWsbw2AOwEpoHPuNMnYAroyQpiBPhAeloBhtMOo/tkp0fiedcQh4BXlgadBs5Y9n0JFF1BHFd3Wykwjq3eiw2tQhzUbZQ2gqBr8rAtRE8L4eQapBFmybdo4CEO5BBENGezxdKBIKKhJNtsnc4FWYn10tQ3Nh0MIirH8YYcFTod5GPkwtcDIDkAEY1HgcgpNi8gi1H5hM1RvF0gP4E+E4gkReQIRHTeBHKP/IHcMYFICpo3kMcmEDllupQPzATGn9G4dqmaCWTV8SRXDXNcczzHVxOIVDpc6kBIWuBSP7IA2WeY44jjOTbSDq0vwDHDHDdwqzUTSN0hREnHPArsV09cT8HryyaQp44hSvo5TS2ZQKSMmScI0W0TiNRi8wQhGjOB9FseGtsF4QN7NoGoIc8tBjzpGOKt1oAHgF16yX0FqAbavTFCqDFSFU+qs8ApBxCyo00AXRH2dQGT6g3RrcxS3QQQ50K/4c12DgZgRsIaiVuz1kSILb5cIc/K2lfefzvCKozWtV7LNWEMJ1QhzwrAO20yGuaV4QxBpoxGeNEgTaWrBS+i0YOMQE60AFLSJtUokG4tHKet3hZAerXJt1AQbVhMIXNMAuKHLfYmkPVIkMAPPWnCDGxpxNahVYvboZhimFViGWGQpNM6xrwXV7pm5lIAqUZsv37Ee6Sgf0AQXYoNEhhgKIVQm7QAqWhfsWV7YpCAd8paFXchMXgw4ZcpfX4DF60gDEDjWtyzqVmJMa8D92UJmYj5CuqJxjlrtmUIwyR9wAUpYwJPNH5X9UDoB/5UsySZndaa/+YTwM2mNTOtO9JuvUq6sBtHEvHELLDN6zTp75b1GF6UNdF6OKUpOcVqyr2gnlkHvqsn5mV3ClvYfwDzpIrBHWfPHQAAAABJRU5ErkJggg==" alt="Atrasados" class="w-6 h-6">
+          </div>
+          <div>
+            <p class="text-lg font-bold text-[#B91C1C]">{{ pedidosDemorados }}</p>
+            <p class="text-sm text-[#B91C1C] font-semibold">Atrasados</p>
+          </div>
+        </div>
+      
+        <!-- RESERVAS HOY -->
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#93c5fd] to-[#3b82f6] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+          <div class="bg-[#1D4ED8] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACdElEQVR4nO2aPW8UMRCGvaQAlEtHjSIQSpQ2BTU0XEJDAbQcFIifABVKi6CIjoaW+kTBH4iEQEAFHRARhWyAhgIJaJCiPGjIHOfbbLyfNnuwr7TFjT2efcY+23M6YzIETAHLQB94BrwHfujzFlgDVoBFIMoaLyNWF9hmpFhsVcYcDnwEeEd+vQEulgVi78WTiusCWdfM3wHOAieAaX3mgHPAKvDBCv4cmC0R77cO+pzlfAvYIUUFX+IQ0LOy+gU4M3EgQ+lMDaggMxrLpc/AhT+BLafjwNc8IMBLWT6O9gi46xlE9CltWcjuI3qcA8TZbsEMPIOQDHrZmq5jdYBYyywOAsJe5l6p/Yba5DuzUxVE+17Fo4wV6LTaPgKHrQ3gZk0gcqBuhQC5rbZ+nhcrCqL9+yFA1tR23iPIUgiQDbWd9AgyFwLku9o6BV5sV30Wcvaf0f4/jS8B3zTITAGfp+ojN+ArTQFZ1yCnCvgcBR5YM/xQzgxH//mQX/ZuiST0dFZELxz9lkOArKhttSiI+i8Ar4Enf3v7XVSb1BNTZWByHIhxCJBICydRzwPINV8QomQwKU/RzE3XCNFJ1OC1yyQCRlqeolfvSj8iWGM+OjDoqF9mm0tpTrNanqJFUVQR4p6OtRsURCQ1ttVnUGaZ6XIam4ngIKJEP7naX8+zm2mVeQnYLBI0FMhQW3oWdPWU7ugzrzfb+3m22CaANFamBaH8Emnc0jItyH61M6JKyc14hlxy+flo8wbSJJkWhH9oaZkWZL/aGVGl5GY8Qy65/Hy0eQNpkkwL0jCZdkYaJvM/zMg2k6PYBbI0ITBxLX+BamX86BcSPRT9k4GCXAAAAABJRU5ErkJggg==" alt="overtime" class="w-6 h-6">
+          </div>
+          <div>
+            <p class="text-lg font-bold text-[#1D4ED8]">{{ reservasHoy }}</p>
+            <p class="text-sm text-[#1D4ED8] font-semibold">Reservas hoy</p>
+          </div>
+        </div>
+      
+        <!-- BAJO STOCK -->
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#fda4af] to-[#ec4899] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+          <div class="bg-[#BE123C] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACxElEQVR4nO2ZO2hUQRRAJ/5AiGBUJOKvESKJgkYbN/6rxEbBLq2V2Els7BXEtEIiFlbBTjsLP6QTQVTwgxFBSUQ3mo1G/KBRj9zkbhiX3bcz83az7z1yqv3MzJ2zc9/M2/uMmUeAI8Bb3BkDekzS0In5MmqSBoGYpJElkbGspFaPp8wo0N3oeWcbYIVH2+UmiQDbgL8eqTUNbDJJA7gacLFfMEkCWAf8DBCZBJpNUgD6COekSQrAwxgiw/WY0DJgC7AL2O6y7MBq4EsMkd9Aay0mvwToBW4DP0qC/AEeAKftrVVeA11Ak75vBa5o+/lPL2Z/+ecOgSakrfbZALzQz+8DOWu8HcDdAJFbcSSOOu407+SM0D6Sdq9Lvpez4xqw2Rr7GPDSQ+S7pHWIxD7gl0OANzJ57dOhUpWQtDxXTEG93iQlPznKdPlKNOsEqyHps1H77Nb0cuE9cAJYpH3XAJf0JI/irK/IGYfJPAbWavv9wBT+PAIOWXHbgZsR7W/4SDQ53GrfA1q0fTfwjXhcL6anNeazMu2eGFeAnVWC3imeHcDxwNuOcsg4/cBKa8s/BXy02nx1Flmg0TC7Q13Wu8y0MQkMzqS6SqSdQREpkH4KwbWmpGHICCYjqTWRlYt9oLj9DqR0ZQo69+QUJxYoBynDVIIMiYzUIV4O2FuHcUeiROT/QE2p42pfjBI5mCKRA1Eiiz0KCI0U+QwsrSiiAYdSIDIUKaEBpTQayh6gE8hHiOS1jWwCofS6iLQ41Jcq0WkV6sbLiMhnHVYpNoRpYFVVEQ0yHBhk3CqdbpWqozXmB6ne29/V/RED8R7KSOq06zgzUvZrLcLNpV4AfT4ibcRjbmVKxo2zEkXanEVqdMr/J1MjiVdeEhr4PPHJ6+6Ui5lO4U94dfeK+wvWkilgvbeIysh+LxVzn4f8tUZiPwUOR032Hzjo4pr3QUTzAAAAAElFTkSuQmCC" alt="food-donor" class="w-6 h-6">
+          </div>
+          <div>
+            <p class="text-lg font-bold text-[#BE123C]">{{ productosStockBajo }}</p>
+            <p class="text-sm text-[#BE123C] font-semibold">Bajo stock</p>
+          </div>
+        </div>
+    </div>      
+  
+    <!-- Centro: gráfico pastel y turnos -->
+    <div class="flex flex-col gap-4">
+        <!-- Indicadores diarios tipo dashboard moderno -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <!-- Ingresos de hoy -->
+            <div class="bg-white p-4 rounded-xl shadow border border-gray-100 flex flex-col justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-green-100 p-2 rounded-full">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE1UlEQVR4nO1ZTYhbVRS+ttWiFcXf1nYm9740KNQfKlJHRXeKCN2If0XdqDNUcCGIWH8WsxrRhYs4yTl57cpCFYO68WdjZRbqvHueoU5hBB2xaqmbqkUtjmNHjZz3kjS5eUnuy3tJRXLgwgTePed+9/x9544QIxnJSP43IgnvVoQ/8HIIdg7GSrm8NuMXb5EanleEbymNi4rwhNRwKg3Dyi89IAlXFWE1XHAsvcMLIbb6xXFJ8HLtpqqdV2fD0oe7JOF3UuNRRXBnbxApAskdyl8mCV2p4c/uACyABAAa3x3pBYJ/c5glBpEhfEgR/GwHIFhdQ8v8XtTEIbgvwhN/sf1EAG6ouGdLjfs6HVgS/qo0HnAIJh2/uIO9tm2xfE4vvVFAnEGBuKLinqc0fhAJQOOXUsOjY/OvnNuPblOfM0hPRILQ8Luk0lNibnpdEv0Rnl1NHQRLVDhJgqWsD9ckVh4BRA0EBMGD7Z7AQxz/IiXpknOrXLUSG+DDmtWJPREHhFmJ4gBR7d45EtVnegr3CTMn4oZTukCQC8vR+B3baHZBYlsWh4yGJxSh13Sbc9KDXUmBKIJvYwGp0Y6WEmtTnbhvKA0HO98o7O0XiNTwfbzQKpfXmtxJesVHrC5A43P1m3N8uH3jwv4NOZ2/IOPBPUwi631CDEMklW42OzY3RKu9Gr6qAWm7OUmlx2s6PxrIwU2pUfHmcntAWIrUuMJ7ckv59dFVMKh8v4lhiNLwtkEZJm33ci4Fezy8Q5xpUeFQdBrIZ3ij7V6ubPVwVBp3cwUTZ0qUxp+agVxZcS+NWSjeaCqXxxThTMaHbL/ncQh29jXimv3DhopHz9fwRVOe/c3Ec5wKV8fVpcLLaFzMUIEEUq2e5Wi4TRK8pgiXa73glPLwSVsVuaX8eqOfrVjbN/lVGgRxM81eIjW8GnoG/rEtBtlP4XKjKf44lGS3bZhS44d238NNRk87bG0seM5ppQdTVkYJT/L3mY/hok7fZCvuhbWb/cXqLBp3G0DK1kBO04xGgr1uZbROErvMEDm9d6ym94TVWQjLxln2DJyiNHqIBurUPxpkVMM7vfRtXNi/oe7lRpj7xR0iXi9oLnlYzWh8zMZwOPwEBz2Y9dxbOZTCAxW2S4JZTvRg8vPciV76FOGUyX5FdXqNPZAwvF5q9Qos2XRp5cNVId3uOE/84fjFh+3GAfzG2D8j4grHctsrosanbfZumyucLwlfkBr9pr2LUmN+vOJutdEhCZ41+8fYPG4R/YjSCMaNLGfn3WvTHnVNkT5cz54zImJWJGliJu+ShF9zkxoUEEmFTWZISY3Hx+b3Xdw3kECxB7va4lzj53HAWNuiwiZJsGDaS22ilAQlUzl7xvGK16UIYntEcvMqpGUjfDIleD/CyLLS+EySmYOrU5jYrTmhwpB6N+lzbPQjNuF7USU18A7BJPcLW31hz8GpDl6oMgjbd4L4Mje9LqKSNQM6KTW8GfAjz53gPOIb5xWwWM+d4AcI/sbs2G3hNJeyJ6JEEd7PdLrLQfpaUuNxR+O9YpjC5VBpKNZfTRICWOFZJdOFNQ8BEG5RBC+2/h/QGgDvmRn/ZHaz+M9IdXoND2BMs5l68wDEzZRpTkB1+G/CwyEthz0Bi41LAEcykpGM5F+61HfnmTpCnQAAAABJRU5ErkJggg==" alt="income" class="w-6 h-6 md:w-7 md:h-7" >
+                    </div>
+                    <div>
+                    <p class="text-sm text-gray-500 font-medium">Ingresos hoy</p>
+                    <p class="text-xl font-bold text-green-600">${{ ingresosHoy }}</p>
+                    </div>
+                </div>
+            <p class="text-xs text-green-500 font-semibold mt-2">+ Ventas hoy</p>
+            </div>
+            
+            <!-- Pedidos entregados hoy -->
+            <div class="bg-white p-4 rounded-xl shadow border border-gray-100 flex flex-col justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-100 p-2 rounded-full">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD8UlEQVR4nO1bzU8TQRRfE+NHkEQ8GSU0oTMLQYMHBRKjUUH/BBIOaO1MIUHjFYkf0SP/ARcOnrwp3PTuRSXiSREvJmhC9r0FKmqMHqh5u10sW7bdnS1LrfNLXsL2zUzn/eZ9zGwHw9DQ0NDQqIzu4eUmJuEll1gIJ7CRylhHqS8TsODX02ekozbUNuy4NAeai5E0mIBH4Y0PZ2CHwGNBBFUeGx8na7y0slEmWPSAKerLBQwFthEw5LSRMBV5fGFdT8T4dG7lBBf4I/oEwxgXgqRg+cmz1qkdNb57eLmJS3inMLlQ7q2aB0pCYbFDYHPdxD1XMEw1D+x4PmBKca/g2nHywE7lg7Rq3CsZFSsPJJcPNP4ncHVXdCTqOLX+Xk1AXHDtAahDgOscgDoJcl0FUJdBHqMep3N4ukPgGS7QIgl6btgy6KFdrJwkCXpuWALaqxjuf24YAkyBAzxr93muTm5e6vr+Z6dt1r7cMATwXRJNQK3A62A1tQdIHQIFnQOkToIFXQWkLoMFPwlMwgcuYZI2XOYodtIvWF2DhX0NXwaZhDkzh/01M/RfIYAJ+G3m8KZhFPbQ/Lpk/ggTILiAWfIGJvG7K/Q3zNCvWm1j+ZbGIEDAalrgJZpX6+DSQS7hLpfwtXpfWGMSJ1KZTwdqQ4BwDzHpEeusc4DZRk/n+0C94sp7xrOc3colvlEY47X3A6w6AQIt/zF2i5HV9Iriur1rPJPwRX0sWIpEAvcNUPrWxoM5gj2V9M5xN87qS5ijmHfdPvrKb+cJocOBl69EP5d2r6ffdPUAPRlvZq1zMVffyfZuzMcPJ5cEvK1EAC9KXH3UCxaU7cMlvDKXX6MFSUu86P88lVk7XPcEcAmTNI5T6qKHzi/Pe0rD9K/YmbonwBQ44IwjYDYicRtpgVepLyU9Sn7beNcTZQJMiuscnFfVh5XOHJiuB+BipL4C7hWNb2YC31YKLyUCeELSdcM6VCTgW4R+09TnwoPCXi7weVA7JmG97gloHVw66BAgYd2vo8TmxPbWfcgzMrw49+lKYysRYI5gjxERscrgNft4UAh4cyle5CIS5r27gkzC/Wpj03khugdk7b6oBMTJBUzaV4oGzZTpS3adRIK3w6PkF+ayZawkyJOThxXvKvq23lQ1qPyFGztGGeQJCRPwfnMjJCAfRIK73bZ7A9uUScyNEE9QKNk5cxFwp2bEShyvajyBSXyx2wTQP0bQYYgOMHQwqoFXvVJ6N1APoKrABXxO7DhcjyADaBUVCJhvH11tMxoBKScccCJc0nNeiY2zWx/3G42GtrF8C12Rd16ACligLbMrsMAkPKVSFyrba2hoaBgaxh9oZ7BVTL9HIAAAAABJRU5ErkJggg==" alt="external-Delivered-logistics-glyph-bartama-glyph-64-bartama-graphic" class="w-6 h-6 md:w-7 md:h-7">
+                    </div>
+                    <div>
+                    <p class="text-sm text-gray-500 font-medium">Pedidos entregados</p>
+                    <p class="text-xl font-bold text-blue-600">{{ pedidosEntregadosHoy }}</p>
+                    </div>
+                </div>
+            <p class="text-xs text-blue-500 font-semibold mt-2">+ Completados</p>
+            </div>
+            
+            <!-- Cumplimiento objetivo -->
+            <div class="bg-white p-4 rounded-xl shadow border border-gray-100 flex flex-col justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-purple-100 p-2 rounded-full">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFFklEQVR4nO2ZW4hVVRiAt3QPukEXsitkQULN7PWfzLQSuk1CWS+W1XO9RWGFEoT1JGbl7LWOUycfei2LkBolH4q0ILEequmikxA4Tbb/f89kFqNjM+349z7HDues2z7uc5DwhwXnzJx1+dZ/3zsITsr/VIZuOHiBBHpQAq6XgrYqgXsk4KQCnFaCppTAMQn0jRK0TQG9qEQ8UIPJ84ITQaJ5o2dEgh5TgNulwBkFlBYZEvCoFLhFVWjZmiXpqba9GL50gFcX7j9LAa6UgONFD2+BGpcCH9+8PD1FB8G/KRVCVnCpAtpXFkDbEDiyMUyub4UoDYTNSAFFXQP4b2xumFkzRCkggzf/dokC+qoHEKkJQjOK+cyGvgNXS6CfegGhmm69VAjWRC8hFNARD5BiEG8t+fnMoubEIVgC7eCIFolk4dCNBy6uQXoaR7loQXK5CiduyaJdnmf+boWQFVzKe/O8UiBYJOCQNwQnPMC1Uf+vF/mu/xrgpXwwCfRnG4TAkXIg8hDrpwWgd17vSy4LOhQV0tyoEi9qgxA4wt+bf8uBIOpP5hdIdj55Amcl0OqgJPGBUEBvS4Hf6ZJmm7AN+0BUBT7UbQiZW8YRjSk/4Ux6PmVHLzQhTRD1csZam+UFoNsnXIdTkNwtgTZxBayA/lIC/2CTkEC1hj9YISBebII4Niq0zHIA3O6KTjbHVjfhdXn4NecJbXRq8QkV0tx6NLOF+i3mfsJZiuNaE0Q1xNvz/uP4IBoigV6yWwYe1fYz3BQ5bmDGlCdyTZQH0dCKJmm2WEg8ELSKAnzF4Rs7AoOUYU7adQVtdfhse5JUQMMOs1ppcuzjgaiG8b1cumjXFvSsw2e36UBGbZO4djJoY1OnEPx/KeiwEviGfu14sUMjX2vUiIkVxOQfeYjVzVnlBZGb7be6tTdWJq6wawTHNBrBadukNfPT0w0gh3S/56Iwv1X80gZRj0AHdWvXYPxsh2lN9QxEAX7B7YAJog55yNJepzYf7Lpp6coYU9khAX+wtNipaUgg0oDQXiu9KbIAvamfk2l4VZYP8ky92lh2dOzs+GPh8CuBntFuVknucqjfOaSgO7RrC3rOAfKBhh7XOzbcqdssuwRBn3YOgh9b1v3c7uy4rm1SFegB+63hjCkTD/bjtUrgRHFNYBJBfI3ZP3DWAXJf28QNfb+f7ywadTfQ0KjA24rAMEQV4luN64HdQrhojBYk5xom00d2EJriJGXavBrG8xTgJz7mZNIEyyBMXtkWotvHcGASBfSo8xCC3k2DdI5xkQyI7uQmisMq9xV5b4Hfc3QyOXZD0iCdIwHfd56jgitcre4vHmbxfNAlkYAvuC8Tx0wJ+pgogU97mMasDPHhsiFUBVc4HTwb8ZPOxbKywFwINjvbP9wPuMzMR3iNLHmCDwSN8hn9bkbEA/7Rh96zBQCXZI7t4xOQXx4n4EIbSMBqAZjDCvBljv3FHpBn7xtd0SltGlHhm8ocX+DuAps0nj5+xp0dP/bhw7JT8uDP/Les7MgytpcZpU3a2OV0cJPUYPxCH3/pwdhXRNvGFz2uNribQwraWw0nrwrKEK6xiptZCRCAu4q8qij0MrQednsAQTXvMNsRECT3dNXUBO4pHGI7hsmT5lNcKpTnC7ifM3ZXtWADkoCPGN4J+tw+zxnm0qTj0Fq2cG8QhXQ/J0YJ9CH30/kDDe7dcZo/czXM7Sn3NdwUrVtE55R+kJMSnBjyL/Qpk/BG1XlKAAAAAElFTkSuQmCC" alt="goal--v1" class="w-6 h-6 md:w-7 md:h-7">
+                    </div>
+                    <div>
+                    <p class="text-sm text-gray-500 font-medium">Cumplimiento diario</p>
+                    <p class="text-xl font-bold text-purple-600">
+                        {{ getPorcentajeObjetivo() }}%
+                    </p>
+                    </div>
+                </div>
+            <p class="text-xs text-purple-500 font-semibold mt-2">vs objetivo diario</p>
+            </div>
+        </div>
+      <!-- Indicadores clave: Pendientes, Comparativa -->
+      <div class="w-full mt-6">              
+            <!-- Comparativa de hoy vs ayer -->
+            <div class="rounded-2xl border border-gray-200 bg-white p-6 h-full">
+                <div class="mb-4 flex flex-col justify-between sm:flex-row sm:items-center">
+                  <h3 class="text-lg font-semibold text-gray-800">Comparativa con ayer</h3>
+                </div>
+              
+                <div class="grid rounded-2xl border border-gray-200 bg-white sm:grid-cols-2 xl:grid-cols-3">
+                  <!-- Pedidos completados -->
+                  <div class="border-b border-gray-200 px-6 py-5 sm:border-r xl:border-b-0">
+                    <span class="text-sm text-gray-500">Pedidos completados</span>
+                    <div class="mt-2 flex items-end gap-3">
+                      <h4 class="text-xl font-bold text-gray-800">
+                        {{ pedidosHoy }}
+                      </h4>
+                      <div>
+                        <span
+                          class="flex items-center gap-1 rounded-full py-0.5 pr-2.5 pl-2 text-sm font-medium"
+                          [ngClass]="{
+                            'bg-green-100 text-green-700': deltaPedidos >= 0,
+                            'bg-red-100 text-red-600': deltaPedidos < 0
+                          }"
+                        >
+                          {{ deltaPedidos >= 0 ? '+' : '' }}{{ deltaPedidos }}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              
+                  <!-- Ingresos -->
+                  <div class="border-b border-gray-200 px-6 py-5 xl:border-r xl:border-b-0">
+                    <span class="text-sm text-gray-500">Ingresos</span>
+                    <div class="mt-2 flex items-end gap-3">
+                      <h4 class="text-xl font-bold text-gray-800">
+                        ${{ ingresosHoy }}
+                      </h4>
+                      <div>
+                        <span
+                          class="flex items-center gap-1 rounded-full py-0.5 pr-2.5 pl-2 text-sm font-medium"
+                          [ngClass]="{
+                            'bg-green-100 text-green-700': deltaIngresos >= 0,
+                            'bg-red-100 text-red-600': deltaIngresos < 0
+                          }"
+                        >
+                          {{ deltaIngresos >= 0 ? '+' : '' }}{{ deltaIngresos }}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              
+                  <!-- Tiempo promedio -->
+                  <div class="px-6 py-5">
+                    <span class="text-sm text-gray-500">Tiempo promedio</span>
+                    <div class="mt-2 flex items-end gap-3">
+                      <h4 class="text-xl font-bold text-gray-800">
+                        {{ tiempoPromedio }} min
+                      </h4>
+                      <div>
+                        <span
+                          class="flex items-center gap-1 rounded-full py-0.5 pr-2.5 pl-2 text-sm font-medium"
+                          [ngClass]="{
+                            'bg-green-100 text-green-700': deltaTiempo <= 0,
+                            'bg-red-100 text-red-600': deltaTiempo > 0
+                          }"
+                        >
+                          {{ deltaTiempo > 0 ? '+' : '' }}{{ deltaTiempo }}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>                           
+        </div>
+    
+      <div class="flex flex-col lg:flex-row gap-4">
+        <!-- Gráfico pastel -->
+        <div class="bg-[#fffefc] p-5 rounded-2xl shadow-md w-full lg:w-1/2 border border-[#f5ede6]">
+            <h2 class="text-lg font-bold text-[#8B5E3C] mb-4 text-center">Distribución por tipo de entrega</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div class="space-y-2">
+                <div class="flex items-center justify-between bg-[#fcf7f2] p-3 rounded-xl border border-[#ecdccf]">
+                <span class="text-sm font-semibold text-[#8B5E3C]">Tienda</span>
+                <span class="text-sm font-bold text-[#A67B5B]">{{ tipoEntregaData.datasets[0].data[0] }}</span>
+                </div>
+                <div class="flex items-center justify-between bg-[#fcf7f2] p-3 rounded-xl border border-[#ecdccf]">
+                <span class="text-sm font-semibold text-[#8B5E3C]">Delivery</span>
+                <span class="text-sm font-bold text-[#D6A679]">{{ tipoEntregaData.datasets[0].data[1] }}</span>
+                </div>
+                <div class="flex items-center justify-between bg-[#fcf7f2] p-3 rounded-xl border border-[#ecdccf]">
+                <span class="text-sm font-semibold text-[#8B5E3C]">Mesa</span>
+                <span class="text-sm font-bold text-[#A3B899]">{{ tipoEntregaData.datasets[0].data[2] }}</span>
+                </div>
+            </div>
+            <div class="w-full h-64 flex justify-center items-center">
+                <canvas baseChart
+                [data]="tipoEntregaData"
+                [options]="tipoEntregaOptions"
+                [type]="tipoEntregaChartType"
+                class="w-full max-w-[240px]">
+                </canvas>
+            </div>
+            </div>
+        </div>
+  
+        <!-- Turnos de hoy -->
+        <div class="bg-[#fffefc] p-5 rounded-2xl shadow-md w-full lg:w-1/2 border border-[#f5ede6] max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#B6855D]/60 scrollbar-track-[#f5ede6]">
+            <h3 class="text-md font-bold text-[#8B5E3C] mb-3 text-center tracking-wide">TURNOS DE HOY</h3>
+            <div *ngIf="turnosHoy.length > 0; else noTurnos" class="space-y-3">
+            <div *ngFor="let turno of turnosHoy" class="p-3 bg-[#fcf7f2] rounded-xl border-l-4 border-[#B6855D] shadow-sm">
+                <div class="text-sm font-semibold text-[#8B5E3C]">{{ turno.name }} <span class="text-xs text-gray-500 font-normal">({{ turno.role }})</span></div>
+                <div class="text-xs text-gray-500 mt-1">{{ turno.start_time }} - {{ turno.end_time }}</div>
+            </div>
+            </div>
+            <ng-template #noTurnos>
+            <p class="text-gray-400 text-xs italic text-center">No hay turnos registrados para hoy.</p>
+            </ng-template>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Columna derecha -->
+    <div class="flex flex-col gap-2">
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#d1fae5] to-[#6ee7b7] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+            <div class="bg-[#059669] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACWklEQVR4nO2ZO2gUURSGr/gKgqxgE3UD4qOwV4QIYsBWsJJAMBZa2BrQQsR0PsBGsLNQCCiJoJVNbMzDRyWoEAMiaDAIvjCCxOd+csk/eneyuwY8d7MX5oNlmX93z7nf7sydO7POFRTUBHgI3HcpA6xhjo8uZYCDErnnUgXoBr5IpCfJXQ04x18uAUuUtyt771od4IAG+xU4GuRrgXG9NuRanWCwh4NsA/BC+Wtgo2t1/AylAZeC7JqyR17KpQAwBozmsncSWe9ShhpyBQV18Gdr7BhziwXGuEKkAcBK4DTwHJjV8ymgLZlfhDmJevv/SCyRHNPAWWBFo4FuAQaBtzoLDwE3gE/afqpiL4EuYBWwR9t/vjmaw5lGEl5gIXTlPrsdmIkl4qp7dSqerieSrXluA2WgA7ioR1mPy8BAtvRu8MvGFGlTPJtvulm7zw+9oez+k8gi6xS/CcNNwIfgMyZrnsgi2xQ/C8PrCoe9lIVEE0R2KX5gvYSY1zBWXQ9wSPFgtOmxSSLnFfenLjKueF+yIsBq4Ltm2FJ47RyrYay6R6qWQ8AT62a5huZ1gaXA46qbesBN62ZNEDmuzVd+8Zo16rVuFlMEOAn8BCrA3vDIL+laIhURzy/gWDiDZc0uYM9y1f5mWLMC3AJ2z5MI/p/Ibo5Z0a7aU4Y1p2oK5GT2y9iKTtW9Y1hz+J8iatpv2PSEavYZ1uxbkEhBKwCMkD53vcgE6TMRXpykTK8XWQZMki6T3iE7TnYCn0mPGWBH/qDfClzVbUjLE6M1FY3xir+RuEhzZEGBS43f4mP/D6rrA9kAAAAASUVORK5CYII=" alt="food-bar" class="w-6 h-6">            </div>
+            <div>
+              <p class="text-lg font-bold text-[#059669]">{{ pedidosEntregadosHoy }}</p>
+              <p class="text-sm text-[#059669] font-semibold">Completados hoy</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#fde68a] to-[#fbbf24] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+            <div class="bg-[#D97706] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE+UlEQVR4nO2aa4hVVRTHx1FnGoPMXpZa2QQllkEPeiiWVFBRVhY90B5kU0FJKmoPelDRl7Q+lRRRH6svgdFLQ4tyKFKappxKK2/0ULOcLMqc1JFfrMt/y/J0z5lzzzn3egP/cGD2a+39n73X2mutfZua9qO2AM4A3gU2AW8C4+o18SHAlcCTwFvAOmArsAPYDvwEfA68DTwCXAQMj5E1BviDvbEBOLhWiz8AuBFYDuymMnbqi2t7DbgcGOLkzlb7EmAU0KnydUUTaAPma9sD/gReB+YCFwBHAy1uzFDgGLXNU99tbvxG4DZgMLBIdfM11nbZMK9IEpcB37kFrARmAMNi+huBoTFtBwLTgQ+dvC+A9yJE9iJWxC487yb8CJjs2puBicDD0oOS9MMfo/Vqewg4Bxjkxk8GVkWOXrFEgKOAbgn7C7jdFu6U3Bb/PdXDxjxoMiRrkGRvK5wI0K7/btj2shkEWrUII5YXJuN+kynZJwBfFUZEO1FyulA2f8Apmqho9AATNMcI4NzcRKQT4TiZ+WtT/bW6FwaEk1UNtgNXRdaSi0hQ7C/dTnQk3BdZiLwMnAWcHvlOjRiCQOTFLCYWKd141V1TDYmURG5OuZ5F6m/zT6zmSIV74k7VnQz8XQ2JlET6gE9SfJsjetSShojd2IbVuhtaZK2oAZGsmJ3Gdwpux4WquzfrbAUT2ehclfXhHosjYg6gYZXKwyt4ofuCyG7ziCXrY9VNTSJiXqxhZt7dqMGO3CdZN6i8LI6EuRr9suMHyV34uoGIlNwpCaHBf+MTYJoGLFf5tLwzF0wEd+tb5Ej04gyTBUV6QOUFNB6RBZJnEabhiUpELDzdo0TAqw1I5CXJuzpWT4Bv1HiiynbxNBqRNZI3XuV1lYj0qjHEBr81IJHNkjdS5d8rEQnRXPn6j0R3WbDCyV5BMfjHxUKGnfUg0u5kH08x6HMeyB5icUfr0Eg5C372CQdlVIrAr5J3uMpbkpT9JJW7c5AI4fAQkVhaEJEuyZ2QpOyWljRMU/mVnCTGqUwNze8bSRfioyrf3WAkDHdJ/uPlEiysRMTytoaVEVvdKCT8HWc5tcoesLIW/XLGDlPdZzQOiS7NcQSwS1/FJLh1ekeDZqk8q0FI+LA7HPmlFUlEfP0eufHDgF+Ix9N1IrFJd0ezsjqG6WlD3WC97hhgkmdqTMLQEbFWG0JWMomMpfwNa5V4aHbKtS/QqTW0ukBvTiIJlw4qRWKTsXp9qjd67U1Fa7BEueFbOzkDEtGgSzXILNjZqjvffJs6kugDpmjuSbJShotTkXBkntPAH4DRqruiTmT6bC73nmjvj4bFVZFwim9ZPsMaF6dMyelQDoQtwHkuIdLjEobJCp5A5kglw5DAsDPmCH5QAxLvu/zVGJfhNL0YmYlE5KEnkLEtnqR6u2ducdueBz9aQhtl4PUMZyYWzX1cLhKRnemS4F3KYpQth0x0R0YTbWNudcFcG/CYU+zVuXciRmeedYuw7b7enpNdn7Fa2Auy/yWZ7a36u1NtM4Fj3bjBet0tOfmLM+tESkKXuKOGAjLLgY3KIGs0cI8L6sI/qDoTm3N35ipD7hPNnwJPKRl+pvRrhL521d2kPt2RhyOTNSf1ZVcwoVY5mssUAlSLfoXBM2p6jKqBJZT1m5KFFoLKV+tVNmaH/l6rn25Yn6mx8cR+NP3/8S83clOkQWfgVQAAAABJRU5ErkJggg==" alt="time_2" class="w-6 h-6">
+            </div>
+            <div>
+              <p class="text-lg font-bold text-[#D97706]">{{ tiempoPromedio }}</p>
+              <p class="text-sm text-[#D97706] font-semibold">Tiempo promedio (min)</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#d9f99d] to-[#a3e635] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+            <div class="bg-[#65A30D] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABp0lEQVR4nO2Yy0rEMBRAA4o4Iii6EUXnK3x8iztxFrpVceXjcxQ3o/6DjIoP3A2M+NgMuNN5iLsj0SxKzbSdNk6TkgOFQpv2ntybNKkQnoIDlIBV4Ax4Bb7UIc/PgQ1gQtgKMARsA+/E0wIOgFFhE8A8cEH/3Mq2wgaAOeCZ9Mi2s4MIdBqoqJqvAx2gCzwCR8A92ZHPOFbP7Kp3yHedAuvAVBaBMVXHsp7zpgXsy5jSlMsN9vEAlJNKLABN7KUZO0GocjJR8//NXWSZAYe4w17U7GTDwE7Kh3Y2U1Osa6zpROR3wjWqOpEG7lHXibRxj7ZO5BP36OhE5H7BNZ50IlXc40Qnsol7VHQik2r57NIHcfyPiINLlF2tRODHgVyQ2c4lMNJTRMmUgRfspZF4a6w2VtfYRw2YSSQRkBkGdoC3vKPnN4Yt+cupLwnNuIljEVg2fC1IKbVASCaSqPvSXgtiRMKLuJgRYAlYSRFsz3Z5iUSRKFgXRDIjvEiI7H3qM/KDMAVFEfHYBkUpLbyIGYTPSAhDHeszIkxRpIxc5ehRMybiEYPjG4EgBt+zro8sAAAAAElFTkSuQmCC" alt="chef-hat" class="w-6 h-6">
+            </div>
+            <div>
+              <p class="text-lg font-bold text-[#65A30D]">{{ trabajadoresEnTurno }}</p>
+              <p class="text-sm text-[#65A30D] font-semibold">En turno ahora</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#cffafe] to-[#22d3ee] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+            <div class="bg-[#0891B2] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACdElEQVR4nO2aPW8UMRCGvaQAlEtHjSIQSpQ2BTU0XEJDAbQcFIifABVKi6CIjoaW+kTBH4iEQEAFHRARhWyAhgIJaJCiPGjIHOfbbLyfNnuwr7TFjT2efcY+23M6YzIETAHLQB94BrwHfujzFlgDVoBFIMoaLyNWF9hmpFhsVcYcDnwEeEd+vQEulgVi78WTiusCWdfM3wHOAieAaX3mgHPAKvDBCv4cmC0R77cO+pzlfAvYIUUFX+IQ0LOy+gU4M3EgQ+lMDaggMxrLpc/AhT+BLafjwNc8IMBLWT6O9gi46xlE9CltWcjuI3qcA8TZbsEMPIOQDHrZmq5jdYBYyywOAsJe5l6p/Yba5DuzUxVE+17Fo4wV6LTaPgKHrQ3gZk0gcqBuhQC5rbZ+nhcrCqL9+yFA1tR23iPIUgiQDbWd9AgyFwLku9o6BV5sV30Wcvaf0f4/jS8B3zTITAGfp+ojN+ArTQFZ1yCnCvgcBR5YM/xQzgxH//mQX/ZuiST0dFZELxz9lkOArKhttSiI+i8Ar4Enf3v7XVSb1BNTZWByHIhxCJBICydRzwPINV8QomQwKU/RzE3XCNFJ1OC1yyQCRlqeolfvSj8iWGM+OjDoqF9mm0tpTrNanqJFUVQR4p6OtRsURCQ1ttVnUGaZ6XIam4ngIKJEP7naX8+zm2mVeQnYLBI0FMhQW3oWdPWU7ugzrzfb+3m22CaANFamBaH8Emnc0jItyH61M6JKyc14hlxy+flo8wbSJJkWhH9oaZkWZL/aGVGl5GY8Qy65/Hy0eQNpkkwL0jCZdkYaJvM/zMg2k6PYBbI0ITBxLX+BamX86BcSPRT9k4GCXAAAAABJRU5ErkJggg==" alt="reservas-futuras" class="w-6 h-6">
+            </div>
+            <div>
+              <p class="text-lg font-bold text-[#0891B2]">{{ reservasFuturas }}</p>
+              <p class="text-sm text-[#0891B2] font-semibold">Reservas futuras</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 bg-gradient-to-br from-[#e0e7ff] to-[#c7d2fe] rounded-2xl p-4 shadow-lg w-full max-w-[220px]">
+            <div class="bg-[#4338CA] bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADQ0lEQVR4nO2ZS0gVURjHJ1+hpokUWWErRbJN0GNh0qJaFEZKRVBQ7TNbBNGmRe+CCnpAmzbtKulBVBBEJRpZkCURaAQFlrXoZWbRovzF6X7G4TJnHvfOmXsv3D8M3Mt3znf+vzkzZ+Z84zh55bCAFuAd9vUWWGUTRA0Ql4byIH5S0x3TrAwBK9M1OxnoAB4BY8Ao8BDYBhSnlTycj2KgHegVD2PyeztQ4td5NtDvcab6gJoYIGqApx4+VGyW10xMQAwArUCFHG3AIPFrwMNHn+vMADu0zlUu8aqYYQYC+Gh3A3kswVaPKV8bI0hrAB+9bsHvEqzwSFAZI0hFAB+jbkG1MihVmhJIuzgur0EfD1O9QJ5LcJlPkmshTe3V+gbVVR8PK6Rdv1vwhAQv+CQ5FcLQDaAsBZCTPh4uSbtjbsF5wLgcCz2S7ApgZI9bjhAgOz3GXyQe/wBzTY06JVE3UGhosy6AkQWGvkHVZuhfCDzwvXKAWmBEGh40tGkIYOSOnJROffUJAVJnGPuwxL+qtxAjiDReo01di+Gs/AxhalpIkDGgwMfXak8IrdMBSfoDaHKJP7EI0usy3mLtOfd/FQwCUqDdL5+AxqT4WYsgZ5LGahQPShfdZssPpgS4JQnU9rZei22yCLJBa1+vba1vpryNAEqBe8kwwByLIDNdIJSH0pQgtMHLgfsazL8VBXhtAWRQ2tVpEGrs8rQgNANlwF1J/EE9iIDTFkCOJ0H0AFMigUiamS4ZQO3btxC9Nmo1ga7IZsIAo576Ss+AXxFCqOfHxLLebQ1Cg6kGXmFPb4DpViE0mGaLIM2xQAjIEhlU3ZQvIjCvCgnD8rspLgi1kkxoP7A5ApD1wCHtf09cIMMysCqiFcl1nU61pEByHQHeq5vdOogBTlUhU9VWJ1tEorj3MgUIVRAscrJJwHLZLwTVb/V67mSjgKMhQHY72SoSN/6VABDngUlONovE6nPOADAuZadwm6NMSn2oAW4DX4CPwHVgqZNLAqo9YjOcXBGJPfY+YL7sZcqlsKYWgxEnV4SPnFwReZAMSUqsl7VvK6loVD5VNGQS4jPRSS3TtZkAUTMRtTozAZLO5WTSt9hB8nLs6C/URGTE93otaAAAAABJRU5ErkJggg==" alt="trophy" class="w-6 h-6">
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-[#4338CA] mb-1">Top productos del día</p>
+              <ul class="text-xs text-gray-700 space-y-1">
+                <li *ngFor="let prod of topProductosHoy">
+                  <span class="font-medium text-[#4338CA]">{{ prod[0] }}:</span> {{ prod[1] }}
+                </li>
+              </ul>
+            </div>
+        </div>     
+    </div>
+  </div>
+  
