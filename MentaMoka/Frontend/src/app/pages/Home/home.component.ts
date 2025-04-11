@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   cafesTop: Product[] = [];
   comidaTop: Product[] = [];
   products: Product[] = [];
-  
+
   @ViewChild('categorySlider') categorySliderRef!: ElementRef<HTMLElement>;
   sliderCategory!: KeenSliderInstance;
   @ViewChild('productSlider') productSliderRef!: ElementRef<HTMLElement>;
@@ -42,7 +42,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
-
+  
+  @ViewChild('novedadesSlider') novedadesSliderRef!: ElementRef<HTMLElement>;
 
   selectedProduct: Product | null = null; 
   selectedSize: 'normal' | 'mediano' | 'grande' | '' = '';
@@ -71,6 +72,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private viewportScroller: ViewportScroller
   ) {}
 
+  novedades: Product[] = [];
+
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
@@ -79,23 +82,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
         .filter(p => p.stock && p.stock > 0)
         .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
   
-      // Filtrar cafés
       this.cafesTop = topVendidos.filter(p =>
         p.category?.toLowerCase().includes('café') ||
         p.category?.toLowerCase().includes('cafés')
-      );      
+      );
   
-      // Filtrar comida
       const categoriasComida = ['bagels', 'ensaladas', 'para comer', 'dulces'];
       this.comidaTop = topVendidos.filter(p =>
         categoriasComida.includes(p.category?.toLowerCase())
       ).slice(0, 6);
+  
+      // 🆕 Novedades (últimos 5 productos creados)
+      this.novedades = [...data]
+        .filter(p => p.stock && p.stock > 0)
+        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+        .slice(0, 5);
     });
   
     this.categoryService.getCategories().subscribe(data => this.categories = data);
     this.loadIngredients();
     this.loadSugerenciasPublicas();
   }
+  
+
   
 
   async loadSugerenciasPublicas() {
@@ -276,11 +285,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(waitForComida, 100);
       }
     };
+
+    const waitForNovedades = () => {
+      if (this.novedades.length > 0 && this.novedadesSliderRef?.nativeElement) {
+        new KeenSlider(this.novedadesSliderRef.nativeElement, {
+          loop: true,
+          slides: {
+            origin: 'center',
+            spacing: 10,
+            perView: 4,
+          },
+          breakpoints: {
+            '(max-width: 768px)': {
+              slides: { perView: 2, spacing: 10 },
+            },
+            '(max-width: 480px)': {
+              slides: { perView: 1.3, spacing: 8 },
+            },
+          },
+        });
+      } else {
+        setTimeout(waitForNovedades, 100);
+      }
+    };
   
     waitForCategories();
     waitForCafes();
     waitForComida();
-  
+    waitForNovedades(); // 🆕
+
+
     // 🌀 Scroll suave si hay un fragmento en la URL (como #top-cafes)
     this.route.fragment.subscribe(fragment => {
       if (fragment) {

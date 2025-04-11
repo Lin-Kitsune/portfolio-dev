@@ -38,6 +38,7 @@ export class ProductListComponent implements OnInit {
 
   milks: string[] = [];
   sugars: string[] = [];
+  mostrarNovedades: boolean = false;
 
   constructor(private productService: ProductService, private cartService: CartService, private firestore: Firestore,  private route: ActivatedRoute) {
     const categoriesRef = collection(this.firestore, 'categories');
@@ -45,29 +46,33 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Leer categoría y término de búsqueda desde query params
     this.route.queryParams.subscribe(params => {
       const categoriaParam = params['categoria'];
       const buscarParam = params['buscar'];
+      const novedadesParam = params['novedades'];
   
       if (categoriaParam) {
         this.selectedCategory = categoriaParam;
       }
   
       if (buscarParam) {
-        this.searchQuery = buscarParam.trim(); // ✅ asigna el término de búsqueda
+        this.searchQuery = buscarParam.trim();
       }
   
-      // Cargar productos y aplicar filtros
       this.productService.getProducts().subscribe((data) => {
         this.products = data;
-        this.applyFilters(); // ✅ aplica filtros con categoría y/o búsqueda
+  
+        if (novedadesParam === 'true') {
+          this.filteredProducts = this.products.filter(p => this.esNuevo(p));
+        } else {
+          this.applyFilters();
+        }
       });
     });
   
-    // Cargar ingredientes (leche, azúcar)
     this.loadIngredients();
   }
+  
   
 
 
@@ -80,20 +85,22 @@ loadIngredients() {
   });
 }
 
-  applyFilters() {
-    this.filteredProducts = this.products.filter(product => {
-      const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
-      const matchesMinPrice = this.minPrice !== null ? product.price >= this.minPrice : true;
-      const matchesMaxPrice = this.maxPrice !== null ? product.price <= this.maxPrice : true;
-      const matchesSearch = this.searchQuery.trim() !== '' 
-        ? product.name.toLowerCase().includes(this.searchQuery.toLowerCase()) 
-        : true;
+applyFilters() {
+  this.filteredProducts = this.products.filter(product => {
+    const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
+    const matchesMinPrice = this.minPrice !== null ? product.price >= this.minPrice : true;
+    const matchesMaxPrice = this.maxPrice !== null ? product.price <= this.maxPrice : true;
+    const matchesSearch = this.searchQuery.trim() !== '' 
+      ? product.name.toLowerCase().includes(this.searchQuery.toLowerCase()) 
+      : true;
+    const matchesNovedades = this.mostrarNovedades ? this.esNuevo(product) : true;
 
-      return matchesCategory && matchesMinPrice && matchesMaxPrice && matchesSearch;
-    });
+    return matchesCategory && matchesMinPrice && matchesMaxPrice && matchesSearch && matchesNovedades;
+  });
 
-    this.applySorting(); // 🔹 Aplicamos ordenamiento después de filtrar
-  }
+  this.applySorting(); // 🔹 Aplicamos ordenamiento después de filtrar
+}
+
 
   applySorting() {
     if (this.sortBy === 'price-asc') {
@@ -179,4 +186,15 @@ loadIngredients() {
     this.cartService.addToCart(item);
     console.log('🛒 Producto agregado sin personalización:', item);
   }
+
+  esNuevo(product: Product): boolean {
+    if (!product.created_at) return false;
+    const fechaCreacion = new Date(product.created_at);
+    const hoy = new Date();
+    const diferenciaDias = (hoy.getTime() - fechaCreacion.getTime()) / (1000 * 60 * 60 * 24);
+    return diferenciaDias <= 10;
+  }
+  
+  
+
 }

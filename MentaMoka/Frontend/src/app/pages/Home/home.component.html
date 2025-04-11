@@ -190,6 +190,77 @@
 </section>
 
 
+<!-- NOVEDADES -->
+<section class="text-center mb-16 container mx-auto px-4">
+  <h2 class="text-3xl font-bold text-[#7C4F34] mb-2">NOVEDADES</h2>
+  <p class="text-gray-600 text-sm mb-10">¡Recién salidos del horno!</p>
+
+  <!-- Escritorio (Carrusel) -->
+  <div class="hidden lg:block px-4" #novedadesSlider>
+    <div class="keen-slider flex overflow-hidden">
+      <div class="keen-slider__slide flex-shrink-0 w-[220px]" *ngFor="let prod of novedades">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-4 flex flex-col justify-between text-center relative">
+
+          <div class="aspect-square w-full rounded-lg overflow-hidden mb-3 relative">
+            <img [src]="prod.image_url" alt="{{ prod.name }}" class="w-full h-full object-cover" />
+            <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow z-10">
+              NUEVO
+            </span>
+          </div>
+
+          <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+            {{ prod.name }}
+          </h3>
+
+          <div class="flex justify-center items-center gap-2 mt-2">
+            <p class="text-[#A67B5B] font-bold text-sm">
+              $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+            </p>
+            <button (click)="openModal(prod)"
+              class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+              style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+              COMPRAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Móvil -->
+  <div class="flex lg:hidden flex-wrap justify-center gap-6">
+    <div *ngFor="let prod of novedades" class="w-full sm:w-[47%] md:w-[30%] max-w-xs">
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition px-4 py-4 flex flex-col justify-between text-center relative">
+
+        <div class="relative">
+          <img [src]="prod.image_url" alt="{{ prod.name }}" class="h-36 w-full object-cover rounded-lg mb-2" />
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow z-10">
+            NUEVO
+          </span>
+        </div>
+
+        <h3 class="text-sm font-semibold text-gray-800 min-h-[3rem] flex items-center justify-center">
+          {{ prod.name }}
+        </h3>
+
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <p class="text-[#A67B5B] font-bold text-sm">
+            $ {{ prod.sizes[0].price || prod.price | number:'1.0-0' }}
+          </p>
+          <button (click)="openModal(prod)"
+            class="text-sm text-white px-3 py-1 rounded-full transition hover:opacity-90"
+            style="background: linear-gradient(to bottom right, #5A3E33, #3A2A25);">
+            COMPRAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
   <!-- ✅ Modal flotante fuera del *ngFor -->
 <div *ngIf="selectedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
   <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">

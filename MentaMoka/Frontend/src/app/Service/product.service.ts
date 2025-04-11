@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, query, addDoc, doc, updateDoc, deleteDoc, getDoc, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, query, addDoc, doc, updateDoc, deleteDoc, getDoc, getDocs, orderBy, limit } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { InventoryService } from './inventory.service';
 import { Product } from '../models/product.model';  // 🔥 Importa desde aquí siempre
@@ -147,6 +147,20 @@ async updateIngredientStockAfterSale(product: Product): Promise<void> {
 getProductoConIngredientes(productId: string) {
   const productoRef = doc(this.firestore, 'products', productId);
   return getDoc(productoRef).then(doc => doc.data());
+}
+
+getUltimasNovedades(): Promise<Product[]> {
+  const productosRef = collection(this.firestore, 'products');
+  const q = query(productosRef, orderBy('created_at', 'desc'), limit(5));
+
+  return getDocs(q).then(snapshot => {
+    return snapshot.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      } as Product;
+    });
+  });
 }
 
 }
