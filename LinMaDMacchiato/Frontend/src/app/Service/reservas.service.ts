@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, setDoc, collection, collectionData, updateDoc, addDoc, query, where } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, collection, collectionData, updateDoc, addDoc, query, where, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Reserva } from '../models/reservas.model';
 import { FirebaseAuthService } from './firebase-auth.service';
@@ -72,4 +72,17 @@ export class ReservasService {
     const q = query(reservasRef, where('date', '==', date), where('time', '==', time));
     return collectionData(q, { idField: 'id' }) as Observable<Reserva[]>;
   }
+
+  // Actualizar una reserva existente
+actualizarReserva(id: string, data: Partial<Reserva>): Promise<void> {
+  const reservaRef = doc(this.firestore, 'reservations', id);
+  return updateDoc(reservaRef, data);
+}
+
+// Eliminar una reserva
+eliminarReserva(id: string): Promise<void> {
+  const reservaRef = doc(this.firestore, 'reservations', id);
+  return deleteDoc(reservaRef);
+}
+
 }

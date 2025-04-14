@@ -108,8 +108,11 @@ export class AppComponent implements OnInit {
   }
 
   removeFromCart(item: CartItem) {
-    this.cartService.removeFromCart(item.id!, item.size ?? '', item.selectedOptions ?? {});
+    const size = item.size ? item.size : 'default';
+    const options = item.selectedOptions ? item.selectedOptions : {};
+    this.cartService.removeFromCart(item.id!, size, options);
   }
+  
 
   clearCart() {
     this.cartService.clearCart();

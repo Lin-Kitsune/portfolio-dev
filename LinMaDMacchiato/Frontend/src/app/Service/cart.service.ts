@@ -72,17 +72,22 @@ export class CartService {
   
   async removeFromCart(
     productId: string,
-    size: string,
-    selectedOptions: { [key: string]: string | undefined }
-  )
-   {
-    this.cart = this.cart.filter(item =>
-      !(item.id === productId &&
-        item.size === size &&
-        JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
-    );
+    size: string = 'default',
+    selectedOptions: { [key: string]: string | undefined } = {}
+  ) {
+    this.cart = this.cart.filter(item => {
+      const sameId = item.id === productId;
+      const sameSize = (item.size || 'default') === (size || 'default');
+      const sameOptions =
+        JSON.stringify(item.selectedOptions || {}) === JSON.stringify(selectedOptions || {});
+      
+      // Solo removemos si todas coinciden (por eso usamos !sameId || !sameSize...)
+      return !(sameId && sameSize && sameOptions);
+    });
+  
     await this.updateCartInFirestore();
-  }  
+  }
+   
 
   async clearCart() {
     if (!this.userId) return;
