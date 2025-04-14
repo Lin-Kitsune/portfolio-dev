@@ -6,78 +6,130 @@
     <span class="text-gray-500">Reservas</span>
   </nav>
   <!-- Barra de búsqueda y botones (como en la página de productos) -->
-  <div class="flex justify-between items-center mb-4">
-    <!-- Buscador -->
-    <input 
-      type="text" 
-      [(ngModel)]="searchQuery" 
-      (input)="applyFilters()" 
-      placeholder="Buscar reservas..."
-      class="p-2 border rounded w-1/3 focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
-    />
+  <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
 
-    <!-- Botones para Reservar y Ver Calendario -->
-    <div class="flex gap-4">
-      <button 
-        (click)="toggleModal('reserva')" 
-        class="bg-verdeSalvia text-blancoAlgodon py-2 px-6 rounded hover:bg-greenDark focus:outline-none"
+    <!-- 🟢 Botón "Hacer una reserva" (Izquierda) -->
+    <button
+      (click)="abrirFormularioReserva()"
+      class="flex items-center gap-2 bg-verdeSalvia text-white py-2 px-6 rounded-lg hover:bg-greenDark shadow-sm hover:shadow-md transition duration-300 font-semibold"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Hacer una Reserva
+    </button>
+  
+    <!-- 🔽 Filtro de orden (Derecha) -->
+    <div class="flex items-center gap-3 self-end md:self-auto">
+      <label for="orden" class="text-sm font-medium text-marronTierra">Ordenar por:</label>
+      <select
+        id="orden"
+        [(ngModel)]="ordenSeleccionado"
+        (change)="ordenarReservas()"
+        class="p-2 border border-gray-300 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-verdeSalvia"
       >
-        Hacer una Reserva
-      </button>
-
-      <!-- <button 
-        (click)="toggleModal('calendario')" 
-        class="bg-verdeSalvia text-blancoAlgodon py-2 px-6 rounded hover:bg-greenDark focus:outline-none"
-      >
-        Ver Calendario
-      </button> -->
+        <option value="recientes">Más recientes</option>
+        <option value="antiguas">Más antiguas</option>
+      </select>
     </div>
   </div>
+  
+  
 
-  <!-- Lista de reservas -->
-  <ul class="space-y-4">
-    <li *ngFor="let reserva of reservas" class="relative bg-white shadow-md rounded-lg p-4 mb-4 transition duration-300 hover:shadow-lg hover:scale-105">
-      <div class="flex justify-between items-center">
-        <!-- Información de la reserva (Fecha, Hora, Mesa) -->
-        <div class="flex flex-col">
-          <p class="text-xl font-semibold text-marronTierra">{{ reserva.date }} - {{ reserva.time }} - Mesa {{ reserva.table_number }}</p>
-          
-          <!-- Información adicional (Número de invitados y petición especial) -->
-          <div class="mt-2">
-            <p class="text-md text-gray-700">Número de invitados: {{ reserva.guests }}</p>
-            <p class="text-md text-gray-700">Petición especial: {{ reserva.special_request || 'Ninguna' }}</p>
+<!-- Lista de reservas -->
+
+<div class="bg-white shadow-xl border border-[#ebdac6] rounded-2xl p-6 mt-6">
+
+  <h2 class="text-2xl font-bold text-marronTierra mb-6 border-b pb-2 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-marronTierra" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10m-11 4h12m-7 4h2M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+    Tus Reservas
+  </h2>
+
+  <ul class="space-y-6">
+    <li *ngFor="let reserva of reservas"
+        class="bg-[#fdfaf7] border border-[#ece3d6] shadow rounded-xl p-6 relative hover:shadow-xl hover:-translate-y-[2px] transition-all duration-300">
+
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+
+        <!-- Izquierda: Info reserva -->
+        <div class="flex-1 space-y-1 text-sm text-gray-700">
+
+          <h3 class="text-lg md:text-xl font-bold text-marronTierra mb-1">
+            {{ reserva.date }} · {{ reserva.time }} — <span class="text-green-800 font-semibold">Mesa {{ reserva.table_number }}</span>
+          </h3>
+
+          <!-- Invitados -->
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-marronTierra" viewBox="0 0 24 24"><path fill="currentColor" d="M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20z"/></svg>
+            <p><span class="font-semibold">Invitados:</span> {{ reserva.guests }}</p>
+          </div>
+
+          <!-- Petición especial -->
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-marronTierra" viewBox="0 0 24 24"><path fill="currentColor" d="M8 17q.425 0 .713-.288T9 16t-.288-.712T8 15t-.712.288T7 16t.288.713T8 17m0-4q.425 0 .713-.288T9 12t-.288-.712T8 11t-.712.288T7 12t.288.713T8 13m0-4q.425 0 .713-.288T9 8t-.288-.712T8 7t-.712.288T7 8t.288.713T8 9m3 8h6v-2h-6zm0-4h6v-2h-6zm0-4h6V7h-6zM5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21z"/></svg>
+            <p><span class="font-semibold">Petición especial:</span> {{ reserva.special_request || 'Ninguna' }}</p>
+          </div>
+
+          <!-- Estado -->
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-marronTierra" viewBox="0 0 24 24"><path fill="currentColor" d="M12 10h5V8h-5zm0 6h5v-2h-5zm-3-5q.825 0 1.413-.587T11 9t-.587-1.412T9 7t-1.412.588T7 9t.588 1.413T9 11m0 6q.825 0 1.413-.587T11 15t-.587-1.412T9 13t-1.412.588T7 15t.588 1.413T9 17m-4 4q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21z"/></svg>
+            <p>
+              <span class="font-semibold">Estado:</span>
+              <span [ngClass]="{
+                'text-green-600 font-semibold': reserva.status === 'confirmada',
+                'text-yellow-600 font-semibold': reserva.status === 'pendiente',
+                'text-red-600 font-semibold': reserva.status === 'cancelada'
+              }">
+                {{ reserva.status | titlecase }}
+              </span>
+            </p>
           </div>
         </div>
-        
-        <!-- Botones de acción -->
-        <div class="flex gap-3">
-          <button 
-            (click)="confirmarReserva(reserva.id)" 
-            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none transition duration-300"
-          >
+
+        <!-- Derecha: Acciones -->
+        <div class="flex flex-col md:flex-row gap-2 mt-3 md:mt-0 min-w-[250px] justify-end">
+          <button (click)="confirmarReserva(reserva.id)"
+                  class="bg-marronTierra text-white py-2 px-4 rounded-md hover:brightness-110 transition font-semibold">
             Confirmar
           </button>
-          <button 
-            (click)="cancelarReserva(reserva.id)" 
-            class="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 focus:outline-none transition duration-300"
-          >
+
+          <button (click)="cancelarReserva(reserva.id)"
+                  class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition font-semibold">
             Cancelar
           </button>
-          <button 
-            (click)="reagendarReserva(reserva)" 
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
-          >
+
+          <button (click)="reagendarReserva(reserva)"
+                  class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition font-semibold">
             Reagendar
           </button>
+
+            <!-- 🗑️ Eliminar reserva -->
+          <button (click)="eliminarReserva(reserva.id)"
+            class="absolute bottom-4 right-4 text-red-400 hover:text-red-600 transition"
+            title="Eliminar reserva">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 6.386c0-.484.345-.877.771-.877h2.665c.529-.016.996-.399 1.176-.965l.03-.1l.115-.391c.07-.24.131-.45.217-.637c.338-.739.964-1.252 1.687-1.383c.184-.033.378-.033.6-.033h3.478c.223 0 .417 0 .6.033c.723.131 1.35.644 1.687 1.383c.086.187.147.396.218.637l.114.391l.03.1c.18.566.74.95 1.27.965h2.57c.427 0 .772.393.772.877s-.345.877-.771.877H3.77c-.425 0-.77-.393-.77-.877"/>
+            <path fill-rule="evenodd" d="M11.596 22h.808c2.783 0 4.174 0 5.08-.886c.904-.886.996-2.339 1.181-5.245l.267-4.188c.1-1.577.15-2.366-.303-2.865c-.454-.5-1.22-.5-2.753-.5H8.124c-1.533 0-2.3 0-2.753.5s-.404 1.288-.303 2.865l.267 4.188c.185 2.906.277 4.36 1.182 5.245c.905.886 2.296.886 5.079.886m-1.35-9.811c-.04-.434-.408-.75-.82-.707c-.413.043-.713.43-.672.864l.5 5.263c.04.434.408.75.82.707c.413-.043.713-.43.672-.864zm4.329-.707c.412.043.713.43.671.864l-.5 5.263c-.04.434-.409.75-.82.707c-.413-.043-.713-.43-.672-.864l.5-5.263c.04-.434.409-.75.82-.707" clip-rule="evenodd"/>
+            </svg>
+          </button>
+
         </div>
       </div>
-    </li>    
+    </li>
   </ul>
+</div>
+
+
 
   <!-- Mostrar formulario de reserva -->
   <div *ngIf="crearReservaFormVisible" class="modal fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
-      <h3 class="text-2xl font-semibold text-center text-greenDark mb-4">Crear Nueva Reserva</h3>
+      <h3 class="text-2xl font-semibold text-center text-greenDark mb-4">
+        {{ esEdicion ? 'Editar Reserva' : 'Crear Nueva Reserva' }}
+      </h3>
+      
 
       <form (ngSubmit)="crearReserva()">
         <!-- Fecha y Hora -->
@@ -156,7 +208,8 @@
             class="bg-verdeSalvia text-blancoAlgodon py-2 px-6 rounded hover:bg-greenDark focus:outline-none w-1/2"
             [disabled]="isProcessing"
           >
-            {{ isProcessing ? 'Procesando...' : 'Crear Reserva' }}
+          {{ isProcessing ? 'Procesando...' : (esEdicion ? 'Guardar Cambios' : 'Crear Reserva') }}
+
           </button>
 
           <button 
