@@ -17,7 +17,6 @@ app.use(express.json());
 app.use('/api/components', componentRoutes);
 app.use('/api/auth', authRoutes);
 
-
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(PORT, () => console.log(`Servidor levantado en http://localhost:${PORT}`));
