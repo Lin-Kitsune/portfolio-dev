@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fondo global y estilos base */
+html, body {
+  @apply bg-fondo text-blancoHueso min-h-screen w-full m-0 p-0;
+  font-family: 'system-ui', sans-serif;
+}
+
+/* Links */
+a {
+  @apply font-medium text-white hover:text-primario transition-colors;
+}
