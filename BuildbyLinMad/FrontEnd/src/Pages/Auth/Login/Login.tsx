@@ -33,13 +33,15 @@ export default function Login() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#0D0D0D] px-4">
-      <div className="w-full max-w-md bg-[#1A1A1A] rounded-lg shadow-lg p-6 text-[#F4F4F5]">
-        <h2 className="text-2xl font-bold mb-4 text-center text-[#7F00FF]">
+      <div className="w-full max-w-[350px] bg-[#1A1A1A] rounded-xl shadow-xl p-6 text-[#F4F4F5]">
+        <h2 className="text-2xl font-bold mb-6 text-center text-[#7F00FF]">
           Iniciar sesión
         </h2>
+  
         {message && (
           <p className="mb-4 text-center text-sm text-[#C28BFF]">{message}</p>
         )}
+  
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
@@ -47,7 +49,7 @@ export default function Login() {
             placeholder="Correo"
             value={form.correo}
             onChange={handleChange}
-            className="w-full bg-[#0D0D0D] border border-[#5A32A3] text-[#F4F4F5] rounded px-3 py-2 placeholder:text-[#C28BFF] focus:outline-none focus:ring-2 focus:ring-[#7F00FF]"
+            className="block w-full bg-[#0D0D0D] border border-[#5A32A3] text-[#F4F4F5] rounded-md px-3 py-2 placeholder:text-[#C28BFF] focus:outline-none focus:ring-2 focus:ring-[#7F00FF] text-sm"
             required
           />
           <input
@@ -56,12 +58,12 @@ export default function Login() {
             placeholder="Contraseña"
             value={form.password}
             onChange={handleChange}
-            className="w-full bg-[#0D0D0D] border border-[#5A32A3] text-[#F4F4F5] rounded px-3 py-2 placeholder:text-[#C28BFF] focus:outline-none focus:ring-2 focus:ring-[#7F00FF]"
+            className="block w-full bg-[#0D0D0D] border border-[#5A32A3] text-[#F4F4F5] rounded-md px-3 py-2 placeholder:text-[#C28BFF] focus:outline-none focus:ring-2 focus:ring-[#7F00FF] text-sm"
             required
           />
           <button
             type="submit"
-            className="w-full bg-[#7F00FF] text-white py-2 rounded hover:bg-[#5A32A3] transition"
+            className="w-full bg-[#7F00FF] text-white py-2 rounded-md hover:bg-[#5A32A3] transition font-medium text-sm"
           >
             Iniciar sesión
           </button>
@@ -69,4 +71,5 @@ export default function Login() {
       </div>
     </main>
   );
+  
 }

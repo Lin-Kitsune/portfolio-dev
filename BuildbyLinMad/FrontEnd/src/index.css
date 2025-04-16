@@ -1,4 +1,7 @@
-@tailwind base;
+
+
+@import 'keen-slider/keen-slider.min.css';
+
 @tailwind components;
 @tailwind utilities;
 
