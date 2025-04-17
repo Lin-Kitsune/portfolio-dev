@@ -1,0 +1,105 @@
+.footer-container {
+    position: relative;
+    overflow: visible;
+  }
+  
+  /* Capas SVG */
+  .footer-layer {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    transform: scaleY(-1);
+    pointer-events: none;
+  }
+  
+  .footer-layer svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Fondo más profundo */
+  .footer-layer.back-layer {
+    bottom: calc(100% - 12px);
+  }
+  
+  /* Capa frontal */
+  .footer-layer.front-layer {
+    bottom: calc(100% - 6px);
+  }
+  
+  /* Contenido */
+  .footer-content {
+    position: relative;
+    z-index: 3;
+    background: linear-gradient(to right, #7F00FF 0%, #7F00FF 40%, #00FFFF 100%);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 1.5rem;
+  }  
+
+  .footer-title {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 17px;
+    color: #1A1A1A;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+  
+  .footer-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #00FFFF; /* Celeste decorativo */
+  }
+
+  /* TÍTULOS de columna */
+.footer-col h3 {
+    color: #1A1A1A;
+    position: relative;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+  }
+  
+  .footer-col h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #1A1A1A;
+  }
+  
+  /* LINKS */
+  .footer-col a {
+    color: #F2E1C2;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-col a:hover {
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-content {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  

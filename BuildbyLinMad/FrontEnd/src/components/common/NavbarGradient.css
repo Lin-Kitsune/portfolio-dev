@@ -1,0 +1,79 @@
+.navbar-gradient {
+    background: linear-gradient(to bottom,
+      rgba(13, 13, 13, 1) 0%,
+      rgba(13, 13, 13, 0.85) 25%,
+      rgba(13, 13, 13, 0.6) 50%,
+      rgba(13, 13, 13, 0.3) 75%,
+      rgba(13, 13, 13, 0) 100%
+    );
+  }
+
+  /* Navegacion */
+  .nav-link {
+    position: relative;
+    padding-bottom: 4px;
+    color: white !important; 
+    text-decoration: none !important; 
+    text-transform: uppercase;
+    transition: color 0.3s ease; 
+    font-weight: 600;
+  }
+  
+  .nav-link:visited {
+    color: white !important;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0%;
+    background-color: #00FFFF;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #00FFFF !important;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .nav-link.active {
+    color: #00FFFF !important;
+  }
+
+  /* Botones iniciar y registrar */
+  .nav-btn {
+    @apply px-4 py-1 rounded font-semibold transition-all duration-300;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none !important;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .nav-btn.login {
+    border: 2px solid white;
+    color: white;
+    background-color: transparent;
+  }
+  
+  .nav-btn.login:hover {
+    background-color: white;
+    color: #0D0D0D;
+  }
+  
+  .nav-btn.register {
+    background-color: #7F00FF;
+    color: white;
+  }
+  
+  .nav-btn.register:hover {
+    background-color: #00FFFF;
+    transform: scale(1.05);
+  }
+  
+  

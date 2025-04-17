@@ -1,6 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import './NavbarGradient.css';
+
+import logo from '../../assets/img/logo.png';
 
 const navItems = [
   { label: 'Inicio', path: '/' },
@@ -9,7 +12,7 @@ const navItems = [
   { label: 'Historial', path: '/historial' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onLoginClick, onRegisterClick }) {
   const location = useLocation();
   const [usuario, setUsuario] = useState(null);
 
@@ -21,16 +24,17 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="w-full bg-[#1A1A1A]/90 backdrop-blur border-b border-[#5A32A3] shadow-md z-50">
+    <header className="absolute top-0 left-0 w-full z-50 navbar-gradient">
       {/* Agrega sticky top-0 si quieres que quede fijo */}
       {/* <header className="sticky top-0 z-50 bg-[#1A1A1A]/90 backdrop-blur border-b border-[#5A32A3] shadow-md"> */}
       <nav className="max-w-screen-2xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* 🔹 Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold text-[#7F00FF] hover:text-white transition-colors"
-        >
-          Build by <span className="text-white">LinMad</span>
+        <Link to="/" className="flex items-center space-x-3">
+          <img
+            src="/src/assets/img/logo.png"
+            alt="Logo LinMad"
+            className="h-[60px] w-auto object-contain"
+          />
         </Link>
 
         {/* 🔹 Menú navegación */}
@@ -40,11 +44,8 @@ export default function Navbar() {
               <Link
                 to={item.path}
                 className={classNames(
-                  'text-white hover:text-[#7F00FF] transition-colors font-medium tracking-wide',
-                  {
-                    'text-[#7F00FF] underline underline-offset-4':
-                      location.pathname === item.path,
-                  }
+                  'nav-link font-medium tracking-wide',
+                  { active: location.pathname === item.path }
                 )}
               >
                 {item.label}
@@ -58,14 +59,14 @@ export default function Navbar() {
           {!usuario ? (
             <>
               <Link
-                to="/login"
-                className="text-white border border-white px-4 py-1 rounded hover:bg-white hover:text-[#0D0D0D] transition"
+                onClick={onLoginClick}
+                className="nav-btn login"
               >
                 Iniciar Sesión
               </Link>
               <Link
-                to="/register"
-                className="bg-[#7F00FF] text-white px-4 py-1 rounded hover:bg-[#5A32A3] transition"
+                onClick={onRegisterClick}
+                className="bg-[#7F00FF] text-white px-4 py-1 rounded hover:bg-[#00FFFF] hover:text-[#0D0D0D] transition-all duration-300 font-semibold nav-btn"
               >
                 Registrarse
               </Link>

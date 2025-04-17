@@ -1,0 +1,125 @@
+.login-modal {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .modal-fondo {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .login-btn {
+    background-color: #7F00FF;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+    width: 100%;
+  }
+  
+  .login-btn:hover {
+    background-color: #00FFFF;
+    color: #0D0D0D;
+    transform: scale(1.05);
+  }
+
+  /* INPUT LINEA E ÍCONO TRANSICIÓN */
+.input-wrapper {
+    position: relative;
+  }
+  
+  .input-wrapper input {
+    transition: border-color 0.3s ease;
+    border-bottom: 2px solid #00FFFF; /* color celeste por defecto */
+  }
+  
+  .input-wrapper input:focus {
+    border-bottom: 2px solid #7F00FF; /* color primario al focus */
+  }
+  
+  /* ÍCONO TRANSICIÓN */
+  .input-wrapper svg {
+    transition: fill 0.3s ease;
+    fill: #00FFFF; /* celeste inicial */
+  }
+  
+  .input-wrapper input:focus ~ span svg {
+    fill: #7F00FF; /* morado al focus */
+  }
+
+  /* FLOATING LABEL COLOR TRANSITION */
+.input-wrapper label {
+    transition: color 0.3s ease;
+    color: #00FFFF; /* color acento base */
+  }
+  
+  .input-wrapper input:focus ~ label {
+    color: #7F00FF; /* color primario al focus */
+  }
+
+  .input-wrapper input:not(:placeholder-shown) ~ label {
+    transform: scale(0.75) translateY(-1.5rem);
+    color: #7F00FF; /* mismo color del focus */
+  }
+  
+  /* Checkbox */
+  .custom-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Ocultamos el checkbox por defecto */
+  .custom-checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #00FFFF;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  /* Estilo al pasar el mouse */
+  .custom-checkbox:hover {
+    box-shadow: 0 0 5px #00ffffaa;
+  }
+  
+  /* Cuando está checkeado */
+  .custom-checkbox:checked {
+    background-color: #00FFFF;
+    border-color: #00FFFF;
+  }
+  
+  /* Tick dentro del checkbox al marcar */
+  .custom-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 4px;
+    height: 9px;
+    border: solid #0D0D0D;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Label del texto */
+  .custom-label {
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: #C2B9FF;
+    transition: color 0.3s;
+  }
+  
+  .custom-label:hover {
+    color: white;
+  }
+  
