@@ -9,9 +9,29 @@
 html, body {
   @apply bg-fondo text-blancoHueso min-h-screen w-full m-0 p-0;
   font-family: 'system-ui', sans-serif;
+  overflow-x: hidden;
 }
 
 /* Links */
 a {
   @apply font-medium text-white hover:text-primario transition-colors;
 }
+
+.modal-fondo {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
