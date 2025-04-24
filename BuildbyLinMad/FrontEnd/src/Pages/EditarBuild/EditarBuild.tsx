@@ -1,23 +1,30 @@
-import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import ComponentSelector from '../../components/Build/ComponentSelector';
 import { isCompatible } from '../../utils/compatibility';
 import { toast } from 'react-toastify';
-import { FaSave, FaTrashAlt } from 'react-icons/fa';
+import { FaSave, FaArrowLeft } from 'react-icons/fa';
 import { buildService } from '../../services/buildService';
 
-function BuildAsistido() {
-  const [build, setBuild] = useState({
-    cpu: null,
-    gpu: null,
-    motherboard: null,
-    ram: null,
-    ssd: null,
-    hdd: null,
-    psu: null,
-    case: null,
-    cooler: null,
-    fans: [],
+function EditarBuild() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const buildToEdit = location.state?.build;
+
+  const [build, setBuild] = useState<any>({
+    cpu: null, gpu: null, motherboard: null, ram: null,
+    ssd: null, hdd: null, psu: null, case: null,
+    cooler: null, fans: [],
   });
+
+  useEffect(() => {
+    if (buildToEdit) {
+      setBuild(buildToEdit.components);
+    } else {
+      toast.error('⚠️ No se encontró ninguna build para editar');
+      navigate('/historial');
+    }
+  }, [buildToEdit]);
 
   const handleSelect = (type: string, component: any) => {
     const result = isCompatible(type, build, component);
@@ -27,18 +34,10 @@ function BuildAsistido() {
       return;
     }
 
-    setBuild((prev) => ({
+    setBuild((prev: any) => ({
       ...prev,
       [type]: component,
     }));
-  };
-
-  const handleClearBuild = () => {
-    setBuild({
-      cpu: null, gpu: null, motherboard: null, ram: null,
-      ssd: null, hdd: null, psu: null, case: null,
-      cooler: null, fans: [],
-    });
   };
 
   const total = Object.values(build).reduce((acc, comp) => {
@@ -52,34 +51,31 @@ function BuildAsistido() {
     return acc;
   }, 0);
 
-  const handleSaveBuild = async () => {
+  const handleUpdate = async () => {
     try {
-      const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-      const userId = usuario.id;
-  
-      if (!userId) {
-        toast.error('⚠️ Debes iniciar sesión para guardar tu build');
-        return;
-      }
-  
-      const buildData = {
-        userId,
+      await buildService.actualizarBuild(buildToEdit._id, {
         components: build,
         total,
-      };
-  
-      await buildService.guardarBuild(buildData);
-      toast.success('✅ Build guardada correctamente');
-    } catch (err) {
-      console.error('Error al guardar build:', err);
-      toast.error('❌ Error al guardar la build');
+      });
+      toast.success('✅ Build actualizada correctamente');
+      navigate('/historial');
+    } catch (error) {
+      console.error('❌ Error al actualizar build:', error);
+      toast.error('No se pudo actualizar la build');
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-[#121212] text-white px-6 py-10">
-      <h2 className="text-3xl font-bold text-cafe-macchiato mb-8">Arma tu PC paso a paso</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-cafe-macchiato">✏️ Editar Build</h2>
+        <button
+          onClick={() => navigate('/historial')}
+          className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2"
+        >
+          <FaArrowLeft /> Volver
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -105,7 +101,6 @@ function BuildAsistido() {
           ))}
         </div>
 
-        {/* Panel lateral */}
         <div className="bg-[#1e1e1e] p-6 rounded-xl shadow-md h-fit sticky top-10">
           <h4 className="text-xl font-bold text-tercero mb-4">🧩 Tu Build</h4>
           <ul className="space-y-2 text-sm">
@@ -129,17 +124,10 @@ function BuildAsistido() {
             </p>
 
             <button
-              onClick={handleClearBuild}
-              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition font-medium"
+              onClick={handleUpdate}
+              className="w-full bg-cafe-macchiato hover:bg-opacity-90 text-white py-2 rounded-lg transition font-medium flex items-center justify-center gap-2"
             >
-              <FaTrashAlt /> Vaciar Build
-            </button>
-
-            <button
-              onClick={handleSaveBuild}
-              className="w-full flex items-center justify-center gap-2 bg-[#A67B5B] hover:bg-[#8c664c] text-white py-2 rounded-lg transition font-medium"
-            >
-              <FaSave /> Guardar Build
+              <FaSave /> Guardar Cambios
             </button>
           </div>
         </div>
@@ -148,4 +136,4 @@ function BuildAsistido() {
   );
 }
 
-export default BuildAsistido;
+export default EditarBuild;
