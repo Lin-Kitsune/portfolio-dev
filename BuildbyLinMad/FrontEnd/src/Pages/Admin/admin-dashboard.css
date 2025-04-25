@@ -1,0 +1,58 @@
+.admin-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .admin-card {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: linear-gradient(to bottom right, #7F00FF, #00FFFF);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    border: none;
+  }
+  
+  .admin-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .admin-card img {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+    object-fit: contain;
+  }
+
+  /* Icono con tamaño más grande como en tu referencia */
+.admin-card img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    object-fit: contain;
+  }
+
+  .admin-card span {
+    text-transform: uppercase;
+    white-space: nowrap;      
+    font-size: 0.8rem;         
+    text-align: center;
+    margin-top: 0.5rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  
+  
