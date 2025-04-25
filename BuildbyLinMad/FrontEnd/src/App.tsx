@@ -16,6 +16,19 @@ import Historial from './Pages/Historial/Historial';
 import Perfil from './Pages/Perfil/Perfil';
 import EditarBuild from './Pages/EditarBuild/EditarBuild';
 
+// Admin
+import AdminDashboard from './Pages/Admin/AdminDashboard';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import CasesAdmin from './Pages/Admin/components/CasesAdmin';
+import CoolersAdmin from './Pages/Admin/components/CoolersAdmin';
+import DisksAdmin from './Pages/Admin/components/DisksAdmin';
+import FansAdmin from './Pages/Admin/components/FansAdmin';
+import GpusAdmin from './Pages/Admin/components/GpusAdmin';
+import MotherboardsAdmin from './Pages/Admin/components/MotherboardsAdmin';
+import ProcessorsAdmin from './Pages/Admin/components/ProcessorsAdmin';
+import PsusAdmin from './Pages/Admin/components/PsusAdmin';
+import RamsAdmin from './Pages/Admin/components/RamsAdmin';
+import SsdsAdmin from './Pages/Admin/components/SsdsAdmin';
 
 // Iniciar y Registrarse
 import Login from './Pages/Auth/Login/Login';
@@ -70,6 +83,22 @@ function App() {
         <Route path="/login" element={<Navigate to="/" />} />
         <Route path="/register" element={<Navigate to="/" />} />
         <Route path="/editar-build" element={<EditarBuild />} />
+        {/* Admin */}
+        <Route
+          path="/admin"
+          element={<ProtectedRoute role="admin" element={<AdminDashboard />} />}
+        />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/cases" element={<CasesAdmin />} />
+        <Route path="/admin/coolers" element={<CoolersAdmin />} />
+        <Route path="/admin/disks" element={<DisksAdmin />} />
+        <Route path="/admin/fans" element={<FansAdmin />} />
+        <Route path="/admin/gpus" element={<GpusAdmin />} />
+        <Route path="/admin/motherboards" element={<MotherboardsAdmin />} />
+        <Route path="/admin/processors" element={<ProcessorsAdmin />} />
+        <Route path="/admin/psus" element={<PsusAdmin />} />
+        <Route path="/admin/rams" element={<RamsAdmin />} />
+        <Route path="/admin/ssds" element={<SsdsAdmin />} />
       </Routes>
 
       <Footer />

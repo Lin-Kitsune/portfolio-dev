@@ -20,12 +20,17 @@ export default function Login({ onClose, onRegisterClick }) {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', form);
       const { user } = res.data;
+      console.log('🔍 Usuario logueado:', user);
   
       localStorage.setItem('usuario', JSON.stringify(user));
       setMessage('Login exitoso. Redirigiendo...');
       setTimeout(() => {
-        navigate('/');
-        window.location.reload(); // 🔄
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+        window.location.reload();
       }, 1500);
     } catch (err) {
       setMessage(err.response?.data?.message || 'Error al iniciar sesión');
