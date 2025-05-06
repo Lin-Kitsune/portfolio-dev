@@ -30,6 +30,8 @@ import PsusAdmin from './Pages/Admin/components/PsusAdmin';
 import RamsAdmin from './Pages/Admin/components/RamsAdmin';
 import SsdsAdmin from './Pages/Admin/components/SsdsAdmin';
 
+import AdminUserBuilds from './Pages/Admin/components/AdminUserBuilds';
+
 // Iniciar y Registrarse
 import Login from './Pages/Auth/Login/Login';
 import Register from './Pages/Auth/Register/Register';
@@ -99,6 +101,7 @@ function App() {
         <Route path="/admin/psus" element={<PsusAdmin />} />
         <Route path="/admin/rams" element={<RamsAdmin />} />
         <Route path="/admin/ssds" element={<SsdsAdmin />} />
+        <Route path="/admin/user-builds" element={<AdminUserBuilds />} />
       </Routes>
 
       <Footer />
