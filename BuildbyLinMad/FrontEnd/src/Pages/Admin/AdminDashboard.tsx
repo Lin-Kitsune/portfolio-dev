@@ -31,6 +31,12 @@ const COMPONENTES = [
     { key: 'ssds', label: 'Unidades SSD', icon: '/icon/ssd.png' },
   ];
   
+  const GESTION = [
+
+    { key: 'user-builds', label: 'BUILDS USUARIOS', icon: '/icon/cooler.png' },
+
+  ];
+
   export default function AdminDashboard() {
     const navigate = useNavigate();
     
@@ -50,6 +56,19 @@ const COMPONENTES = [
             </button>
           ))}
         </div>
+
+        <h1 className="text-3xl font-extrabold text-center mb-10">GESTIÓN</h1>
+
+        <div className="admin-grid">
+          {GESTION.map((gest) => (
+            <button key={gest.key} className="admin-card" onClick={() => handleRedirect(gest.key)}>
+              <img src={gest.icon} alt={gest.label} />
+              <span>{gest.label}</span>
+            </button>
+          ))}
+        </div>
+
       </div>
+      
     );
   }

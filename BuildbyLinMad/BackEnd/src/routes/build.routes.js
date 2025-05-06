@@ -71,5 +71,15 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
+// 📌 Obtener todas las builds (para admin)
+router.get('/', async (req, res) => {
+  try {
+    const builds = await Build.find().sort({ createdAt: -1 });
+    return res.status(200).json(builds);
+  } catch (error) {
+    console.error('❌ Error al obtener todas las builds:', error);
+    return res.status(500).json({ message: 'Error al obtener las builds' });
+  }
+});
 
 export default router;

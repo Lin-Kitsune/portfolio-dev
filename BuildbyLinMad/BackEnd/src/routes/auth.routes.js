@@ -44,4 +44,15 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// 📌 Obtener todos los usuarios
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({}, '_id nombre correo'); // Solo lo necesario
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuarios', error: error.message });
+  }
+});
+
+
 export default router;
