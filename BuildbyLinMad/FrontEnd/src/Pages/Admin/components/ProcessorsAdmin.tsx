@@ -11,22 +11,51 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { FaSearch, FaSortUp, FaSortDown, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { processorService } from '../../../services/processorService';
 
 export default function ProcessorsAdmin() {
-  const mockData = [
-    { id: '1', name: 'Ryzen 5 5600X', brand: 'AMD', price: 160000, socket: 'AM4', cores: 6, threads: 12 },
-    { id: '2', name: 'Intel Core i5-12600K', brand: 'Intel', price: 210000, socket: 'LGA1700', cores: 10, threads: 16 },
-  ];  
+  const [processors, setProcessors] = useState<any[]>([]);
 
-  const [filterType, setFilterType] = useState('');
-  const [filterBrand, setFilterBrand] = useState('');
+  // General
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selected, setSelected] = useState<any>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [editImage, setEditImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  // Filtros
+  const [filterModel, setFilterModel] = useState('');
+  const [filterSocket, setFilterSocket] = useState('');
+  const [filterPriceMin, setFilterPriceMin] = useState('');
+  const [filterPriceMax, setFilterPriceMax] = useState('');
+  
+
+  // Crear
+  const [nombre, setNombre] = useState('');
+  const [precio, setPrecio] = useState('');
+  const [link, setLink] = useState('');
+  const [modelo, setModelo] = useState('');
+  const [socket, setSocket] = useState('');
+
+  // Editar
+  const [editNombre, setEditNombre] = useState('');
+  const [editModelo, setEditModelo] = useState('');
+  const [editLink, setEditLink] = useState('');
+  const [editPrecio, setEditPrecio] = useState('');
+  const [editSocket, setEditSocket] = useState('');
+
+  // Otros
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Estilo filtros
   const selectEstilos = {
     backgroundColor: '#0D0D0D',
     borderRadius: '6px',
@@ -45,6 +74,20 @@ export default function ProcessorsAdmin() {
     },
   };
 
+  useEffect(() => {
+    loadProcessors();
+  }, []);
+  
+  const loadProcessors = async () => {
+    try {
+      const data = await processorService.getProcessors();
+      setProcessors(data);
+    } catch (error) {
+      console.error('Error al cargar procesadores:', error);
+      toast.error('Error al cargar procesadores');
+    }
+  };  
+
   const handleSort = (field: string) => {
     if (sortField !== field) {
       setSortField(field);
@@ -57,26 +100,119 @@ export default function ProcessorsAdmin() {
     }
   };  
 
-  const filteredData = mockData
-    .filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (filterBrand ? item.brand === filterBrand : true)
-    )
-    .sort((a, b) => {
-      const fieldA = a[sortField as keyof typeof a];
-      const fieldB = b[sortField as keyof typeof b];
-      if (typeof fieldA === 'string') {
-        return sortDirection === 'asc'
-          ? fieldA.localeCompare(fieldB as string)
-          : (fieldB as string).localeCompare(fieldA);
-      } else if (typeof fieldA === 'number') {
-        return sortDirection === 'asc'
-          ? (fieldA as number) - (fieldB as number)
-          : (fieldB as number) - (fieldA as number);
+  // crear
+  const handleCreate = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('name', nombre);
+      formData.append('price', precio);
+      formData.append('link', link);
+      formData.append('model', modelo);
+      formData.append('specs', JSON.stringify({ socket }));
+  
+      if (imageFile) {
+        formData.append('image', imageFile);
       }
-      return 0;
-    });
+  
+      await processorService.createProcessor(formData);
+      toast.success('Procesador agregado');
+      await loadProcessors();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Error al crear procesador:', error);
+      toast.error('Error al crear procesador');
+    }
+  };
+
+  // editar
+  const handleEditClick = (item: any) => {
+    setSelected(item);
+    setEditNombre(item.name);
+    setEditPrecio(item.price);
+    setEditLink(item.link);
+    setEditModelo(item.model || '');
+    setEditSocket(item.specs?.socket || '');
+    setPreview(item.imagePath ? `http://localhost:5000/${item.imagePath}` : null);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('name', editNombre);
+      formData.append('price', editPrecio.toString());
+      formData.append('link', editLink);
+      formData.append('model', editModelo);
+      formData.append('specs', JSON.stringify({ socket: editSocket }));
+  
+      if (editImage) {
+        formData.append('image', editImage);
+      }
+  
+      await processorService.updateProcessor(selected._id, formData);
+      toast.success('Procesador actualizado');
+      await loadProcessors();
+      setIsEditModalOpen(false);
+      setSelected(null);
+    } catch (error) {
+      console.error('Error al actualizar procesador:', error);
+      toast.error('Error al actualizar procesador');
+    }
+  };
+
+  // eliminar
+  const handleDelete = async () => {
+    try {
+      await processorService.deleteProcessor(selected._id);
+      toast.success('Procesador eliminado');
+      await loadProcessors();
+      setIsDeleteModalOpen(false);
+      setSelected(null);
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+      toast.error('Error al eliminar');
+    }
+  };
+
+  // Filtros
+  const filteredData = processors
+  .filter((item) => {
+    const matchesName = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSocket = filterSocket ? item.specs?.socket === filterSocket : true;
+    const matchesPriceMin = filterPriceMin ? item.price >= parseInt(filterPriceMin) : true;
+    const matchesPriceMax = filterPriceMax ? item.price <= parseInt(filterPriceMax) : true;
+    const matchesModel = filterModel
+    ? item.model?.toLowerCase().includes(filterModel.toLowerCase())
+    : true;
+    return matchesName && matchesSocket && matchesPriceMin && matchesPriceMax && matchesModel;
+  })
+  .sort((a, b) => {
+    let fieldA, fieldB;
+
+    if (sortField in a) {
+      fieldA = a[sortField];
+      fieldB = b[sortField];
+    } else if (sortField && a.specs && sortField in a.specs) {
+      fieldA = a.specs[sortField];
+      fieldB = b.specs[sortField];
+    }
+
+    if (typeof fieldA === 'string') {
+      return sortDirection === 'asc'
+        ? fieldA.localeCompare(fieldB)
+        : fieldB.localeCompare(fieldA);
+    } else if (typeof fieldA === 'number') {
+      return sortDirection === 'asc' ? fieldA - fieldB : fieldB - fieldA;
+    }
+
+    return 0;
+  });
+
+const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+const paginatedData = filteredData.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
 
   return (
     <div className="min-h-screen mt-32 px-6 bg-fondo text-blancoHueso">
@@ -94,7 +230,14 @@ export default function ProcessorsAdmin() {
             {/* Marca */}
             <div>
               <label className="block mb-1 text-textoSecundario">Marca:</label>
-              <Select size="small" fullWidth className="bg-[#0D0D0D] text-white rounded">
+              <Select
+                size="small"
+                value={filterModel}
+                onChange={(e) => setFilterModel(e.target.value)}
+                fullWidth
+                displayEmpty
+                sx={selectEstilos}
+              >
                 <MenuItem value="">Todas</MenuItem>
                 <MenuItem value="AMD">AMD</MenuItem>
                 <MenuItem value="Intel">Intel</MenuItem>
@@ -104,7 +247,14 @@ export default function ProcessorsAdmin() {
             {/* Socket */}
             <div>
               <label className="block mb-1 text-textoSecundario">Socket:</label>
-              <Select size="small" fullWidth className="bg-[#0D0D0D] text-white rounded">
+              <Select
+                size="small"
+                value={filterSocket}
+                onChange={(e) => setFilterSocket(e.target.value)}
+                fullWidth
+                displayEmpty
+                sx={selectEstilos}
+              >
                 <MenuItem value="">Todos</MenuItem>
                 <MenuItem value="AM4">AM4</MenuItem>
                 <MenuItem value="AM5">AM5</MenuItem>
@@ -113,29 +263,29 @@ export default function ProcessorsAdmin() {
               </Select>
             </div>
 
-            {/* Núcleos */}
-            <div>
-              <label className="block mb-1 text-textoSecundario">Núcleos:</label>
-              <Select size="small" fullWidth className="bg-[#0D0D0D] text-white rounded">
-                <MenuItem value="">Todos</MenuItem>
-                <MenuItem value="4">4</MenuItem>
-                <MenuItem value="6">6</MenuItem>
-                <MenuItem value="8">8</MenuItem>
-                <MenuItem value="12">12</MenuItem>
-                <MenuItem value="16">16</MenuItem>
-              </Select>
-            </div>
-
-            {/* Hilos */}
-            <div>
-              <label className="block mb-1 text-textoSecundario">Hilos:</label>
-              <Select size="small" fullWidth className="bg-[#0D0D0D] text-white rounded">
-                <MenuItem value="">Todos</MenuItem>
-                <MenuItem value="8">8</MenuItem>
-                <MenuItem value="12">12</MenuItem>
-                <MenuItem value="16">16</MenuItem>
-                <MenuItem value="24">24</MenuItem>
-              </Select>
+             {/* Rango de precios */}
+             <div>
+              <label className="block mb-1 text-textoSecundario">Precio (CLP):</label>
+              <div className="flex gap-2">
+                <TextField
+                  size="small"
+                  placeholder="Min"
+                  type="number"
+                  value={filterPriceMin}
+                  onChange={(e) => setFilterPriceMin(e.target.value)}
+                  InputProps={{ style: { color: '#F4F4F5', backgroundColor: '#0D0D0D' } }}
+                  sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+                />
+                <TextField
+                  size="small"
+                  placeholder="Max"
+                  type="number"
+                  value={filterPriceMax}
+                  onChange={(e) => setFilterPriceMax(e.target.value)}
+                  InputProps={{ style: { color: '#F4F4F5', backgroundColor: '#0D0D0D' } }}
+                  sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+                />
+              </div>
             </div>
             
           </div>
@@ -208,7 +358,7 @@ export default function ProcessorsAdmin() {
             >
               <TableHead>
                 <TableRow className="bg-[#7F00FF]">
-                  {['name', 'brand', 'socket', 'cores', 'threads', 'price'].map((field) => (
+                  {['name', 'model', 'socket', 'price'].map((field) => (
                     <TableCell
                       key={field}
                       onClick={() => handleSort(field)}
@@ -220,10 +370,8 @@ export default function ProcessorsAdmin() {
                       }}
                     >
                       {field === 'name' && 'Nombre'}
-                      {field === 'brand' && 'Marca'}
+                      {field === 'model' && 'Modelo'}
                       {field === 'socket' && 'Socket'}
-                      {field === 'cores' && 'Núcleos'}
-                      {field === 'threads' && 'Hilos'}
                       {field === 'price' && 'Precio'}
 
                       {sortField === field &&
@@ -236,6 +384,7 @@ export default function ProcessorsAdmin() {
                   ))}
                   <TableCell
                     sx={{
+                      whiteSpace: 'nowrap',
                       color: '#FFFFFF',
                       fontWeight: 'bold',
                       textTransform: 'uppercase',
@@ -246,17 +395,15 @@ export default function ProcessorsAdmin() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredData.map((item) => (
+                {paginatedData.map((item) => (
                   <TableRow
                     key={item.id}
                     className="transition duration-200"
                     sx={{ '&:hover': { backgroundColor: '#1A1A1A' } }}
                   >
                     <TableCell className="font-medium">{item.name}</TableCell>
-                    <TableCell className="font-medium">{item.brand}</TableCell>
-                    <TableCell className="font-medium">{item.socket}</TableCell>
-                    <TableCell className="font-medium">{item.cores}</TableCell>
-                    <TableCell className="font-medium">{item.threads}</TableCell>
+                    <TableCell className="font-medium">{item.model || '-'}</TableCell>
+                    <TableCell className="font-medium">{item.specs?.socket || '-'}</TableCell>
 
                     <TableCell className="font-medium">
                       ${item.price.toLocaleString('es-CL')}
@@ -264,7 +411,7 @@ export default function ProcessorsAdmin() {
                     <TableCell className="py-4">
                     <Button
                       size="small"
-                      onClick={() => handleEdit(item.id)}
+                      onClick={() => handleEditClick(item)}
                       sx={{
                         minWidth: 'unset',
                         color: '#00FFFF',
@@ -280,7 +427,10 @@ export default function ProcessorsAdmin() {
 
                     <Button
                       size="small"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => {
+                        setSelected(item);
+                        setIsDeleteModalOpen(true);
+                      }}
                       sx={{
                         minWidth: 'unset',
                         color: '#FF4D4F',
@@ -301,49 +451,125 @@ export default function ProcessorsAdmin() {
               </TableBody>
             </Table>
           </div>
-          {/* Paginación centrada */}
-          <div className="mt-8 flex justify-center">
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button
-                  key={n}
-                  className={`w-10 h-10 flex items-center justify-center rounded-md font-bold transition-all duration-200
-                    ${
-                      n === 1
-                        ? 'bg-[#00FFFF] text-[#0D0D0D]'
-                        : 'bg-[#7F00FF] text-white hover:bg-[#5A32A3]'
-                    }
-                    outline-none border-none shadow-none focus:outline-none`}
-                >
-                  {n}
-                </button>              
-              ))}
-            </div>
-          </div>
+           {/* Paginación centrada */}
+           <div className="mt-8 flex justify-center items-center gap-2 flex-wrap">
+            {/* Botón Anterior */}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`w-10 h-10 flex items-center justify-center rounded-md font-bold transition-all duration-200
+                ${currentPage === 1
+                  ? 'bg-[#444] text-white opacity-50'
+                  : 'bg-[#7F00FF] text-white hover:bg-[#5A32A3]'}
+                outline-none border-none shadow-none focus:outline-none`}
+            >
+              ‹
+            </button>
+
+            {/* Números de página */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-10 h-10 flex items-center justify-center rounded-md font-bold transition-all duration-200
+                  ${
+                    currentPage === page
+                      ? 'bg-[#00FFFF] text-[#0D0D0D]'
+                      : 'bg-[#7F00FF] text-white hover:bg-[#5A32A3]'
+                  }
+                  outline-none border-none shadow-none focus:outline-none`}
+              >
+                {page}
+              </button>
+            ))}
+
+            {/* Botón Siguiente */}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`w-10 h-10 flex items-center justify-center rounded-md font-bold transition-all duration-200
+                ${currentPage === totalPages
+                  ? 'bg-[#444] text-white opacity-50'
+                  : 'bg-[#7F00FF] text-white hover:bg-[#5A32A3]'}
+                outline-none border-none shadow-none focus:outline-none`}
+            >
+              ›
+            </button>
+           </div>
         </div>
       </div>
+
       {/* Modal de agregar */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center modal-fondo z-50">
-          <div className="bg-[#1A1A1A] rounded-xl p-6 w-full max-w-md shadow-xl border border-[#7F00FF] relative text-white">
-          <h3 className="text-xl font-bold mb-4 text-acento">Agregar nuevo procesador</h3>
+          <div className="bg-[#1A1A1A] rounded-xl p-6 w-full max-w-xl shadow-xl border border-[#7F00FF] relative text-white">
+            <h3 className="text-xl font-bold mb-4 text-acento">Agregar nuevo Procesador</h3>
 
-            <form className="flex flex-col gap-4">
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               {/* Nombre */}
               <TextField
                 label="Nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
                 variant="outlined"
                 size="small"
                 InputLabelProps={{ style: { color: '#C2B9FF' } }}
                 InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
+
+              {/* Modelo */}
+              <TextField
+                label="Modelo"
+                value={modelo}
+                onChange={(e) => setModelo(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
+              {/* Link del producto */}
+              <TextField
+                label="Link del producto"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
+              {/* Precio */}
+              <TextField
+                label="Precio"
+                type="number"
+                value={precio}
+                onChange={(e) => setPrecio(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
+              {/* Socket */}
+              <TextField
+                label="Socket"
+                value={socket}
+                onChange={(e) => setSocket(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
               {/* Imagen */}
-              <div className="flex flex-col gap-2 mb-4">
-                <label
-                  htmlFor="image_input"
-                  className="block text-sm font-semibold text-blancoHueso"
-                >
+              <div className="col-span-2">
+                <label htmlFor="image_input" className="block text-sm font-semibold text-blancoHueso mb-1">
                   Imagen del producto
                 </label>
                 <input
@@ -367,10 +593,84 @@ export default function ProcessorsAdmin() {
                   />
                 )}
               </div>
+
+              {/* Botones */}
+              <div className="col-span-2 flex justify-end gap-2 mt-2">
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsModalOpen(false)}
+                  sx={{ borderColor: '#FF4D4F', color: '#FF4D4F' }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleCreate}
+                  sx={{
+                    backgroundColor: '#7F00FF',
+                    '&:hover': { backgroundColor: '#5A32A3' },
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    textTransform: 'none',
+                  }}
+                >
+                  Guardar
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* modal editar */}
+      {isEditModalOpen && selected && (
+        <div className="fixed inset-0 flex items-center justify-center modal-fondo z-50">
+          <div className="bg-[#1A1A1A] rounded-xl p-6 w-full max-w-2xl shadow-xl border border-[#7F00FF] relative text-white">
+            <h3 className="text-xl font-bold mb-4 text-acento">Editar Procesador</h3>
+
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+              {/* Nombre */}
+              <TextField
+                label="Nombre"
+                value={editNombre}
+                onChange={(e) => setEditNombre(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
+              {/* Modelo */}
+              <TextField
+                label="Modelo"
+                value={editModelo}
+                onChange={(e) => setEditModelo(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
+              {/* Link del producto */}
+              <TextField
+                label="Link del producto"
+                value={editLink}
+                onChange={(e) => setEditLink(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
+
               {/* Precio */}
               <TextField
                 label="Precio"
                 type="number"
+                value={editPrecio}
+                onChange={(e) => setEditPrecio(e.target.value)}
                 variant="outlined"
                 size="small"
                 InputLabelProps={{ style: { color: '#C2B9FF' } }}
@@ -379,61 +679,108 @@ export default function ProcessorsAdmin() {
               />
 
               {/* Socket */}
-              <Select size="small" displayEmpty defaultValue="" sx={selectEstilos}>
-                <MenuItem value="">Socket</MenuItem>
-                <MenuItem value="AM4">AM4</MenuItem>
-                <MenuItem value="AM5">AM5</MenuItem>
-                <MenuItem value="LGA1200">LGA1200</MenuItem>
-                <MenuItem value="LGA1700">LGA1700</MenuItem>
-              </Select>
+              <TextField
+                label="Socket"
+                value={editSocket}
+                onChange={(e) => setEditSocket(e.target.value)}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
+                sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+              />
 
-              {/* Núcleos */}
-              <Select size="small" displayEmpty defaultValue="" sx={selectEstilos}>
-                <MenuItem value="">Núcleos</MenuItem>
-                <MenuItem value="4">4</MenuItem>
-                <MenuItem value="6">6</MenuItem>
-                <MenuItem value="8">8</MenuItem>
-                <MenuItem value="12">12</MenuItem>
-                <MenuItem value="16">16</MenuItem>
-              </Select>
-
-              {/* Hilos */}
-              <Select size="small" displayEmpty defaultValue="" sx={selectEstilos}>
-                <MenuItem value="">Hilos</MenuItem>
-                <MenuItem value="8">8</MenuItem>
-                <MenuItem value="12">12</MenuItem>
-                <MenuItem value="16">16</MenuItem>
-                <MenuItem value="24">24</MenuItem>
-              </Select>
+              {/* Imagen */}
+              <div className="col-span-2">
+                <label className="block mb-1 text-sm font-semibold text-blancoHueso">
+                  Imagen del producto
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setEditImage(file);
+                      setPreview(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="w-full text-sm text-white border border-[#7F00FF] rounded-lg cursor-pointer bg-[#0D0D0D] focus:outline-none file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#7F00FF] file:text-white hover:file:bg-[#5A32A3]"
+                />
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Vista previa"
+                    className="mt-2 max-h-40 rounded border border-[#333]"
+                  />
+                )}
+              </div>
 
               {/* Botones */}
-              <div className="flex justify-end gap-2 mt-2">
+              <div className="col-span-2 flex justify-end gap-2 mt-2">
                 <Button
+                  onClick={() => setIsEditModalOpen(false)}
                   variant="outlined"
-                  onClick={() => setIsModalOpen(false)}
-                  sx={{
-                    borderColor: '#FF4D4F',
-                    color: '#FF4D4F',
-                    textTransform: 'none',
-                    fontWeight: 'bold',
-                  }}
+                  sx={{ borderColor: '#FF4D4F', color: '#FF4D4F' }}
                 >
                   Cancelar
                 </Button>
                 <Button
+                  onClick={handleUpdate}
                   variant="contained"
                   sx={{
                     backgroundColor: '#7F00FF',
                     '&:hover': { backgroundColor: '#5A32A3' },
                     color: '#fff',
-                    textTransform: 'none',
                     fontWeight: 'bold',
+                    textTransform: 'none',
                   }}
                 >
-                  Guardar
+                  Guardar cambios
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* modal de eliminar */}
+      {isDeleteModalOpen && selected && (
+        <div className="fixed inset-0 flex items-center justify-center modal-fondo z-50">
+          <div className="bg-[#1A1A1A] rounded-xl p-6 w-full max-w-sm shadow-xl border border-[#7F00FF] text-white">
+            <h3 className="text-xl font-bold mb-4 text-acento">¿Eliminar Procesador?</h3>
+
+            <p className="mb-6 text-blancoHueso">
+              ¿Estás seguro de que deseas eliminar <strong>{selected.name}</strong>? Esta acción no se puede deshacer.
+            </p>
+
+            <div className="flex justify-end gap-2">
+              <Button
+                onClick={() => setIsDeleteModalOpen(false)}
+                variant="outlined"
+                sx={{
+                  borderColor: '#FF4D4F',
+                  color: '#FF4D4F',
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                }}
+              >
+                Cancelar
+              </Button>
+
+              <Button
+                onClick={handleDelete}
+                variant="contained"
+                sx={{
+                  backgroundColor: '#FF4D4F',
+                  color: '#fff',
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                }}
+              >
+                Eliminar
+              </Button>
+            </div>
           </div>
         </div>
       )}

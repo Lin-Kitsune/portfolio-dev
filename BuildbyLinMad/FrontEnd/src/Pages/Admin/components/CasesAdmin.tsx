@@ -62,6 +62,24 @@ export default function CasesAdmin() {
   const [filterPriceMin, setFilterPriceMin] = useState('');
   const [filterPriceMax, setFilterPriceMax] = useState('');
 
+  const selectEstilos = {
+    backgroundColor: '#0D0D0D',
+    borderRadius: '6px',
+    color: '#F4F4F5',
+    '.MuiOutlinedInput-notchedOutline': {
+      borderColor: '#7F00FF',
+    },
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#00FFFF',
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#5A32A3',
+    },
+    '.MuiSelect-icon': {
+      color: '#F4F4F5',
+    },
+  };
+
   const handleSort = (field: string) => {
     if (sortField !== field) {
       setSortField(field);
@@ -269,12 +287,13 @@ export default function CasesAdmin() {
                 value={filterFormato}
                 onChange={(e) => setFilterFormato(e.target.value)}
                 fullWidth
-                className="bg-[#0D0D0D] text-white rounded"
+                displayEmpty
+                sx={selectEstilos}
               >
                 <MenuItem value="">Todos</MenuItem>
-                <MenuItem value="atx">ATX</MenuItem>
-                <MenuItem value="micro atx">Micro ATX</MenuItem>
-                <MenuItem value="extended atx">Extended ATX</MenuItem>
+                <MenuItem value="ATX">ATX</MenuItem>
+                <MenuItem value="Micro ATX">Micro ATX</MenuItem>
+                <MenuItem value="Extended ATX">Extended ATX</MenuItem>
               </Select>
             </div>
 
@@ -286,7 +305,8 @@ export default function CasesAdmin() {
                 value={filterPanel}
                 onChange={(e) => setFilterPanel(e.target.value)}
                 fullWidth
-                className="bg-[#0D0D0D] text-white rounded"
+                displayEmpty
+                sx={selectEstilos}
               >
                 <MenuItem value="">Todos</MenuItem>
                 <MenuItem value="vidrio templado">Vidrio templado</MenuItem>
@@ -303,7 +323,8 @@ export default function CasesAdmin() {
                 value={filterFans}
                 onChange={(e) => setFilterFans(e.target.value)}
                 fullWidth
-                className="bg-[#0D0D0D] text-white rounded"
+                displayEmpty
+                sx={selectEstilos}
               >
                 <MenuItem value="">Todos</MenuItem>
                 <MenuItem value="sí">Sí</MenuItem>
@@ -319,7 +340,8 @@ export default function CasesAdmin() {
                 value={filterRgb}
                 onChange={(e) => setFilterRgb(e.target.value)}
                 fullWidth
-                className="bg-[#0D0D0D] text-white rounded"
+                displayEmpty
+                sx={selectEstilos}
               >
                 <MenuItem value="">Todos</MenuItem>
                 <MenuItem value="sí">Sí</MenuItem>
@@ -335,7 +357,8 @@ export default function CasesAdmin() {
                 value={filterPsu}
                 onChange={(e) => setFilterPsu(e.target.value)}
                 fullWidth
-                className="bg-[#0D0D0D] text-white rounded"
+                displayEmpty
+                sx={selectEstilos}
               >
                 <MenuItem value="">Todas</MenuItem>
                 <MenuItem value="inferior">Inferior</MenuItem>
@@ -349,23 +372,21 @@ export default function CasesAdmin() {
               <div className="flex gap-2">
                 <TextField
                   size="small"
-                  variant="outlined"
                   placeholder="$ Mín"
                   type="number"
                   value={filterPriceMin}
                   onChange={(e) => setFilterPriceMin(e.target.value)}
-                  className="bg-[#0D0D0D] text-white"
-                  InputProps={{ sx: { color: 'white', backgroundColor: '#0D0D0D' } }}
+                  InputProps={{ style: { color: '#F4F4F5', backgroundColor: '#0D0D0D' } }}
+                  sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
                 />
                 <TextField
                   size="small"
-                  variant="outlined"
                   placeholder="$ Máx"
                   type="number"
                   value={filterPriceMax}
                   onChange={(e) => setFilterPriceMax(e.target.value)}
-                  className="bg-[#0D0D0D] text-white"
-                  InputProps={{ sx: { color: 'white', backgroundColor: '#0D0D0D' } }}
+                  InputProps={{ style: { color: '#F4F4F5', backgroundColor: '#0D0D0D' } }}
+                  sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
                 />
               </div>
             </div>
@@ -678,7 +699,13 @@ export default function CasesAdmin() {
                     onChange={(e) => setFuenteIncluida(e.target.value)}
                     fullWidth
                     className="bg-[#0D0D0D] text-white rounded"
-                    sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+                    sx={{
+                      backgroundColor: '#0D0D0D',
+                      color: '#F4F4F5',
+                      '& fieldset': { borderColor: '#7F00FF' },
+                      '& svg': { color: '#F4F4F5' }, 
+                      '& .MuiSelect-select': { color: '#F4F4F5' },
+                    }}
                   >
                     <MenuItem value="">Seleccionar</MenuItem>
                     <MenuItem value="sí">Sí</MenuItem>
@@ -695,7 +722,13 @@ export default function CasesAdmin() {
                     onChange={(e) => setVentiladoresIncluidos(e.target.value)}
                     fullWidth
                     className="bg-[#0D0D0D] text-white rounded"
-                    sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+                    sx={{
+                      backgroundColor: '#0D0D0D',
+                      color: '#F4F4F5',
+                      '& fieldset': { borderColor: '#7F00FF' },
+                      '& svg': { color: '#F4F4F5' },
+                      '& .MuiSelect-select': { color: '#F4F4F5' },
+                    }}
                   >
                     <MenuItem value="">Seleccionar</MenuItem>
                     <MenuItem value="sí">Sí</MenuItem>
@@ -775,6 +808,8 @@ export default function CasesAdmin() {
                 value={editNombre}
                 onChange={(e) => setEditNombre(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -783,6 +818,8 @@ export default function CasesAdmin() {
                 value={editLink}
                 onChange={(e) => setEditLink(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -792,6 +829,8 @@ export default function CasesAdmin() {
                 value={editPrecio}
                 onChange={(e) => setEditPrecio(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -800,6 +839,8 @@ export default function CasesAdmin() {
                 value={editFormato}
                 onChange={(e) => setEditFormato(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -808,6 +849,8 @@ export default function CasesAdmin() {
                 value={editIluminacion}
                 onChange={(e) => setEditIluminacion(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -816,6 +859,8 @@ export default function CasesAdmin() {
                 value={editUbicacionFuente}
                 onChange={(e) => setEditUbicacionFuente(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -824,6 +869,8 @@ export default function CasesAdmin() {
                 value={editPanelLateral}
                 onChange={(e) => setEditPanelLateral(e.target.value)}
                 size="small"
+                InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                InputProps={{ style: { color: '#F4F4F5' } }}
                 sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
               />
 
@@ -836,7 +883,13 @@ export default function CasesAdmin() {
                     onChange={(e) => setEditFuenteIncluida(e.target.value)}
                     fullWidth
                     className="bg-[#0D0D0D] text-white rounded"
-                    sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+                    sx={{
+                      backgroundColor: '#0D0D0D',
+                      color: '#F4F4F5',
+                      '& fieldset': { borderColor: '#7F00FF' },
+                      '& svg': { color: '#F4F4F5' },
+                      '& .MuiSelect-select': { color: '#F4F4F5' },
+                    }}
                   >
                     <MenuItem value="">Seleccionar</MenuItem>
                     <MenuItem value="sí">Sí</MenuItem>
@@ -852,7 +905,13 @@ export default function CasesAdmin() {
                     onChange={(e) => setEditVentiladoresIncluidos(e.target.value)}
                     fullWidth
                     className="bg-[#0D0D0D] text-white rounded"
-                    sx={{ '& fieldset': { borderColor: '#7F00FF' } }}
+                    sx={{
+                      backgroundColor: '#0D0D0D',
+                      color: '#F4F4F5',
+                      '& fieldset': { borderColor: '#7F00FF' },
+                      '& svg': { color: '#F4F4F5' },
+                      '& .MuiSelect-select': { color: '#F4F4F5' },
+                    }}
                   >
                     <MenuItem value="">Seleccionar</MenuItem>
                     <MenuItem value="sí">Sí</MenuItem>
