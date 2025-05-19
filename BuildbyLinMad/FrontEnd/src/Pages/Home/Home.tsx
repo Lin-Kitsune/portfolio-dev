@@ -1,11 +1,16 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider, KeenSliderInstance } from 'keen-slider/react';
-
+import axios from 'axios';
+import { FaDesktop } from 'react-icons/fa';
 // Imagenes
 import potencia from '../../assets/img/potencia.png';
 import recomendacion from '../../assets/img/recomendacion.png';
 import disenoProfesional from '../../assets/img/diseno-profesional.png';
+
+// Card
+
+import BuildCard from './BuildCard'; // ajusta la ruta si está en una subcarpeta
 
 function Home() {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -15,9 +20,27 @@ function Home() {
     loop: true,
     slides: { perView: 1 },
     created: (instance) => {
-      sliderInstance.current = instance; 
+      sliderInstance.current = instance;
     },
   });
+
+  const [buildsRef] = useKeenSlider<HTMLDivElement>({
+  loop: true,
+  mode: 'free',
+  slides: {
+    perView: 2.5,
+    spacing: 16,
+  },
+  breakpoints: {
+    '(max-width: 768px)': {
+      slides: { perView: 1.2, spacing: 12 },
+    },
+    '(min-width: 769px) and (max-width: 1024px)': {
+      slides: { perView: 2, spacing: 14 },
+    },
+  },
+});
+
 
   useEffect(() => {
     if (!sliderRef.current || !sliderInstance.current) return;
@@ -28,7 +51,7 @@ function Home() {
 
     const autoplay = () => {
       timeoutId = setInterval(() => {
-        sliderInstance.current?.next(); 
+        sliderInstance.current?.next();
       }, 3500);
     };
 
@@ -44,7 +67,7 @@ function Home() {
       el.removeEventListener('mouseout', autoplay);
     };
   }, []);
-  
+
   const slides = [
     {
       title: 'Potencia tu PC con Build by LinMad',
@@ -63,11 +86,31 @@ function Home() {
     },
   ];
 
+  // 🚀 Estado para las builds recomendadas
+  const [builds, setBuilds] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchBuilds = async () => {
+      try {
+const res = await axios.get('http://localhost:5000/api/builds/recommended')
+        console.log('Builds API response:', res.data);
+        setBuilds(Array.isArray(res.data) ? res.data : []);
+      } catch (error) {
+        console.error('Error al cargar builds recomendadas:', error);
+        setBuilds([]); // aseguramos que sea array
+      }
+    };
+
+    fetchBuilds();
+  }, []);
+
+const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
+
   return (
-  <main className="bg-[#0D0D0D] text-[#F4F4F5] min-h-screen">
-    <div className="relative">
+    <main className="bg-[#0D0D0D] text-[#F4F4F5] min-h-screen">
+      <div className="relative">
         {/* Carrusel */}
-      <div
+        <div
           ref={(node) => {
             sliderRef.current = node;
             refCallback(node);
@@ -88,25 +131,21 @@ function Home() {
 
                 <div className="flex gap-4">
                   {index === 0 && (
-                    <>
-                      <button
-                        type="button"
-                        className="bg-primario font-bold hover:bg-acento text-white hover:text-[#0D0D0D] font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-200 focus:outline-none focus:ring-0 shadow-none border-none"
-                      >
-                        Ver configurador
-                      </button>
-                    </>
+                    <button
+                      type="button"
+                      className="bg-primario font-bold hover:bg-acento text-white hover:text-[#0D0D0D] font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-200 focus:outline-none focus:ring-0 shadow-none border-none"
+                    >
+                      Ver configurador
+                    </button>
                   )}
 
                   {index === 1 && (
-                    <>
-                      <button
-                        type="button"
-                        className="bg-primario font-bold hover:bg-acento hover:text-[#0D0D0D] text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-200 focus:outline-none focus:ring-0 shadow-none border-none"
-                      >
-                        Ir al recomendador
-                      </button>
-                    </>
+                    <button
+                      type="button"
+                      className="bg-primario font-bold hover:bg-acento hover:text-[#0D0D0D] text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-200 focus:outline-none focus:ring-0 shadow-none border-none"
+                    >
+                      Ir al recomendador
+                    </button>
                   )}
 
                   {index === 2 && (
@@ -129,41 +168,42 @@ function Home() {
               </div>
             </div>
           ))}
-      </div>
-      {/* Tarjetas sobrepuestas */}
-      <section className="w-full flex justify-center px-4 md:px-8 mt-[-25px] relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-hover px-6 py-6 w-full max-w-6xl">
-          {[
-            {
-              title: 'Recomendador de Componentes',
-              desc: 'Te guiamos paso a paso según tus necesidades reales.',
-              icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59" viewBox="0 0 24 24">
-                  <path
-                    fill="none"
-                    stroke="#fff"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M8.85 6.15L12 3l3.15 3.15L12 9.3zm5.85 6.3l3.15-3.15L21 12.45l-3.15 3.15zm-5.85 5.4L12 14.7l3.15 3.15L12 21zM3 12l3.15-3.15L9.3 12l-3.15 3.15z"
-                  />
-                </svg>
-              ),
-            },
-            {
-              title: 'Build Asistido',
-              desc: 'Configura tu equipo completo con compatibilidad garantizada.',
-              icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 16 16">
-                  <path
-                    fill="#fff"
-                    fillRule="evenodd"
-                    d="m14.773 3.485l-.78-.184l-2.108 2.096l-1.194-1.216l2.056-2.157l-.18-.792a4.4 4.4 0 0 0-1.347-.228a3.6 3.6 0 0 0-1.457.28a3.8 3.8 0 0 0-1.186.84a3.7 3.7 0 0 0-.875 1.265a3.94 3.94 0 0 0 0 2.966a335 335 0 0 0-6.173 6.234c-.21.275-.31.618-.284.963a1.4 1.4 0 0 0 .464.967q.188.205.437.328c.17.075.353.118.538.127c.316-.006.619-.126.854-.337c1.548-1.457 4.514-4.45 6.199-6.204c.457.194.948.294 1.444.293a3.74 3.74 0 0 0 2.677-1.133a3.9 3.9 0 0 0 1.111-2.73a4.2 4.2 0 0 0-.196-1.378M2.933 13.928a.3.3 0 0 1-.135.07a.4.4 0 0 1-.149 0a.35.35 0 0 1-.144-.057a.34.34 0 0 1-.114-.11c-.14-.143-.271-.415-.14-.568c1.37-1.457 4.191-4.305 5.955-6.046q.15.199.328.376q.177.185.38.341c-1.706 1.75-4.488 4.564-5.98 5.994zm11.118-9.065c.002.765-.296 1.5-.832 2.048a2.86 2.86 0 0 1-4.007 0a2.99 2.99 0 0 1-.635-3.137A2.75 2.75 0 0 1 10.14 2.18a2.8 2.8 0 0 1 1.072-.214h.254L9.649 3.839v.696l1.895 1.886h.66l1.847-1.816zM3.24 6.688h1.531l.705.717l.678-.674l-.665-.678V6.01l.057-1.649l-.22-.437l-2.86-1.882l-.591.066l-.831.849l-.066.599l1.838 2.918l.424.215zm-.945-3.632L4.609 4.58L4.57 5.703H3.494L2.002 3.341zm7.105 6.96l.674-.673l3.106 3.185a1.48 1.48 0 0 1 0 2.039a1.4 1.4 0 0 1-1.549.315a1.3 1.3 0 0 1-.437-.315l-3.142-3.203l.679-.678l3.132 3.194a.4.4 0 0 0 .153.105a.48.48 0 0 0 .359 0a.4.4 0 0 0 .153-.105a.4.4 0 0 0 .1-.153a.5.5 0 0 0 .036-.184a.6.6 0 0 0-.035-.184a.4.4 0 0 0-.1-.153z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ),
-            },
+        </div>
+
+        {/* Tarjetas sobrepuestas */}
+        <section className="w-full flex justify-center px-4 md:px-8 mt-[-25px] relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-hover px-6 py-6 w-full max-w-6xl">
+            {[
+              {
+                title: 'Recomendador de Componentes',
+                desc: 'Te guiamos paso a paso según tus necesidades reales.',
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="#fff"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M8.85 6.15L12 3l3.15 3.15L12 9.3zm5.85 6.3l3.15-3.15L21 12.45l-3.15 3.15zm-5.85 5.4L12 14.7l3.15 3.15L12 21zM3 12l3.15-3.15L9.3 12l-3.15 3.15z"
+                    />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Build Asistido',
+                desc: 'Configura tu equipo completo con compatibilidad garantizada.',
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 16 16">
+                    <path
+                      fill="#fff"
+                      fillRule="evenodd"
+                      d="m14.773 3.485l-.78-.184l-2.108 2.096l-1.194-1.216l2.056-2.157l-.18-.792a4.4 4.4 0 0 0-1.347-.228a3.6 3.6 0 0 0-1.457.28a3.8 3.8 0 0 0-1.186.84a3.7 3.7 0 0 0-.875 1.265a3.94 3.94 0 0 0 0 2.966a335 335 0 0 0-6.173 6.234c-.21.275-.31.618-.284.963a1.4 1.4 0 0 0 .464.967q.188.205.437.328c.17.075.353.118.538.127c.316-.006.619-.126.854-.337c1.548-1.457 4.514-4.45 6.199-6.204c.457.194.948.294 1.444.293a3.74 3.74 0 0 0 2.677-1.133a3.9 3.9 0 0 0 1.111-2.73a4.2 4.2 0 0 0-.196-1.378"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ),
+              },
             {
               title: 'Historial y Guardados',
               desc: 'Revisa tus configuraciones y proyectos anteriores.',
@@ -176,20 +216,73 @@ function Home() {
                 </svg>
               ),
             },
-          ].map((card, i) => (
-            <div
-              key={i}
-              className="bg-hover px-4 py-4 rounded-lg flex flex-col items-center text-center"
-            >
-              <div className="text-3xl mb-2">{card.icon}</div>
-              <h3 className="text-base font-bold text-white m-0 leading-tight">{card.title}</h3>
-              <p className="text-sm text-blancoHueso mt-1 leading-snug">{card.desc}</p>
+            ].map((card, i) => (
+              <div
+                key={i}
+                className="bg-hover px-4 py-4 rounded-lg flex flex-col items-center text-center"
+              >
+                <div className="text-3xl mb-2">{card.icon}</div>
+                <h3 className="text-base font-bold text-white m-0 leading-tight">{card.title}</h3>
+                <p className="text-sm text-blancoHueso mt-1 leading-snug">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+    {/* Carrusel de Builds Recomendadas */}
+    
+      {builds.length > 0 && (
+        <section className="w-full px-4 md:px-10 mt-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
+              {builds.map((build, index) => (
+                <BuildCard
+                  key={index}
+                  title={`Build #${index + 1}`}
+                  onClick={() => setSelectedBuild(build)}
+                />
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+         </section>
+      )}
+
+      </div>
+
+      {selectedBuild && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-[#1F1F1F] rounded-xl shadow-2xl p-6 w-[90%] max-w-2xl relative border border-[#9F5BFF]">
+            {/* Botón de cerrar */}
+            <button
+              onClick={() => setSelectedBuild(null)}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#9F5BFF] text-white hover:bg-white hover:text-[#9F5BFF] transition-all"
+            >
+              ×
+            </button>
+
+            <h2 className="text-white text-2xl font-bold mb-4">
+              Build #{builds.indexOf(selectedBuild) + 1}
+            </h2>
+            <p className="text-[#ccc] mb-4">Lista completa de componentes:</p>
+
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-sm text-[#F4F4F5]">
+              {Object.entries(selectedBuild.components).flatMap(([key, comp]: any) =>
+                Array.isArray(comp)
+                  ? comp.map((c, i) => <li key={`${key}-${i}`}>• {c.name}</li>)
+                  : comp?.name
+                  ? [<li key={key}>• {comp.name}</li>]
+                  : []
+              )}
+            </ul>
     </div>
-  </main>
+
+    
+  </div>
+
+  
+)}
+
+
+    </main>
+    
   );
 }
 

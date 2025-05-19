@@ -33,6 +33,9 @@ function Historial() {
     fetchBuilds();
   }, []);
 
+  const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+  const isAdmin = usuario?.role === 'admin';
+
   const eliminarBuild = async (id: string) => {
     try {
       await buildService.eliminarBuild(id);
@@ -46,6 +49,27 @@ function Historial() {
 
   const editarBuild = (build: any) => {
     navigate('/editar-build', { state: { build } });
+  };
+
+  const toggleRecomendada = async (id: string, estadoActual: boolean) => {
+    try {
+      if (estadoActual) {
+        await buildService.desmarcarBuildComoRecomendada(id);
+        toast.info('❎ Build desmarcada como recomendada');
+      } else {
+        await buildService.marcarBuildComoRecomendada(id);
+        toast.success('🌟 Build marcada como recomendada');
+      }
+
+      setBuilds((prev) =>
+        prev.map((b) =>
+          b._id === id ? { ...b, recommended: !estadoActual } : b
+        )
+      );
+    } catch (error) {
+      console.error('❌ Error al actualizar recomendación:', error);
+      toast.error('No se pudo actualizar la recomendación');
+    }
   };
 
   return (
@@ -93,7 +117,20 @@ function Historial() {
                 <span className="text-green-400 font-bold text-base">
                   💰 Total: ${build.total.toLocaleString('es-CL')}
                 </span>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
+                  {isAdmin && (
+                    <button
+                      onClick={() => toggleRecomendada(build._id, build.recommended)}
+                      className={`px-3 py-1 ${
+                        build.recommended
+                          ? 'bg-green-600 hover:bg-green-700'
+                          : 'bg-blue-600 hover:bg-blue-700'
+                      } text-white rounded-lg flex items-center gap-2 text-sm font-semibold shadow`}
+                    >
+                      ⭐ {build.recommended ? 'Recomendada' : 'Marcar como recomendada'}
+                    </button>
+                  )}
+
                   <button
                     onClick={() => editarBuild(build)}
                     className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg flex items-center gap-2 text-sm font-semibold shadow"
