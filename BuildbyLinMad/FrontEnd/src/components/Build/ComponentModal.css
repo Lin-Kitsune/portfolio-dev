@@ -1,0 +1,54 @@
+.custom-glow-card {
+  position: relative;
+  background-color: #1c1c1c;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.custom-glow-card:hover {
+  box-shadow: 0 0 12px #7F00FF99;
+  border-color: #7F00FF;
+}
+
+.custom-glow-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 6px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  background: linear-gradient(to bottom, #00FFFF, #7F00FF);
+  box-shadow:
+    0 0 8px #00FFFF,
+    0 0 12px #7F00FF;
+}
+
+/* Scroll oscuro neón */
+.scroll-estetico::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-estetico::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 8px;
+}
+
+.scroll-estetico::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #7f00ff, #9a1bff);
+  border-radius: 8px;
+}
+
+.scroll-estetico::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #a855f7, #00ffff);
+}
+

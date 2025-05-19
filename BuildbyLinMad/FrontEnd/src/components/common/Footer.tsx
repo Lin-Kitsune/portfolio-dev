@@ -44,7 +44,7 @@ export default function Footer() {
                 {/* Branding */}
                 <div className="flex items-center gap-6 col-span-2 footer-col morado">
                     <img src={Logo} alt="Logo LinMad" className="w-36 h-auto bg-[#0D0D0D] p-3 rounded-md" />
-                    <p className="text-[20px] font-bold text-acento leading-snug max-w-xs">
+                    <p className="text-[20px] font-bold text-white leading-snug max-w-xs">
                         "Tu plataforma para armar la PC ideal con inteligencia"
                     </p>
                 </div>
