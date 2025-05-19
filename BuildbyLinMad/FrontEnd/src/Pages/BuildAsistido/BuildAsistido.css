@@ -1,0 +1,128 @@
+.admin-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .admin-card {
+    width: 160px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: linear-gradient(to bottom right, #7F00FF, #00FFFF);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    border: none;
+  }
+  
+  .admin-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .admin-card img {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+    object-fit: contain;
+  }
+
+  /* Icono con tamaño más grande como en tu referencia */
+.admin-card img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    object-fit: contain;
+  }
+
+  .admin-card span {
+    text-transform: uppercase;
+    white-space: nowrap;      
+    font-size: 0.8rem;         
+    text-align: center;
+    margin-top: 0.5rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+.build-layout {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  margin: 0 auto;
+}
+
+.build-node {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  transform: translate(-50%, -50%);
+}
+
+.build-center {
+  position: absolute;
+  top: 400px;
+  left: 400px;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  background: linear-gradient(to bottom right, #7F00FF, #00FFFF) !important;
+  padding: 0.7rem;
+  border-radius: 0.75rem;
+  width: 300px;
+  color: white;
+}
+.build-center h4,
+.build-center p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+
+
+/* === LÍNEAS DE CONEXIÓN === */
+
+.build-node::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 80px;
+  background-color: white;
+  transform-origin: top;
+  z-index: -1;
+}
+
+/* Gira cada línea según su ángulo */
+.node-0::before { transform: rotate(0deg); }
+.node-1::before { transform: rotate(36deg); }
+.node-2::before { transform: rotate(72deg); }
+.node-3::before { transform: rotate(108deg); }
+.node-4::before { transform: rotate(144deg); }
+.node-5::before { transform: rotate(180deg); }
+.node-6::before { transform: rotate(216deg); }
+.node-7::before { transform: rotate(252deg); }
+.node-8::before { transform: rotate(288deg); }
+.node-9::before { transform: rotate(324deg); }
+
+.custom-checkbox:checked {
+          background-color: #9F5BFF;
+          border-color: #9F5BFF;
+          background-image: url("data:image/svg+xml,%3Csvg fill='white' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.173 13.004 2.23 9.062l1.414-1.415L6.17 10.176l6.185-6.185 1.414 1.414z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 0.85em 0.85em;
+ }
+
+
+ 
