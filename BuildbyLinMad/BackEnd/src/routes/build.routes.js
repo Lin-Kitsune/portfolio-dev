@@ -104,29 +104,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 📌 Desmarcar una build como recomendada
-router.put('/:id/unrecommend', async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const updatedBuild = await Build.findByIdAndUpdate(
-      id,
-      { recommended: false },
-      { new: true }
-    );
-
-    if (!updatedBuild) {
-      return res.status(404).json({ message: 'Build no encontrada' });
-    }
-
-    return res.status(200).json({ message: 'Build desmarcada como recomendada', build: updatedBuild });
-  } catch (error) {
-    console.error('❌ Error al desmarcar build como recomendada:', error);
-    return res.status(500).json({ message: 'Error al actualizar la build' });
-  }
-});
-
-// 📌 Obtener todas las builds recomendadas
+// 📌 Obtener builds recomendadas
 router.get('/recommended', async (req, res) => {
   try {
     const builds = await Build.find({ recommended: true }).sort({ createdAt: -1 });

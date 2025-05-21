@@ -41,6 +41,22 @@ function Home() {
   },
 });
 
+const getIconForKey = (key: string) => {
+  const icons: Record<string, string> = {
+    processors: '🧠',
+    gpus: '⚡',
+    motherboards: '🧱',
+    rams: '💾',
+    ssds: '💽',
+    disks: '📀',
+    psus: '🔌',
+    cases: '🧊',
+    coolers: '💨',
+    fans: '🌬️',
+  };
+  return icons[key] || '🔧';
+};
+
 
   useEffect(() => {
     if (!sliderRef.current || !sliderInstance.current) return;
@@ -247,38 +263,89 @@ const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
 
       </div>
 
-      {selectedBuild && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-[#1F1F1F] rounded-xl shadow-2xl p-6 w-[90%] max-w-2xl relative border border-[#9F5BFF]">
-            {/* Botón de cerrar */}
-            <button
-              onClick={() => setSelectedBuild(null)}
-              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#9F5BFF] text-white hover:bg-white hover:text-[#9F5BFF] transition-all"
-            >
-              ×
-            </button>
+{selectedBuild && (
+  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
+    <div className="bg-[#1F1F1F] rounded-xl shadow-2xl p-6 w-full max-w-6xl relative border border-[#9F5BFF]">
 
-            <h2 className="text-white text-2xl font-bold mb-4">
-              Build #{builds.indexOf(selectedBuild) + 1}
-            </h2>
-            <p className="text-[#ccc] mb-4">Lista completa de componentes:</p>
+      {/* Botón cerrar */}
+      <button
+        onClick={() => setSelectedBuild(null)}
+        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#9F5BFF] text-white hover:bg-white hover:text-[#9F5BFF] transition-all"
+      >
+        ×
+      </button>
 
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-sm text-[#F4F4F5]">
-              {Object.entries(selectedBuild.components).flatMap(([key, comp]: any) =>
-                Array.isArray(comp)
-                  ? comp.map((c, i) => <li key={`${key}-${i}`}>• {c.name}</li>)
-                  : comp?.name
-                  ? [<li key={key}>• {comp.name}</li>]
-                  : []
-              )}
-            </ul>
+      {/* Título */}
+      <h2 className="text-white text-2xl font-bold mb-6 text-center">Build #{builds.indexOf(selectedBuild) + 1}</h2>
+
+      {/* Contenido sin scroll interno */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {Object.entries(selectedBuild.components).flatMap(([key, comp]: any) =>
+          Array.isArray(comp)
+            ? comp.map((item, i) => (
+                <div key={`${key}-${i}`} className="flex items-start gap-3 text-sm bg-[#222] p-4 rounded-lg">
+                  {getIconForKey(key)}
+                  <div className="flex-1">
+                    <p className="text-white font-semibold line-clamp-1">{item.name}</p>
+                    <ul className="text-xs text-zinc-400 mt-1 space-y-[2px]">
+                      {Object.entries(item.specs || {})
+                        .filter(([k]) => typeof item.specs[k] !== 'object')
+                        .slice(0, 3)
+                        .map(([k, v]) => (
+                          <li key={k}>
+                            <span className="capitalize">{k}:</span> {String(v)}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <span className="text-xs bg-[#9F5BFF] text-white font-bold px-2 py-0.5 rounded-full whitespace-nowrap mt-1">
+                    ${item.price?.toLocaleString('es-CL') || 'N/A'}
+                  </span>
+                </div>
+              ))
+            : comp?.name && (
+                <div key={key} className="flex items-start gap-3 text-sm bg-[#222] p-4 rounded-lg">
+                  {getIconForKey(key)}
+                  <div className="flex-1">
+                    <p className="text-white font-semibold line-clamp-1">{comp.name}</p>
+                    <ul className="text-xs text-zinc-400 mt-1 space-y-[2px]">
+                      {Object.entries(comp.specs || {})
+                        .filter(([k]) => typeof comp.specs[k] !== 'object')
+                        .slice(0, 3)
+                        .map(([k, v]) => (
+                          <li key={k}>
+                            <span className="capitalize">{k}:</span> {String(v)}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <span className="text-xs bg-[#9F5BFF] text-white font-bold px-2 py-0.5 rounded-full whitespace-nowrap mt-1">
+                    ${comp.price?.toLocaleString('es-CL') || 'N/A'}
+                  </span>
+                </div>
+              )
+        )}
+      </div>
+
+      {/* Total */}
+      <div className="mt-6 text-right">
+        <p className="text-white text-sm">
+          Total:{' '}
+          <span className="text-[#9F5BFF] font-bold text-xl">
+            ${Object.values(selectedBuild.components).reduce((acc, comp: any) => {
+              if (Array.isArray(comp)) {
+                return acc + comp.reduce((sum, c) => sum + (c.price || 0), 0);
+              }
+              return acc + (comp?.price || 0);
+            }, 0).toLocaleString('es-CL')}
+          </span>
+        </p>
+      </div>
     </div>
-
-    
   </div>
-
-  
 )}
+
+    )}
 
 
     </main>
