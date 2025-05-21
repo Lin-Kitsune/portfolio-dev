@@ -22,5 +22,14 @@ export const buildService = {
     const res = await axios.put(`${API_URL}/update/${buildId}`, buildData);
     return res.data;
   },
-  
+
+  marcarBuildComoRecomendada: async (buildId: string) => {
+    const res = await axios.put(`${API_URL}/${buildId}/recommend`);
+    return res.data;
+  },
+
+  desmarcarBuildComoRecomendada: async (buildId: string) => {
+    const res = await axios.put(`${API_URL}/${buildId}/unrecommend`);
+    return res.data;
+  },
 };

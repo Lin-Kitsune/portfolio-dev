@@ -71,6 +71,28 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
+// 📌 Marcar una build como recomendada
+router.put('/:id/recommend', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedBuild = await Build.findByIdAndUpdate(
+      id,
+      { recommended: true },
+      { new: true }
+    );
+
+    if (!updatedBuild) {
+      return res.status(404).json({ message: 'Build no encontrada' });
+    }
+
+    return res.status(200).json({ message: 'Build marcada como recomendada', build: updatedBuild });
+  } catch (error) {
+    console.error('❌ Error al marcar build como recomendada:', error);
+    return res.status(500).json({ message: 'Error al actualizar la build' });
+  }
+});
+
 // 📌 Obtener todas las builds (para admin)
 router.get('/', async (req, res) => {
   try {
@@ -79,6 +101,17 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('❌ Error al obtener todas las builds:', error);
     return res.status(500).json({ message: 'Error al obtener las builds' });
+  }
+});
+
+// 📌 Obtener builds recomendadas
+router.get('/recommended', async (req, res) => {
+  try {
+    const builds = await Build.find({ recommended: true }).sort({ createdAt: -1 });
+    return res.status(200).json(builds);
+  } catch (error) {
+    console.error('❌ Error al obtener builds recomendadas:', error);
+    return res.status(500).json({ message: 'Error al obtener builds recomendadas' });
   }
 });
 
