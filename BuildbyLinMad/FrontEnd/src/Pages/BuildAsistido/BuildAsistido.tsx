@@ -82,29 +82,45 @@ function BuildAsistido() {
     fans: 'fans',
   };
 
+  const reverseKeyMap: Record<string, string> = Object.fromEntries(
+    Object.entries(keyMap).map(([k, v]) => [v, k])
+  );
+
   const [selectorActivo, setSelectorActivo] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [buildId, setBuildId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchBuildFromBackend = async () => {
-      try {
-        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-        if (!usuario?.id) return;
+ useEffect(() => {
+  const fetchBuildFromBackend = async () => {
+    try {
+      const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+      if (!usuario?.id) return;
 
-        const builds = await buildService.getBuildsByUser(usuario.id);
-        if (builds?.length > 0) {
-          setBuild(builds[0].components); // ← último build más reciente
-        }
-      } catch (error) {
-        console.error('❌ Error al cargar build:', error);
-      } finally {
-        setLoading(false);
+      const builds = await buildService.getBuildsByUser(usuario.id);
+      if (builds?.length > 0) {
+        const buildDoc = builds[0];
+        const raw = buildDoc.components;
+
+        const fixedBuild: any = {};
+        Object.entries(raw).forEach(([key, value]) => {
+          const normalizedKey = key.toLowerCase();
+          fixedBuild[normalizedKey] = value;
+        });
+
+        setBuild(fixedBuild);
+        setBuildId(buildDoc._id); 
       }
-    };
+    } catch (error) {
+      console.error('❌ Error al cargar build:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchBuildFromBackend();
-  }, []);
+  fetchBuildFromBackend();
+}, []);
+
 
   const handleSelect = (type: string, component: any) => {
     const realKey = keyMap[type] || type;
@@ -127,6 +143,9 @@ function BuildAsistido() {
       ssd: null, hdd: null, psu: null, case: null,
       cooler: null, fans: [],
     });
+
+    // Esto es CLAVE para indicar que se trata de una nueva build
+    setBuildId(null);
   };
 
   const total = Object.values(build).reduce((acc, comp) => {
@@ -144,23 +163,32 @@ function BuildAsistido() {
     try {
       const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
       const userId = usuario.id;
-  
+
       if (!userId) {
-        toast.error('⚠️ Debes iniciar sesión para guardar tu build');
+        toast.error('Debes iniciar sesión para guardar tu build');
         return;
       }
-  
+
       const buildData = {
         userId,
         components: build,
         total,
       };
-  
-      await buildService.guardarBuild(buildData);
-      toast.success('✅ Build guardada correctamente');
+
+      if (buildId) {
+        //  Actualizar build existente
+        await buildService.actualizarBuild(buildId, buildData);
+        toast.success('Build actualizada correctamente');
+      } else {
+        //  Guardar nueva build
+        const nuevaBuild = await buildService.guardarBuild(buildData);
+        setBuildId(nuevaBuild.id); // opcional, para futuras actualizaciones
+        toast.success('Build guardada correctamente');
+      }
+
     } catch (err) {
-      console.error('Error al guardar build:', err);
-      toast.error('❌ Error al guardar la build');
+      console.error('Error al guardar o actualizar build:', err);
+      toast.error('Error al guardar la build');
     }
   };
 
@@ -247,6 +275,8 @@ function BuildAsistido() {
           <div className="build-layout relative w-[800px] h-[800px] mx-auto flex items-center justify-center">
             {COMPONENTES.map((comp, i) => {
               const selectedComponent = build[keyMap[comp.key] || comp.key];
+              const isArray = Array.isArray(selectedComponent);
+              const displayComponent = isArray ? selectedComponent[0] : selectedComponent;
 
               return (
                 <div
@@ -271,63 +301,60 @@ function BuildAsistido() {
                         className="admin-card"
                       >
                         <img src={comp.icon} alt={comp.label} />
-                        <span>{selectedComponent?.name || comp.label}</span>
+                        <span>{displayComponent?.name || comp.label}</span>
                       </button>
                     }
                     backContent={
-                    selectedComponent ? (
-                      <div className="back-content">
+                      displayComponent ? (
+                        <div className="back-content">
+                          {displayComponent.link && (
+                            <a
+                              href={displayComponent.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="component-link"
+                            >
+                              Ver link pieza
+                            </a>
+                          )}
 
-                        {selectedComponent.link && (
-                          <a
-                            href={selectedComponent.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="component-link"
-                          >
-                            Ver link pieza
-                          </a>
-
-                        )}
-
-                        <div className="spec-list">
-                          {Object.entries(selectedComponent.specs || {})
-                          .filter(([key]) => 
-                            key !== 'capacidadPorModulo' 
-                            && key !== 'cantidad'  
-                            && key !== 'voltaje'
-                            && key !== 'certificacion'
-                            && key !== 'chipset'
-                            && key !== 'memorias'
-                            && key !== 'memoria'
-                            && key !== 'rpm'
-                            && key !== 'poseeDram'
-                            && key !== 'fuenteDePoderIncluida'
-                            && key !== 'ventiladoresIncluidos'
-                            && key !== 'iluminacion'
-                            && key !== 'bearing'
-                            && key !== 'ubicacionFuente'
-                            && key !== 'panelLateral'
-                            && key !== 'gpu'
-                            && key !== 'frecuenciaCore'
-                            && key !== 'frecuenciaMemorias'
-                            && key !== 'tipoMemoria'
-
-                          )
-
-                          .slice(0, 5)
-                          .map(([key, value]) => (
-                            <div key={key} className="spec-line">
-                              <span className="spec-key">{key}:</span>
-                              <span className="spec-value">{String(value)}</span>
-                            </div>
-                          ))}
+                          <div className="spec-list">
+                            {Object.entries(displayComponent.specs || {})
+                              .filter(([key]) => 
+                                key !== 'capacidadPorModulo' &&
+                                key !== 'cantidad' &&
+                                key !== 'voltaje' &&
+                                key !== 'certificacion' &&
+                                key !== 'chipset' &&
+                                key !== 'memorias' &&
+                                key !== 'memoria' &&
+                                key !== 'rpm' &&
+                                key !== 'poseeDram' &&
+                                key !== 'fuenteDePoderIncluida' &&
+                                key !== 'ventiladoresIncluidos' &&
+                                key !== 'iluminacion' &&
+                                key !== 'bearing' &&
+                                key !== 'ubicacionFuente' &&
+                                key !== 'panelLateral' &&
+                                key !== 'gpu' &&
+                                key !== 'frecuenciaCore' &&
+                                key !== 'frecuenciaMemorias' &&
+                                key !== 'tipoMemoria' &&
+                                key !== '_id'
+                              )
+                              .slice(0, 5)
+                              .map(([key, value]) => (
+                                <div key={key} className="spec-line">
+                                  <span className="spec-key">{key}:</span>
+                                  <span className="spec-value">{String(value)}</span>
+                                </div>
+                              ))}
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <p>Sin selección</p>
-                    )
-                  }
+                      ) : (
+                        <p>Sin selección</p>
+                      )
+                    }
 
                   />
                 </div>
@@ -477,7 +504,7 @@ function BuildAsistido() {
                 <ComponentSelector
                   type={selectorActivo}
                   label={COMPONENTES.find((c) => c.key === selectorActivo)?.label || ''}
-                  selected={build[selectorActivo]}
+                  selected={build[keyMap[selectorActivo] || selectorActivo]}
                   onSelect={(comp) => {
                     handleSelect(selectorActivo, comp);
                     setSelectorActivo(null);

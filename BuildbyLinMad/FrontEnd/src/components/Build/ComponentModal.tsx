@@ -440,7 +440,6 @@ export default function ComponentModal({ type, onClose, onSelect, build }: Compo
           </>
         );
 
-
       default:
         return (
           <>
