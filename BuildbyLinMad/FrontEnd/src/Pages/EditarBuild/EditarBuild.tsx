@@ -21,7 +21,7 @@ function EditarBuild() {
     if (buildToEdit) {
       setBuild(buildToEdit.components);
     } else {
-      toast.error('⚠️ No se encontró ninguna build para editar');
+      toast.error('No se encontró ninguna build para editar');
       navigate('/historial');
     }
   }, [buildToEdit]);
@@ -30,7 +30,7 @@ function EditarBuild() {
     const result = isCompatible(type, build, component);
 
     if (!result.compatible) {
-      toast.error(`❌ ${result.reason || 'Componente incompatible'}`);
+      toast.error(`${result.reason || 'Componente incompatible'}`);
       return;
     }
 
@@ -57,10 +57,10 @@ function EditarBuild() {
         components: build,
         total,
       });
-      toast.success('✅ Build actualizada correctamente');
+      toast.success('Build actualizada correctamente');
       navigate('/historial');
     } catch (error) {
-      console.error('❌ Error al actualizar build:', error);
+      console.error('Error al actualizar build:', error);
       toast.error('No se pudo actualizar la build');
     }
   };
