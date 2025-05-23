@@ -4,10 +4,11 @@ import { isCompatible } from '../../utils/compatibility';
 import { toast } from 'react-toastify';
 import 'flowbite';
 import { buildService } from '../../services/buildService';
-import { Button } from '@mui/material';
 import { FlipCard } from './FlipCard'
 import { generarPDFBuild } from '../../services/pdfService';
 import PdfButton from './PdfButton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 // Puedes reemplazar las imágenes por las tuyas reales luego
 const COMPONENTES = [
@@ -90,6 +91,8 @@ function BuildAsistido() {
   const [loading, setLoading] = useState(true);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [buildId, setBuildId] = useState<string | null>(null);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [buildTitle, setBuildTitle] = useState('');
 
  useEffect(() => {
   const fetchBuildFromBackend = async () => {
@@ -112,7 +115,7 @@ function BuildAsistido() {
         setBuildId(buildDoc._id); 
       }
     } catch (error) {
-      console.error('❌ Error al cargar build:', error);
+      console.error(' Error al cargar build:', error);
     } finally {
       setLoading(false);
     }
@@ -127,7 +130,7 @@ function BuildAsistido() {
 
     const result = isCompatible(realKey, build, component);
     if (!result.compatible) {
-      toast.error(`❌ ${result.reason || 'Componente incompatible'}`);
+      toast.error(` ${result.reason || 'Componente incompatible'}`);
       return;
     }
 
@@ -170,6 +173,7 @@ function BuildAsistido() {
       }
 
       const buildData = {
+        title: buildTitle.trim() || `Build creada el ${new Date().toLocaleDateString('es-CL')}`,
         userId,
         components: build,
         total,
@@ -413,7 +417,7 @@ function BuildAsistido() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={handleSaveBuild}
+                  onClick={() => setShowSaveModal(true)}
                   sx={{
                     backgroundColor: '#7F00FF',
                     '&:hover': { backgroundColor: '#5A32A3' },
@@ -424,6 +428,7 @@ function BuildAsistido() {
                 >
                   Guardar
                 </Button>
+
               </div>
             </div>
 
@@ -513,6 +518,69 @@ function BuildAsistido() {
               </div>
             </div>
           )}
+
+          {/* Modal de guardar nombre */}
+          {showSaveModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-50 flex items-center justify-center">
+              <div className="bg-[#0f0f0f] border-2 border-[#7F00FF] rounded-xl p-6 w-[90%] max-w-md shadow-2xl text-white">
+                <h2 className="text-xl font-bold text-center mb-4 text-white">GUARDAR BUILD</h2>
+
+                {/* Input estilizado */}
+                <TextField
+                  label="Nombre"
+                  value={buildTitle}
+                  onChange={(e) => setBuildTitle(e.target.value)}
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  InputLabelProps={{ style: { color: '#C2B9FF' } }}
+                  InputProps={{ style: { color: '#F4F4F5' } }}
+                  sx={{
+                    mt: 1,
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': { borderColor: '#7F00FF' },
+                      '&:hover fieldset': { borderColor: '#5A32A3' },
+                      '&.Mui-focused fieldset': { borderColor: '#00FFFF' },
+                    },
+                  }}
+                />
+
+                {/* Botones */}
+                <div className="flex justify-end gap-3 mt-6">
+                  <Button
+                    variant="outlined"
+                    onClick={() => setShowSaveModal(false)}
+                    sx={{
+                      borderColor: '#FF4D4F',
+                      color: '#FF4D4F',
+                      textTransform: 'none',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={async () => {
+                      await handleSaveBuild();
+                      setShowSaveModal(false);
+                      setBuildTitle('');
+                    }}
+                    sx={{
+                      backgroundColor: '#7F00FF',
+                      '&:hover': { backgroundColor: '#5A32A3' },
+                      color: '#fff',
+                      textTransform: 'none',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Guardar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
     </>
   );

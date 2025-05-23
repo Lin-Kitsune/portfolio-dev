@@ -2,15 +2,13 @@ import { useRef, useEffect, useState } from 'react';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider, KeenSliderInstance } from 'keen-slider/react';
 import axios from 'axios';
-import { FaDesktop } from 'react-icons/fa';
 // Imagenes
 import potencia from '../../assets/img/potencia.png';
 import recomendacion from '../../assets/img/recomendacion.png';
 import disenoProfesional from '../../assets/img/diseno-profesional.png';
 
 // Card
-
-import BuildCard from './BuildCard'; // ajusta la ruta si está en una subcarpeta
+import BuildCard from './BuildCard';
 
 function Home() {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -40,23 +38,6 @@ function Home() {
     },
   },
 });
-
-const getIconForKey = (key: string) => {
-  const icons: Record<string, string> = {
-    processors: '🧠',
-    gpus: '⚡',
-    motherboards: '🧱',
-    rams: '💾',
-    ssds: '💽',
-    disks: '📀',
-    psus: '🔌',
-    cases: '🧊',
-    coolers: '💨',
-    fans: '🌬️',
-  };
-  return icons[key] || '🔧';
-};
-
 
   useEffect(() => {
     if (!sliderRef.current || !sliderInstance.current) return;
@@ -102,28 +83,28 @@ const getIconForKey = (key: string) => {
     },
   ];
 
-  // 🚀 Estado para las builds recomendadas
+  // Estado para las builds recomendadas
   const [builds, setBuilds] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchBuilds = async () => {
       try {
-const res = await axios.get('http://localhost:5000/api/builds/recommended')
-        console.log('Builds API response:', res.data);
-        setBuilds(Array.isArray(res.data) ? res.data : []);
-      } catch (error) {
-        console.error('Error al cargar builds recomendadas:', error);
-        setBuilds([]); // aseguramos que sea array
-      }
-    };
+    const res = await axios.get('http://localhost:5000/api/builds/recommended')
+            console.log('Builds API response:', res.data);
+            setBuilds(Array.isArray(res.data) ? res.data : []);
+          } catch (error) {
+            console.error('Error al cargar builds recomendadas:', error);
+            setBuilds([]); // aseguramos que sea array
+          }
+        };
 
-    fetchBuilds();
+        fetchBuilds();
   }, []);
 
 const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
 
   return (
-    <main className="bg-[#0D0D0D] text-[#F4F4F5] min-h-screen">
+    <main className=" text-[#F4F4F5] min-h-screen">
       <div className="relative">
         {/* Carrusel */}
         <div
@@ -245,109 +226,29 @@ const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
           </div>
         </section>
 
-    {/* Carrusel de Builds Recomendadas */}
-    
-      {builds.length > 0 && (
-        <section className="w-full px-4 md:px-10 mt-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
-              {builds.map((build, index) => (
-                <BuildCard
-                  key={index}
-                  title={`Build #${index + 1}`}
-                  onClick={() => setSelectedBuild(build)}
-                />
-              ))}
-            </div>
-         </section>
-      )}
+        {/* Cards */}
+        <section className="w-full px-4 md:px-10 mt-16 mb-20">
+          <h2 className="text-white text-3xl md:text-4xl font-extrabold tracking-wide text-center flex items-center justify-center gap-4 uppercase relative mb-10">
+            <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
+            Builds destacadas
+            <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
+            {builds.map((build, index) => (
+              <BuildCard
+                key={build._id}
+                title={build.title || `Build #${index + 1}`}
+                total={build.total}
+                components={build.components}
+                onToggleRecommended={() => toggleRecomendada(build._id, build.recommended)}
+              />
+
+            ))}
+          </div>
+        </section>
+
 
       </div>
-
-{selectedBuild && (
-  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-    <div className="bg-[#1F1F1F] rounded-xl shadow-2xl p-6 w-full max-w-6xl relative border border-[#9F5BFF]">
-
-      {/* Botón cerrar */}
-      <button
-        onClick={() => setSelectedBuild(null)}
-        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#9F5BFF] text-white hover:bg-white hover:text-[#9F5BFF] transition-all"
-      >
-        ×
-      </button>
-
-      {/* Título */}
-      <h2 className="text-white text-2xl font-bold mb-6 text-center">Build #{builds.indexOf(selectedBuild) + 1}</h2>
-
-      {/* Contenido sin scroll interno */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {Object.entries(selectedBuild.components).flatMap(([key, comp]: any) =>
-          Array.isArray(comp)
-            ? comp.map((item, i) => (
-                <div key={`${key}-${i}`} className="flex items-start gap-3 text-sm bg-[#222] p-4 rounded-lg">
-                  {getIconForKey(key)}
-                  <div className="flex-1">
-                    <p className="text-white font-semibold line-clamp-1">{item.name}</p>
-                    <ul className="text-xs text-zinc-400 mt-1 space-y-[2px]">
-                      {Object.entries(item.specs || {})
-                        .filter(([k]) => typeof item.specs[k] !== 'object')
-                        .slice(0, 3)
-                        .map(([k, v]) => (
-                          <li key={k}>
-                            <span className="capitalize">{k}:</span> {String(v)}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                  <span className="text-xs bg-[#9F5BFF] text-white font-bold px-2 py-0.5 rounded-full whitespace-nowrap mt-1">
-                    ${item.price?.toLocaleString('es-CL') || 'N/A'}
-                  </span>
-                </div>
-              ))
-            : comp?.name && (
-                <div key={key} className="flex items-start gap-3 text-sm bg-[#222] p-4 rounded-lg">
-                  {getIconForKey(key)}
-                  <div className="flex-1">
-                    <p className="text-white font-semibold line-clamp-1">{comp.name}</p>
-                    <ul className="text-xs text-zinc-400 mt-1 space-y-[2px]">
-                      {Object.entries(comp.specs || {})
-                        .filter(([k]) => typeof comp.specs[k] !== 'object')
-                        .slice(0, 3)
-                        .map(([k, v]) => (
-                          <li key={k}>
-                            <span className="capitalize">{k}:</span> {String(v)}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                  <span className="text-xs bg-[#9F5BFF] text-white font-bold px-2 py-0.5 rounded-full whitespace-nowrap mt-1">
-                    ${comp.price?.toLocaleString('es-CL') || 'N/A'}
-                  </span>
-                </div>
-              )
-        )}
-      </div>
-
-      {/* Total */}
-      <div className="mt-6 text-right">
-        <p className="text-white text-sm">
-          Total:{' '}
-          <span className="text-[#9F5BFF] font-bold text-xl">
-            ${Object.values(selectedBuild.components).reduce((acc, comp: any) => {
-              if (Array.isArray(comp)) {
-                return acc + comp.reduce((sum, c) => sum + (c.price || 0), 0);
-              }
-              return acc + (comp?.price || 0);
-            }, 0).toLocaleString('es-CL')}
-          </span>
-        </p>
-      </div>
-    </div>
-  </div>
-)}
-
-    )}
-
-
     </main>
     
   );
