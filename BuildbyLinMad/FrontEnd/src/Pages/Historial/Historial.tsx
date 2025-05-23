@@ -22,6 +22,11 @@ function Historial() {
         }
 
         const data = await buildService.getBuildsByUser(userId);
+        // 🔍 Imprimir los IDs y títulos de las builds
+        console.log("Builds del usuario:");
+        data.forEach((build: any, index: number) => {
+          console.log(`Build ${index + 1}: ID = ${build._id}, título = ${build.title}`);
+        });
         setBuilds(data);
       } catch (err) {
         console.error('Error al obtener builds:', err);
