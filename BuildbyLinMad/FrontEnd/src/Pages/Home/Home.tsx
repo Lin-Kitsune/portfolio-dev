@@ -10,6 +10,10 @@ import disenoProfesional from '../../assets/img/diseno-profesional.png';
 // Card
 import BuildCard from './BuildCard';
 
+// Carruseles
+import NewComponentsSlider from './NewComponentsSlider';
+import PopularComponentsSlider from './PopularComponentsSlider';
+
 function Home() {
   const sliderRef = useRef<HTMLDivElement>(null);
   const sliderInstance = useRef<KeenSliderInstance | null>(null);
@@ -247,6 +251,25 @@ const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
           </div>
         </section>
 
+        {/* Carrusel Piezas Populares */}
+        <section className="w-screen overflow-hidden mt-8 mb-12">
+          <h2 className="text-white text-3xl md:text-4xl font-extrabold tracking-wide text-center flex items-center justify-center gap-4 uppercase relative mb-10">
+            <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
+            Componentes Populares
+            <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
+          </h2>
+          <PopularComponentsSlider />
+        </section>
+
+        {/* Carrusel componentes nuevos */}
+        <section className="w-screen overflow-hidden mt-8 mb-12">
+          <h2 className="text-white text-3xl md:text-4xl font-extrabold tracking-wide text-center flex items-center justify-center gap-4 uppercase relative mb-10">
+            <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
+            Componentes Nuevos
+            <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
+          </h2>
+          <NewComponentsSlider />
+        </section>
 
       </div>
     </main>
