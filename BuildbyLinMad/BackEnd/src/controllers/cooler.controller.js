@@ -8,7 +8,7 @@ const coolerController = {
       const parsedSpecs = JSON.parse(specs);
       const imagePath = req.file ? req.file.path : '';
 
-      const nuevo = new Cooler({ name, price, specs: parsedSpecs, link, model, imagePath });
+      const nuevo = new Cooler({ name, price, specs: parsedSpecs, link, model, imagePath, createdAt: new Date(), });
       await nuevo.save();
 
       res.status(201).json(nuevo);

@@ -16,7 +16,7 @@ const caseSchema = new mongoose.Schema({
   link: { type: String, required: true },
   model: { type: String, default: null },
   imagePath: { type: String, default: '' },
-});
+  }, { timestamps: true });
 
 const Case = mongoose.model('Case', caseSchema, 'cases');
 
