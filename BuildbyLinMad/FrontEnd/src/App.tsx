@@ -40,6 +40,7 @@ import Register from './Pages/Auth/Register/Register';
 function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showPerfil, setShowPerfil] = useState(false);
 
   return (
     <BrowserRouter>
@@ -52,6 +53,11 @@ function App() {
         onRegisterClick={() => {
           setShowRegister(true);
           setShowLogin(false);
+        }}
+        onPerfilClick={() => {
+          setShowPerfil(true);
+          setShowLogin(false);
+          setShowRegister(false);
         }}
       />
 
@@ -74,6 +80,10 @@ function App() {
           }}
         />
       )}
+      {showPerfil && (
+        <Perfil onClose={() => setShowPerfil(false)} 
+        />
+      )}
 
       {/* Rutas principales */}
       <Routes>
@@ -81,7 +91,7 @@ function App() {
         <Route path="/recomendador" element={<Recomendador />} />
         <Route path="/build" element={<BuildAsistido />} />
         <Route path="/historial" element={<Historial />} />
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/perfil" element={<Navigate to="/" />} />
         <Route path="/login" element={<Navigate to="/" />} />
         <Route path="/register" element={<Navigate to="/" />} />
         <Route path="/editar-build" element={<EditarBuild />} />

@@ -12,7 +12,7 @@ const navItems = [
   { label: 'Historial', path: '/historial' },
 ];
 
-export default function Navbar({ onLoginClick, onRegisterClick }) {
+export default function Navbar({ onLoginClick, onRegisterClick, onPerfilClick  }) {
   const location = useLocation();
   const [usuario, setUsuario] = useState(null);
 
@@ -73,7 +73,7 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
             </>
           ) : (
             <Link
-              to="/perfil"
+              onClick={onPerfilClick}
               title="Mi perfil"
               className="text-white hover:text-[#C28BFF] transition"
             >
