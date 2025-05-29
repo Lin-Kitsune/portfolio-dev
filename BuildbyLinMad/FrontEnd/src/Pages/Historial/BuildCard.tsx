@@ -16,7 +16,8 @@ const BuildCard = ({ build, index, onEdit, onDelete, onToggleRecommended, isAdmi
       />
 
       <div className="content">
-        <h1 className="build-title">Build #{index + 1}</h1>
+        <h1 className="text-2xl font-bold">{build.title || `Build #${index + 1}`}</h1>
+
 
         <div className="row-info">
           <span className="build-date">{fecha}</span>

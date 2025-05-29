@@ -171,8 +171,14 @@ export default function MotherboardsAdmin() {
         JSON.stringify({
           socket: editSocket,
           chipset: editChipset,
+          formato: editFormato,
+          memorias: {
+            cantidad: parseInt(editCantidadRam),
+            tipo: editTipoRam,
+          },
         })
       );
+
   
       if (editImage) {
         formData.append('image', editImage);
