@@ -32,4 +32,10 @@ export const buildService = {
     const res = await axios.put(`${API_URL}/${buildId}/unrecommend`);
     return res.data;
   },
+
+  getPopularComponents: async () => {
+  const res = await axios.get(`${API_URL}/popular-components`);
+   return res.data;
+},
+
 };

@@ -22,6 +22,8 @@ import psuRoutes from './routes/components/psu.routes.js';
 import ramRoutes from './routes/components/ram.routes.js';
 import ssdRoutes from './routes/components/ssd.routes.js';
 
+import newComponentsRoutes from './routes/new-components.routes.js';
+
 dotenv.config();
 
 const app = express();
@@ -55,6 +57,8 @@ app.use('/api/processors', processorRoutes);
 app.use('/api/psus', psuRoutes);
 app.use('/api/rams', ramRoutes);
 app.use('/api/ssds', ssdRoutes);
+
+app.use('/api/new-components', newComponentsRoutes);
 
 // 🚀 Conexión Mongo + servidor
 mongoose.connect(process.env.MONGO_URI)

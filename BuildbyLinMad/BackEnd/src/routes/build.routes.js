@@ -1,4 +1,5 @@
 import express from 'express';
+import { componentModelMap } from '../models/componentModelMap.js';
 import Build from '../models/Build.js';
 
 const router = express.Router();
@@ -134,6 +135,67 @@ router.put('/:id/unrecommend', async (req, res) => {
   } catch (error) {
     console.error('❌ Error al desmarcar build como recomendada:', error);
     return res.status(500).json({ message: 'Error al actualizar la build' });
+
+// 📌 Obtener los componentes más usados en builds
+router.get('/popular-components', async (req, res) => {
+  try {
+    const builds = await Build.find();
+    const usageMap = new Map();
+
+    // 1. Contar los más usados
+    builds.forEach((build) => {
+      const { components } = build;
+
+      Object.entries(components).forEach(([type, value]) => {
+        if (!value || !value._id) return;
+
+        if (type === 'fans' && Array.isArray(value)) {
+          value.forEach((fan) => {
+            if (!fan?._id) return;
+            const key = `fans-${fan._id}`;
+            usageMap.set(key, {
+              ...usageMap.get(key),
+              type: 'fans',
+              id: fan._id,
+              name: fan.name,
+              count: (usageMap.get(key)?.count || 0) + 1,
+            });
+          });
+        } else {
+          const key = `${type}-${value._id}`;
+          usageMap.set(key, {
+            ...usageMap.get(key),
+            type,
+            id: value._id,
+            name: value.name,
+            count: (usageMap.get(key)?.count || 0) + 1,
+          });
+        }
+      });
+    });
+
+    const results = await Promise.all(
+      Array.from(usageMap.values()).map(async (item) => {
+        const Model = componentModelMap[item.type];
+        if (!Model) return item;
+
+        const data = await Model.findById(item.id);
+
+        return {
+          ...item,
+          price: data?.price ?? null,
+          model: data?.model ?? null,
+          link: data?.link ?? null,
+          imagePath: data?.imagePath ?? null,
+        };
+      })
+    );
+
+    results.sort((a, b) => b.count - a.count);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('❌ Error al procesar componentes populares:', error);
+    res.status(500).json({ message: 'Error al procesar componentes populares' });
   }
 });
 

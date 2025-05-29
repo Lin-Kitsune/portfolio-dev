@@ -15,7 +15,7 @@ const psuSchema = new mongoose.Schema({
   link: { type: String, required: true },
   model: { type: String, default: null },
   imagePath: { type: String, default: '' },
-});
+}, { timestamps: true });
 
 const Psu = mongoose.model('Psu', psuSchema, 'psus');
 
