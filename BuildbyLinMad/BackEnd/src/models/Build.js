@@ -6,6 +6,10 @@ const buildSchema = new mongoose.Schema({
     required: true,
     ref: 'User',
   },
+  title: {
+    type: String,
+    required: true,
+  },
   components: {
     cpu: Object,
     gpu: Object,
@@ -28,6 +32,7 @@ const buildSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
 
 const Build = mongoose.model('Build', buildSchema);
 
