@@ -135,6 +135,8 @@ router.put('/:id/unrecommend', async (req, res) => {
   } catch (error) {
     console.error('❌ Error al desmarcar build como recomendada:', error);
     return res.status(500).json({ message: 'Error al actualizar la build' });
+  }
+});
 
 // 📌 Obtener los componentes más usados en builds
 router.get('/popular-components', async (req, res) => {
@@ -197,6 +199,7 @@ router.get('/popular-components', async (req, res) => {
     console.error('❌ Error al procesar componentes populares:', error);
     res.status(500).json({ message: 'Error al procesar componentes populares' });
   }
-});
+  
+}); 
 
 export default router;
