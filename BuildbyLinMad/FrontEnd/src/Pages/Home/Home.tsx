@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from 'react';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider, KeenSliderInstance } from 'keen-slider/react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
 // Imagenes
 import potencia from '../../assets/img/potencia.png';
 import recomendacion from '../../assets/img/recomendacion.png';
@@ -104,6 +106,27 @@ function Home() {
 
         fetchBuilds();
   }, []);
+
+  const guardarBuild = async (buildId: string) => {
+  const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+  const userId = usuario.id;
+
+  if (!userId) {
+    toast.warning('Debes iniciar sesión para guardar esta build.');
+    return;
+  }
+
+  try {
+    await axios.post('http://localhost:5000/api/builds/save-recommended', {
+      userId,
+      buildId,
+    });
+    toast.success(' Build guardada en tu historial');
+  } catch (error) {
+    console.error(' Error al guardar build recomendada:', error);
+    toast.error('Error al guardar la build. Intenta nuevamente.');
+  }
+};
 
 const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
 
@@ -237,14 +260,15 @@ const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
             Builds destacadas
             <span className="hidden md:inline-block flex-1 h-px bg-white max-w-[120px]" />
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
-            {builds.map((build, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-6 justify-center">
+            {builds.slice(0, 4).map((build, index) => (
               <BuildCard
                 key={build._id}
                 title={build.title || `Build #${index + 1}`}
                 total={build.total}
                 components={build.components}
                 onToggleRecommended={() => toggleRecomendada(build._id, build.recommended)}
+                onSave={() => guardarBuild(build._id)}
               />
 
             ))}
