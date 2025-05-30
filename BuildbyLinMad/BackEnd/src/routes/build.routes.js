@@ -202,4 +202,36 @@ router.get('/popular-components', async (req, res) => {
   
 }); 
 
+// 📌 Guardar una build recomendada en el historial del usuario
+router.post('/save-recommended', async (req, res) => {
+  try {
+    const { userId, buildId } = req.body;
+
+    if (!userId || !buildId) {
+      return res.status(400).json({ message: 'Faltan campos requeridos.' });
+    }
+
+    const originalBuild = await Build.findById(buildId);
+    if (!originalBuild) {
+      return res.status(404).json({ message: 'Build no encontrada' });
+    }
+
+    // Crear una copia para el usuario
+    const userBuild = new Build({
+      userId,
+      title: originalBuild.title || 'Build recomendada',
+      total: originalBuild.total,
+      components: originalBuild.components,
+      source: 'guardada', 
+    });
+
+    await userBuild.save();
+
+    return res.status(201).json({ message: 'Build guardada en el historial del usuario' });
+  } catch (error) {
+    console.error('❌ Error al guardar build recomendada:', error);
+    return res.status(500).json({ message: 'Error al guardar build recomendada' });
+  }
+});
+
 export default router;
