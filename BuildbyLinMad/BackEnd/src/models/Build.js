@@ -27,6 +27,11 @@ const buildSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  source: {
+    type: String,
+    enum: ['manual', 'guardada'],
+    default: 'manual',
+  },
   createdAt: {
     type: Date,
     default: Date.now,
