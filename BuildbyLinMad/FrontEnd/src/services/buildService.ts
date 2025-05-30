@@ -38,4 +38,9 @@ export const buildService = {
    return res.data;
 },
 
+guardarBuildRecomendada: async (userId: string, buildId: string) => {
+  const res = await axios.post(`${API_URL}/save-recommended`, { userId, buildId });
+  return res.data;
+},
+
 };

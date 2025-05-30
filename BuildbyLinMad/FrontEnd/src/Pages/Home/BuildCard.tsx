@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Button from '@mui/material/Button';
 
 interface BuildCardProps {
   title: string;
@@ -9,9 +10,10 @@ interface BuildCardProps {
       name: string;
     };
   };
+  onSave?: () => void;
 }
 
-const BuildCard: React.FC<BuildCardProps> = ({ title, total , components }) => {
+const BuildCard: React.FC<BuildCardProps> = ({ title, total , components, onSave }) => {
   return (
     <StyledWrapper>
       <div className="card-container">
@@ -41,6 +43,29 @@ const BuildCard: React.FC<BuildCardProps> = ({ title, total , components }) => {
                   ) : null
                 )}
               </ul>
+              {/* Guardar build */}
+              {onSave && (
+                <div style={{ textAlign: 'center', marginTop: '12px' }}>
+                  <Button
+                    variant="contained"
+                    onClick={onSave}
+                    sx={{
+                      backgroundColor: '#7F00FF',
+                      '&:hover': {
+                        backgroundColor: '#5A32A3',
+                      },
+                      color: '#fff',
+                      textTransform: 'none',
+                      fontWeight: 'bold',
+                      fontSize: '0.875rem',
+                      borderRadius: '8px',
+                      boxShadow: 'none',
+                    }}
+                  >
+                    Guardar
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
