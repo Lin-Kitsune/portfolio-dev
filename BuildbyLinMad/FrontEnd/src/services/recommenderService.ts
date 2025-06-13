@@ -46,7 +46,7 @@ export async function recomendarMejoras(build: any): Promise<Recomendacion[]> {
         type: 'CPU',
         actual: cpu,
         sugerido: mejoresCPUs[0],
-        motivo: '⚡ Mejor CPU compatible por socket y rango de precio',
+        motivo: ' Mejor CPU compatible por socket y rango de precio',
       });
     }
   }
@@ -67,7 +67,7 @@ export async function recomendarMejoras(build: any): Promise<Recomendacion[]> {
         type: 'GPU',
         actual: gpu,
         sugerido: mejoresGPUs[0],
-        motivo: '⚡ Mejor GPU por rendimiento y precio',
+        motivo: ' Mejor GPU por rendimiento y precio',
       });
     }
   }
@@ -99,7 +99,7 @@ export async function recomendarMejoras(build: any): Promise<Recomendacion[]> {
         type: 'RAM',
         actual: ram,
         sugerido: mejoresRAM[0],
-        motivo: '⚡ Mayor velocidad o capacidad compatible',
+        motivo: ' Mayor velocidad o capacidad compatible',
       });
     }
   }
