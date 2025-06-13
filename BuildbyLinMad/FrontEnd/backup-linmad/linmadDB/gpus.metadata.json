@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"c0e68b38ff9e4004afda528175770a17","collectionName":"gpus","type":"collection"}

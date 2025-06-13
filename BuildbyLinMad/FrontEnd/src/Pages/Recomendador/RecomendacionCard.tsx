@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from '@mui/material/Button';
+import './RecomendacionCard.css';
 
 type Props = {
   data: any;
@@ -6,7 +8,7 @@ type Props = {
   color: string;
 };
 
-const BASE_URL = 'http://localhost:5000'; // puedes moverlo a env si prefieres
+const BASE_URL = 'http://localhost:5000';
 
 const RecomendacionCard = ({ data, title, color }: Props) => {
   const imageUrl = data?.imagePath
@@ -14,39 +16,108 @@ const RecomendacionCard = ({ data, title, color }: Props) => {
     : '/placeholder.png';
 
   return (
-    <div className="bg-neutral-900 rounded-lg shadow-md border p-4 flex flex-col items-center">
-      <h3 className={`text-lg font-bold mb-2 ${color}`}>{title}</h3>
-      <img
-        src={imageUrl}
-        alt={data?.name}
-        className="w-32 h-32 object-contain rounded mb-3"
-      />
-      <p className="font-semibold text-center text-white">{data?.name}</p>
-      <p className="text-sm text-gray-400 mt-1">${data?.price?.toLocaleString('es-CL')}</p>
-      <div className="text-xs text-gray-300 mt-2 space-y-1 w-full text-left">
-        {data?.specs?.socket && <p><strong>Socket:</strong> {data.specs.socket}</p>}
-        {data?.specs?.vram && <p><strong>VRAM:</strong> {data.specs.vram} GB</p>}
-        {data?.specs?.frecuenciaCore?.base && (
-          <p>
-            <strong>Base:</strong> {data.specs.frecuenciaCore.base} MHz |{' '}
-            <strong>Boost:</strong> {data.specs.frecuenciaCore.boost ?? '-'}
-          </p>
-        )}
-        {data?.specs?.frequency && (
-          <p><strong>Frecuencia:</strong> {data.specs.frequency} MHz</p>
-        )}
-        {data?.specs?.tipo && <p><strong>Tipo:</strong> {data.specs.tipo}</p>}
+    <div className="recomend-card">
+      <div className="recomend-card-bg"></div>
+       {/* Texto de fondo grande */}
+      <div className="recomend-bg-title">
+        {data?.name?.split(' ')[0] || ''}
       </div>
-      {data?.link && (
-        <a
-          href={data.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3 text-sm text-blue-400 hover:underline"
+      {/* Imagen */}
+      <div className="recomend-photo">
+        <img src={imageUrl} alt={data?.name} />
+      </div>
+      <div className="recomend-content">
+        <div
+          className={`recomend-badge--estado ${
+            title.toLowerCase() === 'actual'
+              ? 'recomend-badge--actual'
+              : 'recomend-badge--sugerido'
+          }`}
         >
-          Ver producto
-        </a>
-      )}
+          {title}
+        </div>
+        <div className="recomend-name">{data?.name}</div>
+        <div className="recomend-feature">
+          <div className="recomend-label">PRECIO:</div>
+          <span className="recomend-badge">
+            ${data?.price?.toLocaleString('es-CL')}
+          </span>
+        </div>
+
+        <div className="recomend-specs">
+          {data?.specs?.socket && (
+            <div className="recomend-feature">
+              <div className="recomend-label">SOCKET:</div>
+              <span className="recomend-badge--spec">{data.specs.socket}</span>
+            </div>
+          )}
+
+          {data?.specs?.vram && (
+            <div className="recomend-feature">
+              <div className="recomend-label">VRAM:</div>
+              <span className="recomend-badge--spec">{data.specs.vram} GB</span>
+            </div>
+          )}
+
+          {data?.specs?.frecuenciaCore?.base && (
+            <>
+              <div className="recomend-feature">
+                <div className="recomend-label">BASE:</div>
+                <span className="recomend-badge--spec">{data.specs.frecuenciaCore.base} MHz</span>
+              </div>
+              <div className="recomend-feature">
+                <div className="recomend-label">BOOST:</div>
+                <span className="recomend-badge--spec">{data.specs.frecuenciaCore.boost ?? '-'} MHz</span>
+              </div>
+            </>
+          )}
+
+
+          {data?.specs?.frequency && (
+            <div className="recomend-feature">
+              <div className="recomend-label">FRECUENCIA:</div>
+              <span className="recomend-badge--spec">{data.specs.frequency} MHz</span>
+            </div>
+          )}
+
+          {data?.specs?.tipo && (
+            <div className="recomend-feature">
+              <div className="recomend-label">TIPO:</div>
+              <span className="recomend-badge--spec">{data.specs.tipo}</span>
+            </div>
+          )}
+        </div>
+
+        {data?.link && (
+          <Button
+            variant="contained"
+            href={data.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              mt: 2,
+              backgroundColor: '#7F00FF',
+              '&:hover': {
+                backgroundColor: '#5A32A3',
+              },
+              color: '#fff',
+              textTransform: 'none',
+              fontWeight: 'bold',
+              fontSize: '0.875rem',
+              opacity: 0,
+              transform: 'translateY(50px)',
+              transition: '0.5s',
+              transitionDelay: '0.3s',
+              '.recomend-card:hover &': {
+                opacity: 1,
+                transform: 'translateY(0)',
+              },
+            }}
+          >
+            Ver más
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
